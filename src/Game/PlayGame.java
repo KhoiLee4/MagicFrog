@@ -6,10 +6,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
-public class Setting extends BasicGameState{
+public class PlayGame extends BasicGameState{
 
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -24,13 +22,13 @@ public class Setting extends BasicGameState{
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(Color.blue);
-		g.drawString("Setting", 100, 100);
+		g.drawString("Play", 100, 100);
 		
 	}
 
 	@Override
 	public int getID() {
-		return 2;
+		return 1;
 	}
 
 }
