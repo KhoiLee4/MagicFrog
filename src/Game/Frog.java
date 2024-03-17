@@ -9,7 +9,7 @@ public class Frog extends GameObject implements gameConfig {
 	protected Frog() throws SlickException {
 		super(null, screenWidth / 2, screenHeight - 100, null);
 
-		this.img = new Image("C:/Users/ADMIN/Desktop/MagicFrog/Data/Image/Frog.png");
+		this.img = new Image("Data/Image/Frog.png");
 
 		this.hitbox = new Rectangle(this.pos_x - this.img.getWidth() / 2, this.pos_y - this.img.getHeight() / 2,
 				this.img.getWidth(), this.img.getHeight());
