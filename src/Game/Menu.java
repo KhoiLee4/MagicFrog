@@ -36,7 +36,7 @@ public class Menu extends BasicGameState {
 	// khởi tạo các giá trị
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
-		button_start = new Image("C:/Users/ADMIN/Desktop/MagicFrog/Data/Image/button.png");
+		button_start = new Image("Data/Image/button.png");
 		button_setting = new Image("C:/Users/ADMIN/Desktop/MagicFrog/Data/Image/button.png");
 		button_leaderboard = new Image("C:/Users/ADMIN/Desktop/MagicFrog/Data/Image/button.png");
 
