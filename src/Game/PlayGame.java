@@ -8,9 +8,12 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class PlayGame extends BasicGameState{
+	
+	public Frog frog = null;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
+		frog = new Frog();
 		
 	}
 	
@@ -23,6 +26,8 @@ public class PlayGame extends BasicGameState{
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(Color.blue);
 		g.drawString("Play", 100, 100);
+		
+		frog.render();
 		
 	}
 
