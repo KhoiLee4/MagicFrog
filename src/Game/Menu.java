@@ -30,7 +30,13 @@ public class Menu extends BasicGameState {
 	// khởi tạo các giá trị
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
+<<<<<<< HEAD
+		button_start = new Image("Data/Image/button.png");
+		button_setting = new Image("Data/Image/button.png");
+		button_leaderboard = new Image("Data/Image/button.png");
+=======
 		img_background = new Image("Data/Image/Menu.png");
+>>>>>>> ffddefd4c60ed44e9d9b30d9a1a0af54cebebdc0
 
 		bt_setting = new Rectangle(bt_setting_X, bt_setting_Y, 118, 128);
 		bt_leaderboard = new Rectangle(bt_leaderboard_X, bt_leaderboard_Y, 118, 128);

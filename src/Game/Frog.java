@@ -1,12 +1,13 @@
 package Game;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Frog extends GameObject implements gameConfig {
-
+	
 	protected Frog() throws SlickException {
 		super(null, screenWidth / 2, screenHeight - 100, null);
 
