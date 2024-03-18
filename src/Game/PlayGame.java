@@ -10,16 +10,22 @@ import org.newdawn.slick.state.StateBasedGame;
 public class PlayGame extends BasicGameState{
 	
 	public Frog frog = null;
-
+	
+	public static GameContainer game_container = null;
+	
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		frog = new Frog();
+		
+		game_container = container;
 		
 	}
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 //		sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+		frog.update(delta);
 	}
 
 	@Override
