@@ -19,8 +19,6 @@ public class PlayGame extends BasicGameState{
 		frog = new Frog();
 		gameContainer = container;
 		
-		game_container = container;
-		
 	}
 	
 	@Override
