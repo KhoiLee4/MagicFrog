@@ -7,19 +7,22 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
-public class Car extends GameObject implements gameConfig {
+// Đối tượng tấm ván gỗ
+public class Plank extends GameObject {
 
-	protected Car(float x, float y, String url, int direction) throws SlickException {
+	protected Plank(float x, float y, String url, int direction) throws SlickException {
 		super(null, x, y, null);
-
+		
 		this.direction = direction;
 
-		this.speed = speedCar;
+		this.img = new Image(url);
 
+
+		this.speed = speedPlank;
+
+		// đặt lại vị trí cho phù hợp với từng hình
 		if (direction == 1) {
-			this.img = new Image(url);
-		} else {
-			this.img = new Image(url).getFlippedCopy(true, false);
+			this.pos_x = x - this.img.getWidth();
 		}
 
 		this.hitbox = new Rectangle(this.pos_x - this.img.getWidth() / 2, this.pos_y - this.img.getHeight() / 2,
@@ -27,12 +30,12 @@ public class Car extends GameObject implements gameConfig {
 
 	}
 
-	// Cập nhật trạng thái của xe
+	// Cập nhật trạng thái của tấm ván
 	public void update(int delta) throws SlickException {
 		move(delta);
 	}
 
-	// Sự kiện di chuyển của xe (1: sang phải, -1: sang trái
+	// Sự kiện di chuyển của tấm ván (1: sang phải, -1: sang trái)
 	private void move(int delta) throws SlickException {
 		this.pos_x += this.speed * delta * this.direction;
 		if (PlayGame.gameContainer.getInput().isKeyDown(Input.KEY_UP)) {
@@ -47,9 +50,9 @@ public class Car extends GameObject implements gameConfig {
 	}
 
 	// kiểm tra các phần tử đã vào màn hình hết chưa
-	public static boolean checkOnScreen(ArrayList<Car> cars) {
-		for (Car c : cars) {
-			if (c.pos_x < 0 || c.pos_x > 945 - c.img.getWidth()) {
+	public static boolean checkOnScreen(ArrayList<Plank> planks) {
+		for (Plank p : planks) {
+			if (p.pos_x < 0 || p.pos_x > 945 - p.img.getWidth()) {
 				return false;
 			}
 		}

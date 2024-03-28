@@ -32,7 +32,7 @@ public class Game extends StateBasedGame implements gameConfig {
 		try {
 			game = new AppGameContainer(new Game());
 			game.setDisplayMode(screenWidth, screenHeight, false);
-//			game.setTargetFrameRate(60);
+//			game.setTargetFrameRate(144);
 //			game.setVSync(true);
 			game.setShowFPS(false);
 			game.start();
