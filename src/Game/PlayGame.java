@@ -37,7 +37,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		map = new ArrayList<Map>();
 
 		// khởi tạo màng chơi
-		map.add(new MapLand(0, screenHeight));
+		map.add(new MapLand(0));
 		while (Map.totalHeight(map) < screenHeight + 620) {
 			createMap();
 		}

@@ -19,7 +19,7 @@ public final class MapLand extends Map implements gameConfig {
 		super(null, x, 0);
 
 		this.background = new Image("Data/Image/MapLand.png");
-		this.pos_y = -background.getHeight();
+		this.pos_y = screenHeight - background.getHeight();
 
 		randomSpawn = new Random();
 
@@ -34,7 +34,7 @@ public final class MapLand extends Map implements gameConfig {
 
 		randomSpawn = new Random();
 
-		this.background = new Image("Data/Image/MapLand" + randomSpawn.nextInt(1, 2) + ".png");
+		this.background = new Image("Data/Image/MapLand" + (randomSpawn.nextInt(0, 2) + 1) + ".png");
 
 		this.pos_y = y - this.background.getHeight();
 
