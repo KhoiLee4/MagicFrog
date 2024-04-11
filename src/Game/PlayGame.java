@@ -11,6 +11,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+// Loại Map
 enum Type_map {
 	WATER, LAND, STREET;
 
@@ -18,106 +19,107 @@ enum Type_map {
 	private static final int SIZE = VALUES.length;
 	private static final Random RANDOM = new Random();
 
+	// Lấy ngẫu nhiên 1 loại
 	public static Type_map getRandomType() {
 		return VALUES[RANDOM.nextInt(SIZE)];
 	}
 }
 
 public class PlayGame extends BasicGameState implements gameConfig {
-	// Nhân vật ếch
-	public Frog frog = null;
+	// Ếch
+	public Frog frog;
+
 	// Map
 	private ArrayList<Map> map;
 
-	public static GameContainer gameContainer = null;
+	//
+	public static GameContainer gameContainer;
 
+	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
+		// Tạo nhân vật
 		frog = new Frog();
+
+		// Tạo Map
 		map = new ArrayList<Map>();
 
-		// khởi tạo màn chơi
+		// Khởi tạo màn chơi
 		map.add(new MapLand(0));
 		while (Map.totalHeight(map) < screenHeight + 620) {
 			createMap();
 		}
 
 		gameContainer = container;
-
 	}
 
+	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-
+		// Tạo Map tự động
 		if (Map.totalHeight(map) < screenHeight + 620) {
 			createMap();
 		}
+
+		// flag = -2 => Dead
 		// flag = 1 => move
-		// flag = 2 => cham chieu rong cua hinh chu nhat
-		// flag = 3 => cham chieu dai ben phai cua hinh nhat
-		// flag = 4 => cham chieu dai ben trai cua hinh nhat
-		// flag = 5 => cham 2 diem dac biet cua hcn
-		int flag = 1, index = -1;
-		boolean test = true;
+		// flag = 2 => chạm chiều rộng của hình chữ nhật
+		// flag = 3 => chạm chiều dài bên phải của hình chữ nhật
+		// flag = 4 => chạm chiều dài bên trái của hình chữ nhật
+		// flag = 5 => chạm 2 điểm đặc biệt của hình chữ nhật
+
+		// Cờ trạng thái
+		int flag = 1;
+
+		// kiểm tra Map
 		for (Map x : map) {
-			index++;
-			// check frog return != 1 => trung vat can
+			// check frog return != 1 => touches obstacles
 			flag = x.checkFrog(frog.getHitbox());
 			if (flag != 1) {
-//				System.out.println("Roi vong lap");
-				test = false;
 				break;
-
 			}
 		}
-		if (test) {
-			System.out.println("Chay het map");
-		}
-		System.out.println(flag + " Play game ");
 
+		// Cập nhật nhân vật theo trạng thái
 		frog.update(delta, flag);
 
-		if (flag == 1) {
-			// Di chuyen thi tat ca dc di chuyen
+		// flag = -2 => drop water, touches car
+		if (flag == -2) {
+			frog.setAlive(false);
+			//
+			// Nhân vật chết chuyển sang màn hình GameOver (chơi lại)
+			//
+		} else {
 			for (int i = 0; i < map.size(); i++) {
-				map.get(i).update(delta, flag, frog.getHitbox());
+				// Cập nhật map
+				map.get(i).update(delta, flag, frog);
+
+				// Xóa map đã đi qua
 				if (map.get(i).checkLocation()) {
 					map.remove(i);
 				}
 			}
-		} else { 
-			// Khong di chuyen dc thi chi co xe, tam van dc di chuyen
-			//(map.get(i).getTypeMap().equals("land") && index != i)
-			for (int i = 0; i < map.size(); i++) {
-				if (map.get(i).getTypeMap().equals("water") ||
-						map.get(i).getTypeMap().equals("street")
-						) {
-					map.get(i).update(delta, flag, frog.getHitbox());
-				}
-			//	map.get(index).update(delta, flag, frog.getHitbox());
-				
-			}
-
 		}
-
 	}
 
+	// Hiển thị
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(Color.blue);
-		// g.drawString("Play", 100, 100);
-
+		// Vẽ Map
 		for (int i = 0; i < map.size(); i++) {
 			map.get(i).render();
 		}
 
+		// Vẽ nhân vật
 		frog.render();
-
 	}
 
+	// Tạo Map ngẫu nhiên
 	public void createMap() throws SlickException {
+		// Lấy ngẫu nhiêu loại Map
 		Type_map type = Type_map.getRandomType();
-//		while(map.get(map.size() - 1))
+
+		// Tạo Map theo loại
 		switch (type) {
 		case WATER:
 			map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
@@ -136,9 +138,13 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		}
 	}
 
+	// Lấy id trạng thái
 	@Override
 	public int getID() {
 		return 1;
 	}
-
 }
+
+// LƯU Ý
+// xem xét tối ưu cờ trạng thái
+// Tạo cơ chế tính điểm 

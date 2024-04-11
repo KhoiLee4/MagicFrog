@@ -4,13 +4,15 @@ public interface gameConfig {
 	int screenWidth = 1050;
 	int screenHeight = 1000;
 
-	float speedPlank = 0.3f;
-	float speedCar = 0.4f;
+	float speedPlank = 0.5f;
+	float speedCar = 0.5f;
 	float speedFrog = 0.5f;
 
 	boolean Music = false;
 	boolean Sound = false;
 	
+	float speedMap = speedFrog;
+
 }
 
 // chiều rộng, chiều cao 
@@ -18,4 +20,5 @@ public interface gameConfig {
 // map 945, auto
 // xe 197, 135
 // ván auto, 975
-//  butto 465 540/700, 900 840
+// butto 465 540/700, 900 840
+// 

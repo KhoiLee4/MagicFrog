@@ -4,7 +4,10 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 
 public class GameMusic implements gameConfig {
+	// Nhạc nền
 	private Music backgroundMusic;
+
+	// Trạng thái nhạc
 	private static boolean checkMusic = Music;
 
 	// Khởi tạo
@@ -12,6 +15,7 @@ public class GameMusic implements gameConfig {
 		backgroundMusic = new Music("Data/Sound/Background_Music.ogg");
 	}
 
+	// Lấy trạng thái nhạc
 	public static boolean isCheckMusic() {
 		return checkMusic;
 	}
@@ -30,3 +34,6 @@ public class GameMusic implements gameConfig {
 		}
 	}
 }
+
+// LƯU Ý
+// điều chỉnh cho biến trạng thái thêm tổng quát 
