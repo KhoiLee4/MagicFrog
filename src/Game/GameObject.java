@@ -10,13 +10,17 @@ import org.newdawn.slick.geom.Shape;
 public abstract class GameObject implements gameConfig {
 	// Hình ảnh của đối tượng
 	protected Image img;
-	// Vị trí cảu nhân vật (góc trái trên)
+
+	// Vị trí của đối tượng (góc trái trên)
 	protected float pos_x;
 	protected float pos_y;
+
 	// Viền va chạm
 	protected Shape hitbox;
+
 	// Hướng di chuyển
 	protected int direction;
+
 	// Tốc độ của đối tượng
 	protected float speed;
 
@@ -29,34 +33,42 @@ public abstract class GameObject implements gameConfig {
 		this.direction = 0;
 		this.speed = 0;
 	}
-	
-	public Shape getHitbox() {
-		return hitbox;
-	}
-
-	public void setHitbox(Shape hitbox) {
-		this.hitbox = hitbox;
-	}
 
 	// Vẽ đối tượng
 	public void render() {
+		// Vẽ hình
 		if (this.img != null) {
 			this.img.draw(pos_x, pos_y);
 		}
+
+		// Vẽ hitbox
 		if (this.hitbox != null) {
 			PlayGame.gameContainer.getGraphics().setColor(Color.black);
 			PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 		}
 	}
 
+	// Lấy hitbox của đối tượng
+	public Shape getHitbox() {
+		return hitbox;
+	}
+
+	// Đặt lại hitbox
+	public void setHitbox(Shape hitbox) {
+		this.hitbox = hitbox;
+	}
+
+	// Lấy hướng di chuyển
 	public int getDirection() {
 		return direction;
 	}
 
+	// Đặt lại hướng di chuyển
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
 
+	// Lấy tọa độ, đặt lại tọa độ của đối tượng
 	public float getPos_x() {
 		return pos_x;
 	}
@@ -72,6 +84,7 @@ public abstract class GameObject implements gameConfig {
 	public void setPos_y(float pos_y) {
 		this.pos_y = pos_y;
 	}
-
-	
 }
+
+// LƯU Ý
+
