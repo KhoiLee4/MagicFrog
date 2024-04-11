@@ -80,11 +80,16 @@ public class Menu extends BasicGameState {
 		// chuyển sang setting
 		if ((bt_setting.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_setting
-						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+				.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+<<<<<<< HEAD
 			sound.click();
 			animation = animationSetting;
 			checkAnimation = 1;
+=======
+			
+			sbg.enterState(2, new FadeOutTransition(), new FadeInTransition());
+>>>>>>> master
 		}
 
 		// chuyển sang leaderboard
@@ -107,12 +112,11 @@ public class Menu extends BasicGameState {
 	// hiển thị game lên màn hình
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(Color.blue);
-		g.drawString("Menu", 50, 50);
-		g.setColor(Color.transparent);
-
-		g.draw(bt_setting);
-		g.draw(bt_leaderboard);
+//		g.setColor(Color.blue);
+//		g.drawString("Menu", 50, 50);
+//		g.setColor(Color.transparent);
+//		g.draw(bt_setting);
+//		g.draw(bt_leaderboard);
 
 		img_background.draw();
 		if (animation != null) {

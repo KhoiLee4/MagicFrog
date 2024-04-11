@@ -29,6 +29,14 @@ public abstract class GameObject implements gameConfig {
 		this.direction = 0;
 		this.speed = 0;
 	}
+	
+	public Shape getHitbox() {
+		return hitbox;
+	}
+
+	public void setHitbox(Shape hitbox) {
+		this.hitbox = hitbox;
+	}
 
 	// Vẽ đối tượng
 	public void render() {
@@ -40,5 +48,5 @@ public abstract class GameObject implements gameConfig {
 			PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 		}
 	}
-
+	
 }

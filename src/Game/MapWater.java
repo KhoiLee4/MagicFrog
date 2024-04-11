@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Shape;
 
 public class MapWater extends Map implements gameConfig {
 
@@ -17,7 +18,7 @@ public class MapWater extends Map implements gameConfig {
 
 	// Khởi tạo
 	protected MapWater(float x) throws SlickException {
-		super(null, x, 0);
+		super(null, x, 0, "water");
 
 		this.background = new Image("Data/Image/MapWater.png");
 		this.pos_y = -background.getHeight();
@@ -26,11 +27,12 @@ public class MapWater extends Map implements gameConfig {
 
 		planks = new ArrayList<Plank>();
 
+		//System.out.println("water map");
 
 	}
 
 	protected MapWater(float x, float y) throws SlickException {
-		super(null, x, 0);
+		super(null, x, 0, "water");
 
 		this.background = new Image("Data/Image/MapWater.png");
 
@@ -43,7 +45,7 @@ public class MapWater extends Map implements gameConfig {
 	}
 
 	// Cập nhật map
-	public void update(int delta) throws SlickException {
+	public void update(int delta,int check, Shape hitbox) throws SlickException {
 		String url = "Data/Image/Plank";
 
 		randomTime += randomSpawn.nextInt(3);
@@ -64,15 +66,18 @@ public class MapWater extends Map implements gameConfig {
 
 		// Di chuyển và xóa các tấm ván
 		for (int i = 0; i < planks.size(); i++) {
-			planks.get(i).update(delta);
-
+			planks.get(i).update(delta,check);
 			if (planks.get(i).checkLocation()) {
 				planks.remove(i);
 			}
 		}
 
 		// Di chuyển map
-		super.update(delta);
+		if (check == 1) {
+			super.update(delta, check, hitbox);
+		}else {
+			
+		}
 	}
 
 	// Vẽ map
@@ -84,4 +89,15 @@ public class MapWater extends Map implements gameConfig {
 			planks.get(i).render();
 		}
 	}
+
+	@Override
+	public int checkFrog(Shape hitbox) {
+		for(Plank x : planks ) {
+			if(x.getHitbox().intersects(hitbox) ||x.getHitbox().contains(hitbox) ) {
+				return -1;
+			}
+		}
+		return 1;
+	}
+	
 }

@@ -30,16 +30,16 @@ public class Plank extends GameObject {
 	}
 
 	// Cập nhật trạng thái của tấm ván
-	public void update(int delta) throws SlickException {
-		move(delta);
+	public void update(int delta,int check) throws SlickException {
+		move(delta,check);
 	}
 	
 	
 
 	// Sự kiện di chuyển của tấm ván (1: sang phải, -1: sang trái)
-	private void move(int delta) throws SlickException {
+	private void move(int delta,int check) throws SlickException {
 		this.pos_x += this.speed * delta * this.direction;
-		if (PlayGame.gameContainer.getInput().isKeyDown(Input.KEY_UP)) {
+		if (PlayGame.gameContainer.getInput().isKeyDown(Input.KEY_UP) && check == 1) {
 			this.pos_y += speedFrog * delta;
 		}
 	}
