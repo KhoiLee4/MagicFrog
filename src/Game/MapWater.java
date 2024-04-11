@@ -26,7 +26,6 @@ public class MapWater extends Map implements gameConfig {
 
 		planks = new ArrayList<Plank>();
 
-		System.out.println("water map");
 
 	}
 
@@ -40,8 +39,6 @@ public class MapWater extends Map implements gameConfig {
 		randomSpawn = new Random();
 
 		planks = new ArrayList<Plank>();
-
-		System.out.println("water map");
 
 	}
 

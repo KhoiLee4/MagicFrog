@@ -24,8 +24,7 @@ public final class MapLand extends Map implements gameConfig {
 		randomSpawn = new Random();
 
 		obstacles = new ArrayList<Obstacles>();
-
-		System.out.println("land map");
+		// danh sach
 
 	}
 
@@ -33,22 +32,20 @@ public final class MapLand extends Map implements gameConfig {
 		super(null, x, 0);
 
 		randomSpawn = new Random();
+		int i = randomSpawn.nextInt(0, 2) + 1;
 
-		this.background = new Image("Data/Image/MapLand" + (randomSpawn.nextInt(0, 2) + 1) + ".png");
+		this.background = new Image("Data/Image/MapLand" + i + ".png");
 
 		this.pos_y = y - this.background.getHeight();
 
 		obstacles = new ArrayList<Obstacles>();
-
-		System.out.println("land map");
-
 	}
 
 	// Cập nhật map
 	public void update(int delta) throws SlickException {
 
 		// xử lí các đối tượng cảu Land Map
-
+		
 		// Di chuyển map
 		super.update(delta);
 	}

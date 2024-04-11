@@ -2,7 +2,6 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.Random;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -25,7 +24,6 @@ public class MapStreet extends Map implements gameConfig {
 
 		cars = new ArrayList<Car>();
 
-		System.out.println("water map");
 
 	}
 
@@ -40,7 +38,6 @@ public class MapStreet extends Map implements gameConfig {
 
 		cars = new ArrayList<Car>();
 
-		System.out.println("street map");
 
 	}
 
@@ -57,7 +54,6 @@ public class MapStreet extends Map implements gameConfig {
 				cars.add(new Car((random == 1) ? this.pos_x : this.pos_x + 945,
 						this.pos_y + 20 + 125 * ((random == 1) ? 0 : 1), url + randomSpawn.nextInt(1, 3) + ".png",
 						random));
-				System.out.println("car");
 
 			}
 		}

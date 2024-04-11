@@ -12,11 +12,10 @@ public class Plank extends GameObject {
 
 	protected Plank(float x, float y, String url, int direction) throws SlickException {
 		super(null, x, y, null);
-		
+
 		this.direction = direction;
 
 		this.img = new Image(url);
-
 
 		this.speed = speedPlank;
 
@@ -34,6 +33,8 @@ public class Plank extends GameObject {
 	public void update(int delta) throws SlickException {
 		move(delta);
 	}
+	
+	
 
 	// Sự kiện di chuyển của tấm ván (1: sang phải, -1: sang trái)
 	private void move(int delta) throws SlickException {
