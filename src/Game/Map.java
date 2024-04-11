@@ -15,7 +15,7 @@ public class Map implements gameConfig {
 	protected float pos_y;
 	protected String typeMap;
 	protected ArrayList<GameObject> obstacles;
-	
+
 	// khai báo
 	protected Map(Image img, float pos_x, float pos_y, String typeMap) throws SlickException {
 		this.background = img;
@@ -25,10 +25,9 @@ public class Map implements gameConfig {
 	}
 
 	// cập nhật map
-	public void update(int delta, int check, Shape hitbox) throws SlickException {
-		// Di chuyển map	
-			this.move(delta, check, hitbox);
-
+	public void update(int delta, int check, Frog frog) throws SlickException {
+		// Di chuyển map
+		this.move(delta, check, frog.getHitbox());
 
 	}
 
@@ -45,11 +44,11 @@ public class Map implements gameConfig {
 	private void move(int delta, int check, Shape hitbox) throws SlickException {
 		Input input = PlayGame.gameContainer.getInput();
 		// Tiến lên
-		if (input.isKeyDown(Input.KEY_UP) && (check == 1)) {
+		if (input.isKeyDown(Input.KEY_UP) && (check == 1 || check == 3 || check == 4)) {	
 			this.pos_y += speedFrog * delta;
-			
 		}
-		
+	
+
 	}
 
 	// Kiểm tra vị trí (ra ngoài thì trả về true)
@@ -77,5 +76,5 @@ public class Map implements gameConfig {
 	public String getTypeMap() {
 		return typeMap;
 	}
-	
+
 }

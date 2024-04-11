@@ -44,9 +44,34 @@ public abstract class GameObject implements gameConfig {
 			this.img.draw(pos_x, pos_y);
 		}
 		if (this.hitbox != null) {
-			PlayGame.gameContainer.getGraphics().setColor(Color.cyan);
+			PlayGame.gameContainer.getGraphics().setColor(Color.black);
 			PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 		}
 	}
+
+	public int getDirection() {
+		return direction;
+	}
+
+	public void setDirection(int direction) {
+		this.direction = direction;
+	}
+
+	public float getPos_x() {
+		return pos_x;
+	}
+
+	public void setPos_x(float pos_x) {
+		this.pos_x = pos_x;
+	}
+
+	public float getPos_y() {
+		return pos_y;
+	}
+
+	public void setPos_y(float pos_y) {
+		this.pos_y = pos_y;
+	}
+
 	
 }
