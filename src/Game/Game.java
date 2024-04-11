@@ -27,7 +27,6 @@ public class Game extends StateBasedGame implements gameConfig {
 		this.addState(new GameWin());
 		this.addState(new GameOver());
 	}
-
 	public void start() {
 		try {
 			game = new AppGameContainer(new Game());

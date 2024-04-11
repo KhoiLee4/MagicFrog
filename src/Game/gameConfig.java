@@ -1,7 +1,7 @@
 package Game;
 
 public interface gameConfig {
-	int screenWidth = 600;
+	int screenWidth = 1050;
 	int screenHeight = 1000;
 	
 	float speedPlank = 0.3f;

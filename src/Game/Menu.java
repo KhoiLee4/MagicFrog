@@ -15,7 +15,6 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class Menu extends BasicGameState {
-
 	private Image img_background = null;
 
 	private Rectangle bt_setting = null;
@@ -44,8 +43,9 @@ public class Menu extends BasicGameState {
 		// chuyển sang setting
 		if ((bt_setting.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_setting
-						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+				.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			
 			sbg.enterState(2, new FadeOutTransition(), new FadeInTransition());
 		}
 
@@ -67,12 +67,11 @@ public class Menu extends BasicGameState {
 	// hiển thị game lên màn hình
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.setColor(Color.blue);
-		g.drawString("Menu", 50, 50);
-		g.setColor(Color.transparent);
-
-		g.draw(bt_setting);
-		g.draw(bt_leaderboard);
+//		g.setColor(Color.blue);
+//		g.drawString("Menu", 50, 50);
+//		g.setColor(Color.transparent);
+//		g.draw(bt_setting);
+//		g.draw(bt_leaderboard);
 
 		img_background.draw();
 
