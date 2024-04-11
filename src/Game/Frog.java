@@ -43,8 +43,8 @@ public class Frog extends GameObject implements gameConfig {
 	}
 
 	// cập nhật trạng thái của ếch
-	public void update(int delta) throws SlickException {
 
+	public void update(int delta, int check) throws SlickException {
 		if (animationRunning) {
 			animation.update(delta);
 			if (animation.isStopped()) {
@@ -52,12 +52,8 @@ public class Frog extends GameObject implements gameConfig {
 				animation.restart();
 			}
 		}
-		move(delta);
+		move(delta, check);
 
-	public void update(int delta, int check) throws SlickException {
-		
-			move(delta, check);
-		
 	}
 
 	// bắt sự kiện di chuyển của ếch
@@ -82,7 +78,7 @@ public class Frog extends GameObject implements gameConfig {
 		// flag = 4 => cham chieu dai ben trai cua hinh nhat
 		// flag = 5 => cham 2 diem dac biet cua hcn
 		Input input = PlayGame.gameContainer.getInput();
-		if (flag == 1 ) {
+		if (flag == 1) {
 			// Qua phải
 			if (input.isKeyDown(Input.KEY_RIGHT)) {
 				this.pos_x += this.speed * delta;
@@ -132,7 +128,7 @@ public class Frog extends GameObject implements gameConfig {
 			}
 			// Tiến lên
 			if (input.isKeyDown(Input.KEY_UP)) {
-				System.out.println("Before: "+ this.pos_y + " After: " + this.pos_x);
+				System.out.println("Before: " + this.pos_y + " After: " + this.pos_x);
 				this.pos_y -= this.speed * delta;
 				this.hitbox.setY(this.hitbox.getY() - this.speed * delta);
 				System.out.println("Len tren trong flag = 4");

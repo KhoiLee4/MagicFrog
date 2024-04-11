@@ -62,16 +62,7 @@ public final class MapLand extends Map implements gameConfig {
 		this.pos_y = y - this.background.getHeight();
 
 		obstacles = new ArrayList<Obstacles>();
-	}
 
-	// Cập nhật map
-	public void update(int delta) throws SlickException {
-
-		// xử lí các đối tượng cảu Land Map
-		
-		// Di chuyển map
-		super.update(delta);
-	
 		if (url.equals("Data/Image/MapLand1.png")) {
 			// Khoi tao doi tuong cua mapLand1
 			obstacles.add(new Obstacles(this.pos_x + 13, this.pos_y + 172, "Data/Image/Obstacles3.png"));
@@ -101,8 +92,6 @@ public final class MapLand extends Map implements gameConfig {
 
 		// System.out.println(obstacles.size());
 		System.out.println("land map");
-
-		// System.out.println("land map");
 
 	}
 
