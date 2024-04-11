@@ -12,23 +12,16 @@ import org.newdawn.slick.geom.Shape;
 public class MapWater extends Map implements gameConfig {
 
 	private ArrayList<Plank> planks;
-//	private int countPlank = 4;
 	private Random randomSpawn = null;
 	int randomTime = 0;
 
-	// Khởi tạo
+	// Init map water
 	protected MapWater(float x) throws SlickException {
 		super(null, x, 0, "water");
-
 		this.background = new Image("Data/Image/MapWater.png");
 		this.pos_y = -background.getHeight();
-
 		randomSpawn = new Random();
-
 		planks = new ArrayList<Plank>();
-
-		//System.out.println("water map");
-
 	}
 
 	protected MapWater(float x, float y) throws SlickException {
@@ -46,13 +39,11 @@ public class MapWater extends Map implements gameConfig {
 
 	}
 
-	// Cập nhật map
-	public void update(int delta,int check, Shape hitbox) throws SlickException {
+	// Update map water
+	public void update(int delta,int check, Frog frog) throws SlickException {
 		String url = "Data/Image/Plank";
-
 		randomTime += randomSpawn.nextInt(3);
-
-		// Tạo ngẫu nhiên các tấm ván
+		// Random the planks
 		if (planks.size() <= 3 && Plank.checkOnScreen(planks)) {
 			if (randomTime == 10) {
 				int random = randomSpawn.nextBoolean() ? 1 : -1;
@@ -65,26 +56,35 @@ public class MapWater extends Map implements gameConfig {
 		if (randomTime > 10) {
 			randomTime = 0;
 		}
-
-		// Di chuyển và xóa các tấm ván
+		int index = -1;
+		// move planks and remove it if it go out
 		for (int i = 0; i < planks.size(); i++) {
 			planks.get(i).update(delta,check);
+ 			if(planks.get(i).getHitbox().intersects(frog.getHitbox()) || planks.get(i).getHitbox().contains(frog.getHitbox()) ) {
+ 				index = i;
+			}
 			if (planks.get(i).checkLocation()) {
 				planks.remove(i);
 			}
 		}
-
-		// Di chuyển map
-		if (check == 1) {
-			super.update(delta, check, hitbox);
-		}else {
+		// Move frog if frog on the planks
+		if(index != -1) {
+			if(planks.get(index).getDirection() == 1) {
+				// (1: to right, -1: to left)
+				frog.update(delta, 0);
+			}else {
+				frog.update(delta, -1);
+			}
 			
+		}
+		// Update move map
+		if (check == 1 || check == 4 || check == 3) {
+			super.update(delta, check, frog);
 		}
 	}
 
 	// Vẽ map
 	public void render() {
-//		GameContainer g = PlayGame.gameContainer;
 		super.render();
 
 		for (int i = 0; i < planks.size(); i++) {
@@ -95,10 +95,16 @@ public class MapWater extends Map implements gameConfig {
 	@Override
 	public int checkFrog(Shape hitbox) {
 		for(Plank x : planks ) {
-			if(x.getHitbox().intersects(hitbox) ||x.getHitbox().contains(hitbox) ) {
-				return -1;
+			if(x.getHitbox().contains(hitbox.getX()+ hitbox.getWidth()/2 , hitbox.getY()+ hitbox.getHeight()/2) || x.getHitbox() .intersects(hitbox) ) {
+				return 1;
 			}
 		}
+		if(hitbox.getX()+ hitbox.getWidth()/2 > this.pos_x && hitbox.getX() + hitbox.getWidth()/2 < this.pos_x + this.getImage().getWidth()
+				&& hitbox.getY()+ hitbox.getHeight()/2 > this.pos_y + 20 && hitbox.getY() + hitbox.getHeight()/2 < this.pos_y + this.getImage().getHeight()-40) {
+			return -2;
+		}
+		
+		
 		return 1;
 	}
 	
