@@ -75,4 +75,4 @@ public class Car extends GameObject implements gameConfig {
 }
 
 // LƯU Ý
-// chỉnh lại tạo hitbox tránh dư thừ
+// chỉnh lại tạo hitbox tránh dư thừa
