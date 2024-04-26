@@ -72,7 +72,7 @@ public final class MapLand extends Map implements gameConfig {
 		randomSpawn = new Random();
 		String url = "Data/Image/MapLand" + (randomSpawn.nextInt(2) + 1) + ".png";
 		this.background = new Image(url);
-		this.pos_y = y - this.background.getHeight();
+		this.pos_y = y + 1 - this.background.getHeight();
 
 		obstacles = new ArrayList<Obstacles>();
 
