@@ -6,17 +6,23 @@ import java.util.Random;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
 public final class MapLand extends Map implements gameConfig {
 	// Danh sách đối tượng trong Map
 	private ArrayList<Obstacles> obstacles;
 
+	// Ếch con
+	private BabyFrog babyFrog;
+
+	// Ếch con bị ăn chưa
+	private boolean isEat = false;
+
+	private Fruit fruit;
+
 	// Biến chọn map ngẫu nhiên
 	private Random randomSpawn;
-
-	// Biến chọn thời gian ngẫu nhiên
-	int randomTime = 0;
 
 	// Khởi tạo
 	protected MapLand(float x) throws SlickException {
@@ -53,6 +59,9 @@ public final class MapLand extends Map implements gameConfig {
 
 		// House
 		obstacles.add(new Obstacles(this.pos_x + 71, this.pos_y + 43, "Data/Image/Obstacles5.png"));
+
+		babyFrog = new BabyFrog(this.pos_y, obstacles);
+		fruit = new Fruit(this.pos_y, obstacles);
 
 	}
 
@@ -109,6 +118,10 @@ public final class MapLand extends Map implements gameConfig {
 			obstacles.add(new Obstacles(this.pos_x + 703, this.pos_y + 451, "Data/Image/Obstacles4.png"));
 			obstacles.add(new Obstacles(this.pos_x + 931, this.pos_y + 20, "Data/Image/Obstacles7.png"));
 		}
+
+		babyFrog = new BabyFrog(this.pos_y, obstacles);
+		fruit = new Fruit(this.pos_y, obstacles);
+
 	}
 
 	// Cập nhật
@@ -119,6 +132,15 @@ public final class MapLand extends Map implements gameConfig {
 			// Cập nhật đối tượng trong Map
 			for (Obstacles x : obstacles) {
 				x.update(delta, check);
+			}
+
+			// Cập nhật ếch con
+			if (!isEat) {
+				babyFrog.update(delta, check);
+			}
+
+			if (!fruit.getIsEat()) {
+				fruit.update(delta, check);
 			}
 
 			// Cập nhật Map
@@ -133,11 +155,24 @@ public final class MapLand extends Map implements gameConfig {
 		for (Obstacles x : obstacles) {
 			x.render();
 		}
+		if (!isEat) {
+			babyFrog.render();
+		}
+		if (!fruit.getIsEat()) {
+			fruit.render();
+		}
 	}
 
 	// Kiểm tra nhân vật so với Map
 	@Override
 	public int checkFrog(Shape hitbox) {
+		if (!isEat) {
+			eatFrog(hitbox);
+		}
+		if (!fruit.getIsEat()) {
+			eatFruit(hitbox);
+		}
+
 		for (Obstacles x : obstacles) {
 			if (x.getHitbox().intersects(hitbox) || x.getHitbox().contains(hitbox)) {
 				// touches the bottom edge of the rectangle => return 2
@@ -171,6 +206,31 @@ public final class MapLand extends Map implements gameConfig {
 			}
 		}
 		return 1;
+	}
+
+	// Ăn ếch
+	public void eatFrog(Shape hitbox) {
+		if (babyFrog.getHitbox().intersects(hitbox) || babyFrog.getHitbox().contains(hitbox)) {
+			isEat = true;
+			PlayGame.score++;
+			babyFrog.setPos_x(-30);
+			babyFrog.setPos_y(0);
+			babyFrog.setHitbox(new Rectangle(babyFrog.getPos_x(), babyFrog.getPos_y(), 30, 29));
+		}
+	}
+
+	// Ăn trái cây
+	public void eatFruit(Shape hitbox) {
+		if (fruit.getHitbox().intersects(hitbox) || fruit.getHitbox().contains(hitbox)) {
+			fruit.Eat();
+			PlayGame.energy += 20;
+			if (PlayGame.energy > 100) {
+				PlayGame.energy = 100;
+			}
+			fruit.setPos_x(-30);
+			fruit.setPos_y(0);
+			fruit.setHitbox(new Rectangle(fruit.getPos_x(), fruit.getPos_y(), 30, 29));
+		}
 	}
 }
 

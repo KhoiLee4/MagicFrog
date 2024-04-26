@@ -189,7 +189,10 @@ public class Frog extends GameObject implements gameConfig {
 			}
 			// Tiến lên
 			else if (input.isKeyDown(Input.KEY_UP)) {
+<<<<<<< HEAD
+=======
 				System.out.println(5555);
+>>>>>>> master
 				animation = jump;
 				animationRunning = true;
 			} else {
