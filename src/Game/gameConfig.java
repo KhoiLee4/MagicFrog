@@ -1,17 +1,22 @@
 package Game;
 
 public interface gameConfig {
+	// Kích thước khung hình
 	int screenWidth = 1050;
 	int screenHeight = 1000;
 
+	// Tốc độ chuyển động của các đối tượng
 	float speedPlank = 0.5f;
 	float speedCar = 0.5f;
 	float speedFrog = 0.5f;
+	float speedMap = speedFrog;
 
+	// Trạng thái âm thanh
 	boolean Music = false;
 	boolean Sound = false;
 	
-	float speedMap = speedFrog;
+	// Tốc độ giảm của năng lượng
+	float energyReduction = 0.001f;
 
 }
 
