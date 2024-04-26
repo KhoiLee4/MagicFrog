@@ -177,18 +177,19 @@ public class Frog extends GameObject implements gameConfig {
 		} else {
 			Input input = PlayGame.gameContainer.getInput();
 			// Qua phải
-			if (input.isKeyPressed(Input.KEY_RIGHT)) {
+			if (input.isKeyDown(Input.KEY_RIGHT)) {
 				animation = right;
 				animation.start();
 				animationRunning = true;
 			}
 			// Qua trái
-			else if (input.isKeyPressed(Input.KEY_LEFT)) {
+			else if (input.isKeyDown(Input.KEY_LEFT)) {
 				animation = left;
 				animationRunning = true;
 			}
 			// Tiến lên
-			else if (input.isKeyPressed(Input.KEY_UP)) {
+			else if (input.isKeyDown(Input.KEY_UP)) {
+				System.out.println(5555);
 				animation = jump;
 				animationRunning = true;
 			} else {
@@ -199,6 +200,14 @@ public class Frog extends GameObject implements gameConfig {
 		// Vẽ hitbox
 		PlayGame.gameContainer.getGraphics().setColor(Color.black);
 		PlayGame.gameContainer.getGraphics().draw(this.hitbox);
+	}
+
+	public void render(boolean isPause) {
+		if (isPause) {
+			super.render();
+		} else {
+			render();
+		}
 	}
 
 	// Kiểm tra nhân vật còn sống hay chết

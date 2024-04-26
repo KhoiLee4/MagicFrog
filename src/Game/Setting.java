@@ -44,6 +44,9 @@ public class Setting extends BasicGameState implements gameConfig {
 	int indexSound = Sound ? 0 : 1;
 	int indexMusic = Music ? 0 : 1;
 
+	// Từ đâu đến
+	static boolean isMenu = true;
+
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -74,7 +77,7 @@ public class Setting extends BasicGameState implements gameConfig {
 						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			sound.click();
-			if (sound.isCheckSound()) {
+			if (SoundEffect.isCheckSound()) {
 				sound.turnOff();
 				indexSound = 1;
 			} else {
@@ -89,7 +92,7 @@ public class Setting extends BasicGameState implements gameConfig {
 						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			sound.click();
-			if (music.isCheckMusic()) {
+			if (GameMusic.isCheckMusic()) {
 				music.stopMusic();
 				indexMusic = 1;
 			} else {
@@ -98,13 +101,17 @@ public class Setting extends BasicGameState implements gameConfig {
 			}
 		}
 
-		// Chuyển sang Menu
+		// Quay lại
 		if ((bt_back.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_back
 						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			sound.click();
-			sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+			if (isMenu) {
+				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+			} else {
+				sbg.enterState(1, new FadeOutTransition(), new FadeInTransition());
+			}
 		}
 	}
 

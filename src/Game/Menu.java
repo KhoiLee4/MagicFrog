@@ -20,14 +20,10 @@ public class Menu extends BasicGameState {
 	public GameMusic music;
 	public SoundEffect sound;
 
-	// Hiệu ứng các nút
-	public Animation animationSetting;
-	public Animation animation = null;
-
 	// Hình nền
 	private Image img_background = null;
 	// Hình các nút
-	private Image[] img_bt_setting;
+	private Image img_bt_setting;
 	private Image img_bt_leaderboard = null;
 
 	// Hitbox các nút
@@ -40,9 +36,6 @@ public class Menu extends BasicGameState {
 
 	private int bt_leaderboard_X = 550;
 	private int bt_leaderboard_Y = 705;
-
-	// Kiểm tra hiệu ứng
-	int checkAnimation = 0;
 
 	// Khởi tạo các giá trị
 	@Override
@@ -57,43 +50,25 @@ public class Menu extends BasicGameState {
 
 		// Tạo hình ảnh
 		img_background = new Image("Data/Image/Menu.png");
-		img_bt_setting = new Image[] { new Image("Data/Image/Button_Setting.png"),
-				new Image("Data/Image/Push_Setting.png") };
+		img_bt_setting = new Image("Data/Image/Button_Setting.png");
 		img_bt_leaderboard = new Image("Data/Image/Button_Leaderboard.png");
 
 		// Tạo hitbox
 		bt_setting = new Rectangle(bt_setting_X, bt_setting_Y, 130, 140);
 		bt_leaderboard = new Rectangle(bt_leaderboard_X, bt_leaderboard_Y, 130, 140);
-
-		// Tạo hiệu ứng
-		animationSetting = new Animation(img_bt_setting, 80, false);
 	}
 
-	// Cập nhật 
+	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-		// Thực hiện animation
-		if (checkAnimation != 0 && animation != null) {
-			animation.update(delta);
-			if (animation.getFrame() == animation.getFrameCount() - 1) {
-				if (checkAnimation == 1) {
-					sbg.enterState(2, new FadeOutTransition(), new FadeInTransition());
-
-				} else if (checkAnimation == 2) {
-					sbg.enterState(3, new FadeOutTransition(), new FadeInTransition());
-				}
-				checkAnimation = 0;
-			}
-		}
-
 		// Chuyển sang setting
 		if ((bt_setting.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_setting
 						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			sound.click();
-			animation = animationSetting;
-			checkAnimation = 1;
+			Setting.isMenu = true;
+			sbg.enterState(2, new FadeOutTransition(), new FadeInTransition());
 		}
 
 		// Chuyển sang leaderboard
@@ -103,7 +78,7 @@ public class Menu extends BasicGameState {
 						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			sound.click();
-			checkAnimation = 2;
+			sbg.enterState(3, new FadeOutTransition(), new FadeInTransition());
 		}
 
 		// Bắt đầu chơi
@@ -113,7 +88,7 @@ public class Menu extends BasicGameState {
 		}
 	}
 
-	// Hiển thị 
+	// Hiển thị
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Vẽ hình nền
@@ -123,17 +98,6 @@ public class Menu extends BasicGameState {
 		g.setColor(Color.transparent);
 		g.draw(bt_setting);
 		g.draw(bt_leaderboard);
-
-		// Vẽ hiệu ứng
-		if (animation != null) {
-			if (checkAnimation != 0) {
-				animation.draw(bt_setting_X, bt_setting_Y);
-			} else {
-//				animation.setCurrentFrame(0);
-//				animation.draw(bt_setting_X, bt_setting_Y);
-				animation.getCurrentFrame().draw(bt_setting_X, bt_setting_Y);
-			}
-		}
 	}
 
 	// Lấy id trạng thái
