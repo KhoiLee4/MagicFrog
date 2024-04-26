@@ -42,7 +42,7 @@ public class Map implements gameConfig {
 	public int checkFrog(Shape hitbox) {
 		return 1;
 	}
-
+ 
 	// Di chuyển Map
 	private void move(int delta, int check, Shape hitbox) throws SlickException {
 		Input input = PlayGame.gameContainer.getInput();

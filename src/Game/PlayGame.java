@@ -128,7 +128,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		img_bt_nextr = new Image("Data/Image/Button_Continue.png");
 		bt_next = new Rectangle(bt_next_X, bt_next_Y, 65, 70);
 
-		// Tạo nhân vật
+		// Tạo nhân vật 
 		frog = new Frog();
 
 		// Tạo Map

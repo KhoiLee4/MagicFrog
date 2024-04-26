@@ -7,7 +7,7 @@ public interface gameConfig {
 
 	// Tốc độ chuyển động của các đối tượng
 	float speedPlank = 0.5f;
-	float speedCar = 0.5f;
+	float speedCar = 0.45f;
 	float speedFrog = 0.5f;
 	float speedMap = speedFrog;
 
