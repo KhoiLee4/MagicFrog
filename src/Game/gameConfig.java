@@ -27,3 +27,6 @@ public interface gameConfig {
 // ván auto, 975
 // butto 465 540/700, 900 840
 // 
+
+// Việc cần làm:
+// chỉnh hitbox

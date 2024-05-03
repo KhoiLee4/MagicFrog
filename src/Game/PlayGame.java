@@ -121,7 +121,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		img_energy = new Image("Data/Image/Energy.png");
 		img_energy_border = new Image("Data/Image/Energy_Border.png");
 		energy_X = energy_border_X = screenWidth / 2 - img_energy_border.getWidth() / 2;
-		energy_Y = energy_border_Y = 10;
+		energy_Y = energy_border_Y = 15;
 
 		// Tạo hướng dẫn
 		img_tutorial = new Image("Data/Image/Tutorial" + index + ".png");
@@ -130,7 +130,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Tạo nhân vật
 		frog = new Frog();
-
+		
 		// Tạo Map
 		map = new ArrayList<Map>();
 
@@ -205,6 +205,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				// flag = -2 => drop water, touches car
 				if (flag == -2 || energy <= 0) {
 					frog.setAlive(false);
+					
+					System.out.println(score);
 
 					// Nhân vật chết
 					sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
@@ -247,7 +249,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				sbg.enterState(1);
 			}
 		}
-
 	}
 
 	// Hiển thị
@@ -332,4 +333,5 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 // LƯU Ý
 // xem xét tối ưu cờ trạng thái
-// Tạo cơ chế tính điểm 
+// 
+
