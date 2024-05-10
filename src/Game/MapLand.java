@@ -131,8 +131,8 @@ public final class MapLand extends Map implements gameConfig {
 				if (hitbox.getX() >= x.getHitbox().getX() - hitbox.getWidth()
 						&& hitbox.getX() < x.getHitbox().getX() + x.getHitbox().getHeight() + x.getHitbox().getWidth()
 						&& hitbox.getY() < x.getHitbox().getY() + x.getHitbox().getHeight()
-						&& hitbox.getY() > x.getHitbox().getY() + x.getHitbox().getHeight() / 2) {
-
+						&& hitbox.getY() > x.getHitbox().getY() + 3*x.getHitbox().getHeight() / 5) {
+					// System.out.println(2);
 					return 2;
 				}
 				// touches the length on the right side of the rectangle => return 3
@@ -140,7 +140,7 @@ public final class MapLand extends Map implements gameConfig {
 						&& hitbox.getX() > x.getHitbox().getX() + x.getHitbox().getWidth() / 2
 						&& hitbox.getY() <= x.getHitbox().getY() + x.getHitbox().getHeight()
 						&& hitbox.getY() > x.getHitbox().getY() - hitbox.getHeight()) {
-
+					// System.out.println(3);
 					return 3;
 				}
 				// touches the length on the left right side of the rectangle => return 4
@@ -148,7 +148,7 @@ public final class MapLand extends Map implements gameConfig {
 						&& hitbox.getX() < x.getHitbox().getX() + x.getHitbox().getWidth() / 2
 						&& hitbox.getY() > x.getHitbox().getY() - hitbox.getHeight()
 						&& hitbox.getY() < x.getHitbox().getY() + x.getHitbox().getHeight()) {
-
+					// System.out.println(4);
 					return 4;
 				}
 				// special case
@@ -156,6 +156,7 @@ public final class MapLand extends Map implements gameConfig {
 						&& hitbox.getY() == x.getHitbox().getY() + x.getHitbox().getHeight()
 						|| hitbox.getX() == x.getHitbox().getX() + x.getHitbox().getWidth()
 								&& hitbox.getY() == x.getHitbox().getY() + x.getHitbox().getHeight()) {
+					// System.out.println(5);
 					return 5;
 				}
 			}

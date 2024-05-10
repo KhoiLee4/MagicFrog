@@ -24,22 +24,28 @@ public class Game extends StateBasedGame implements gameConfig {
 	// Danh sách các trạng thái game
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
-		// Màn hình Menu
+		// Màn hình đăng nhập id = 6
+		this.addState(new SignIn());
+
+		// Màn hình đăng nhập id = 7
+		this.addState(new SignUp());
+
+		// Màn hình Menu id = 0
 		this.addState(new Menu());
 
-		// Màn hình chơi
+		// Màn hình chơi id = 1
 		this.addState(new PlayGame());
 
-		// Màn hình cài đặt
+		// Màn hình cài đặt id = 2
 		this.addState(new Setting());
 
-		// Màn hình kĩ lục
+		// Màn hình kĩ lục id = 3
 		this.addState(new Leaderboard());
 
-		// Màn hình thắng
+		// Màn hình thắng id = 4
 		this.addState(new GameWin());
 
-		// Màn hình thua
+		// Màn hình thua id = 5
 		this.addState(new GameOver());
 	}
 
@@ -52,7 +58,7 @@ public class Game extends StateBasedGame implements gameConfig {
 //			game.setTargetFrameRate(144);
 //			game.setVSync(true);
 			game.setShowFPS(false);
-			
+
 			// Chạy trò chơi
 			game.start();
 		} catch (SlickException e) {
