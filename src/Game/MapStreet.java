@@ -52,15 +52,19 @@ public class MapStreet extends Map implements gameConfig {
 
 		// Tạo xe ngẫu nhiên theo thời gian
 		if (cars.size() <= 3 && Car.checkOnScreen(cars)) {
-			if (randomTime == 10) {
+			if (randomTime == 100) {
 				int random = randomSpawn.nextBoolean() ? 1 : -1;
+				// 1 là bên trái -1 là bên phải direction
+				// 1 là đường trên 
+				// -1 là đường dưới
 				cars.add(new Car((random == 1) ? this.pos_x : this.pos_x + 945,
 						this.pos_y + 20 + 125 * ((random == 1) ? 0 : 1), url + (randomSpawn.nextInt(3) + 1) + ".png",
 						random));
+
 			}
 		}
 
-		if (randomTime > 10) {
+		if (randomTime > 100) {
 			randomTime = 0;
 		}
 
@@ -84,6 +88,12 @@ public class MapStreet extends Map implements gameConfig {
 	public void render() {
 		super.render();
 		for (int i = 0; i < cars.size(); i++) {
+			if (i >= 1) {
+				if (cars.get(i - 1).getDirection() == cars.get(i).getDirection()) {	
+					cars.remove(i);
+					continue;
+				}
+			}
 			cars.get(i).render();
 		}
 	}

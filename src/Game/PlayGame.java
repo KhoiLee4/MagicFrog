@@ -316,7 +316,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			break;
 
 		case LAND:
-			map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+			map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
 			break;
 
 		default:

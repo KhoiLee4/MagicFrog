@@ -17,7 +17,6 @@ public class BabyFrog extends GameObject implements gameConfig {
 	// Chuyển động của nhân vật
 	Animation animation = null;
 	int speedAction = 200;
-
 	// Biến tạo ngẫu nhiên
 	private Random randomSpawn;
 
@@ -26,12 +25,11 @@ public class BabyFrog extends GameObject implements gameConfig {
 		super(null, 0, 0, null);
 
 		animation = new Animation(new SpriteSheet(new Image("Data/Image/BabyFrog.png"), 30, 29), speedAction);
-		
+
 		randomSpawn = new Random();
-		
+
 		this.pos_x = randomSpawn.nextInt(screenWidth - this.animation.getWidth());
 		this.pos_y = randomSpawn.nextInt(622 - this.animation.getHeight()) + y;
-
 
 		// Tạo hitbox
 		this.hitbox = new Rectangle(this.pos_x, this.pos_y, 30, 29);
@@ -50,7 +48,12 @@ public class BabyFrog extends GameObject implements gameConfig {
 					this.setPos_y(randomSpawn.nextBoolean() ? obstacle.getPos_y() - this.animation.getHeight()
 							: obstacle.getPos_y() + obstacle.getHitbox().getHeight());
 				}
+				if (y - this.hitbox.getY() >= 0) {
+					this.setPos_x(this.getPos_y() + screenWidth);
+
+				}
 				this.hitbox.setLocation(this.pos_x, this.pos_y);
+				break;
 			}
 		}
 	}
