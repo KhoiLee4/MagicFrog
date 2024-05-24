@@ -42,6 +42,9 @@ public class Game extends StateBasedGame implements gameConfig {
 		// Màn hình kĩ lục id = 3
 		this.addState(new Leaderboard());
 
+		// Màn hình cửa hàng id = 8
+		this.addState(new Shop());
+
 		// Màn hình thắng id = 4
 		this.addState(new GameWin());
 

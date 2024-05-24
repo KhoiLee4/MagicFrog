@@ -30,3 +30,4 @@ public interface gameConfig {
 
 // Việc cần làm:
 // chỉnh hitbox
+// 138 142
