@@ -134,9 +134,9 @@ public class SignIn extends BasicGameState {
 						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
 			// Kiểm tra tài khoản, mật khẩu
 			sound.click();
-			if (checkAccount()) {
+			//if (checkAccount()) {
 				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
-			}
+			//}
 		}
 
 		// Bấm nút đăng ký

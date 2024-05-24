@@ -23,6 +23,12 @@ public final class MapLand extends Map implements gameConfig {
 
 	// Biến chọn map ngẫu nhiên
 	private Random randomSpawn;
+	private int RandomNumber;
+	// Flag render of frog and fruit
+	private boolean isRenderFrogBaby = false;
+	private boolean isRenderFruit = false;
+	// Init temp energy
+	private double tempEnergy;
 
 	// Khởi tạo
 	protected MapLand(float x) throws SlickException {
@@ -38,12 +44,13 @@ public final class MapLand extends Map implements gameConfig {
 		obstacles = new ArrayList<Obstacles>();
 		// default CreateMap 3
 		createMap3();
-		babyFrog = new BabyFrog(this.pos_y, obstacles);
-		fruit = new Fruit(this.pos_y, obstacles);
-
+//		babyFrog = new BabyFrog(this.pos_y, obstacles);
+//		isRenderFrogBaby = true;
+//		fruit = new Fruit(this.pos_y, obstacles);
+//		isRenderFruit = true;
 	}
 
-	protected MapLand(float x, float y) throws SlickException {
+	protected MapLand(float x, float y, double energy) throws SlickException {
 		super(null, x, 0, "land");
 
 		// Tạo Map ngẫu nhiên trong kho có sẵn
@@ -63,16 +70,22 @@ public final class MapLand extends Map implements gameConfig {
 
 		} else if (url.equals("Data/Image/MapLand3.png")) {
 			createMap3();
-		}else if(url.equals("Data/Image/MapLand4.png")) {
+		} else if (url.equals("Data/Image/MapLand4.png")) {
 			createMap4();
-		}else if(url.equals("Data/Image/MapLand5.png")) {
+		} else if (url.equals("Data/Image/MapLand5.png")) {
 			createMap5();
-		}else if(url.equals("Data/Image/MapLand6.png")) {
+		} else if (url.equals("Data/Image/MapLand6.png")) {
 			createMap6();
 		}
-
-		babyFrog = new BabyFrog(this.pos_y, obstacles);
-		fruit = new Fruit(this.pos_y, obstacles);
+		RandomNumber = (randomSpawn.nextInt(20));
+		if (RandomNumber <= 3) {
+			babyFrog = new BabyFrog(this.pos_y, obstacles);
+			isRenderFrogBaby = true;
+		} 
+		if (RandomNumber >= 17 || energy <= 20) {
+			fruit = new Fruit(this.pos_y, obstacles);
+			isRenderFruit = true;
+		} 
 
 	}
 
@@ -87,12 +100,16 @@ public final class MapLand extends Map implements gameConfig {
 			}
 
 			// Cập nhật ếch con
-			if (!isEat) {
-				babyFrog.update(delta, check);
+			if (isRenderFrogBaby) {
+				if (!isEat) {
+					babyFrog.update(delta, check);
+				}
 			}
 
-			if (!fruit.getIsEat()) {
-				fruit.update(delta, check);
+			if (isRenderFruit) {
+				if (!fruit.getIsEat()) {
+					fruit.update(delta, check);
+				}
 			}
 
 			// Cập nhật Map
@@ -107,22 +124,31 @@ public final class MapLand extends Map implements gameConfig {
 		for (Obstacles x : obstacles) {
 			x.render();
 		}
-		if (!isEat) {
-			babyFrog.render();
+		if (isRenderFrogBaby) {
+			if (!isEat) {
+				babyFrog.render();
+			}
+
 		}
-		if (!fruit.getIsEat()) {
-			fruit.render();
+		if (isRenderFruit) {
+			if (!fruit.getIsEat()) {
+				fruit.render();
+			}
 		}
 	}
 
 	// Kiểm tra nhân vật so với Map
 	@Override
 	public int checkFrog(Shape hitbox) {
-		if (!isEat) {
-			eatFrog(hitbox);
+		if (isRenderFrogBaby) {
+			if (!isEat) {
+				eatFrog(hitbox);
+			}
 		}
-		if (!fruit.getIsEat()) {
-			eatFruit(hitbox);
+		if (isRenderFruit) {
+			if (!fruit.getIsEat()) {
+				eatFruit(hitbox);
+			}
 		}
 
 		for (Obstacles x : obstacles) {
@@ -131,7 +157,7 @@ public final class MapLand extends Map implements gameConfig {
 				if (hitbox.getX() >= x.getHitbox().getX() - hitbox.getWidth()
 						&& hitbox.getX() < x.getHitbox().getX() + x.getHitbox().getHeight() + x.getHitbox().getWidth()
 						&& hitbox.getY() < x.getHitbox().getY() + x.getHitbox().getHeight()
-						&& hitbox.getY() > x.getHitbox().getY() + 3*x.getHitbox().getHeight() / 5) {
+						&& hitbox.getY() > x.getHitbox().getY() + 3 * x.getHitbox().getHeight() / 5) {
 					// System.out.println(2);
 					return 2;
 				}
@@ -272,47 +298,48 @@ public final class MapLand extends Map implements gameConfig {
 		obstacles.add(new Obstacles(this.pos_x + 275, this.pos_y + 100, "Data/Image/Obstacles5.png"));
 
 	}
+
 	private void createMap5() throws SlickException {
 		// init fence
-		obstacles.add(new Obstacles(this.pos_x + 166,this.pos_y + 234,"Data/Image/Obstacles1.png"));
-		obstacles.add(new Obstacles(this.pos_x + 780 ,this.pos_y + 289,"Data/Image/Obstacles1.png"));
-		
+		obstacles.add(new Obstacles(this.pos_x + 166, this.pos_y + 234, "Data/Image/Obstacles1.png"));
+		obstacles.add(new Obstacles(this.pos_x + 780, this.pos_y + 289, "Data/Image/Obstacles1.png"));
+
 		// init wall
-		obstacles.add(new Obstacles(this.pos_x + 456,this.pos_y + 419,"Data/Image/Obstacles2.png"));
-		obstacles.add(new Obstacles(this.pos_x + 815 ,this.pos_y + 441,"Data/Image/Obstacles2.png"));
-		obstacles.add(new Obstacles(this.pos_x + 110,this.pos_y + 543,"Data/Image/Obstacles2.png"));
-		obstacles.add(new Obstacles(this.pos_x + 762 ,this.pos_y + 540,"Data/Image/Obstacles2.png"));
-		
+		obstacles.add(new Obstacles(this.pos_x + 456, this.pos_y + 419, "Data/Image/Obstacles2.png"));
+		obstacles.add(new Obstacles(this.pos_x + 815, this.pos_y + 441, "Data/Image/Obstacles2.png"));
+		obstacles.add(new Obstacles(this.pos_x + 110, this.pos_y + 543, "Data/Image/Obstacles2.png"));
+		obstacles.add(new Obstacles(this.pos_x + 762, this.pos_y + 540, "Data/Image/Obstacles2.png"));
+
 		// init tree
-		obstacles.add(new Obstacles(this.pos_x + 100,this.pos_y + 42,"Data/Image/Obstacles4.png"));
-		obstacles.add(new Obstacles(this.pos_x + 140,this.pos_y +350,"Data/Image/Obstacles4.png"));
-		obstacles.add(new Obstacles(this.pos_x +570,this.pos_y +60,"Data/Image/Obstacles4.png"));
-		obstacles.add(new Obstacles(this.pos_x +400,this.pos_y +260,"Data/Image/Obstacles4.png"));
-		
-		//init small tree
-		obstacles.add(new Obstacles(this.pos_x +330,this.pos_y +65,"Data/Image/Obstacles3.png"));
-		obstacles.add(new Obstacles(this.pos_x + 940,this.pos_y + 80,"Data/Image/Obstacles3.png"));
-		
+		obstacles.add(new Obstacles(this.pos_x + 100, this.pos_y + 42, "Data/Image/Obstacles4.png"));
+		obstacles.add(new Obstacles(this.pos_x + 140, this.pos_y + 350, "Data/Image/Obstacles4.png"));
+		obstacles.add(new Obstacles(this.pos_x + 570, this.pos_y + 60, "Data/Image/Obstacles4.png"));
+		obstacles.add(new Obstacles(this.pos_x + 400, this.pos_y + 260, "Data/Image/Obstacles4.png"));
+
+		// init small tree
+		obstacles.add(new Obstacles(this.pos_x + 330, this.pos_y + 65, "Data/Image/Obstacles3.png"));
+		obstacles.add(new Obstacles(this.pos_x + 940, this.pos_y + 80, "Data/Image/Obstacles3.png"));
+
 	}
+
 	private void createMap6() throws SlickException {
-		
+
 		// init wall
-		obstacles.add(new Obstacles(this.pos_x + 700,this.pos_y + 58,"Data/Image/Obstacles2.png"));
-		obstacles.add(new Obstacles(this.pos_x + 764 ,this.pos_y + 285,"Data/Image/Obstacles2.png"));
-		
+		obstacles.add(new Obstacles(this.pos_x + 700, this.pos_y + 58, "Data/Image/Obstacles2.png"));
+		obstacles.add(new Obstacles(this.pos_x + 764, this.pos_y + 285, "Data/Image/Obstacles2.png"));
+
 		// init tree
-		obstacles.add(new Obstacles(this.pos_x + 420,this.pos_y + 80,"Data/Image/Obstacles4.png"));
-		obstacles.add(new Obstacles(this.pos_x + 310,this.pos_y +382,"Data/Image/Obstacles4.png"));
-		obstacles.add(new Obstacles(this.pos_x +155,this.pos_y +177,"Data/Image/Obstacles4.png"));
-	
-		
-		//init small tree
-		obstacles.add(new Obstacles(this.pos_x +80,this.pos_y +442,"Data/Image/Obstacles8.png"));
-		obstacles.add(new Obstacles(this.pos_x + 255,this.pos_y + 450,"Data/Image/Obstacles3.png"));
-		obstacles.add(new Obstacles(this.pos_x +731,this.pos_y +448,"Data/Image/Obstacles9.png"));
-		obstacles.add(new Obstacles(this.pos_x + 920,this.pos_y + 155,"Data/Image/Obstacles3.png"));
-		obstacles.add(new Obstacles(this.pos_x + 905,this.pos_y + 446,"Data/Image/Obstacles3.png"));
-		
+		obstacles.add(new Obstacles(this.pos_x + 420, this.pos_y + 80, "Data/Image/Obstacles4.png"));
+		obstacles.add(new Obstacles(this.pos_x + 310, this.pos_y + 382, "Data/Image/Obstacles4.png"));
+		obstacles.add(new Obstacles(this.pos_x + 155, this.pos_y + 177, "Data/Image/Obstacles4.png"));
+
+		// init small tree
+		obstacles.add(new Obstacles(this.pos_x + 80, this.pos_y + 442, "Data/Image/Obstacles8.png"));
+		obstacles.add(new Obstacles(this.pos_x + 255, this.pos_y + 450, "Data/Image/Obstacles3.png"));
+		obstacles.add(new Obstacles(this.pos_x + 731, this.pos_y + 448, "Data/Image/Obstacles9.png"));
+		obstacles.add(new Obstacles(this.pos_x + 920, this.pos_y + 155, "Data/Image/Obstacles3.png"));
+		obstacles.add(new Obstacles(this.pos_x + 905, this.pos_y + 446, "Data/Image/Obstacles3.png"));
+
 	}
 }
 

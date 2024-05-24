@@ -13,7 +13,7 @@ public class MapWater extends Map implements gameConfig {
 	// Danh sách ván trong Map
 	private ArrayList<Plank> planks;
 
-	// Biến chọn xe ngẫu nhiên
+	// Biến chọn ván ngẫu nhiên
 	private Random randomSpawn;
 
 	// Biến chọn thời gian ngẫu nhiên
@@ -71,27 +71,40 @@ public class MapWater extends Map implements gameConfig {
 
 		// Di chuyển ván
 		for (int i = 0; i < planks.size(); i++) {
-			planks.get(i).update(delta, check);
-			
+//			planks.get(i).update(delta, check);
+
 			// Kiểm tra tấm ván có nhân vật
 			if (planks.get(i).getHitbox().intersects(frog.getHitbox())
 					|| planks.get(i).getHitbox().contains(frog.getHitbox())) {
-				index = i;
-			}
-			
-			// Xóa ván
-			if (planks.get(i).checkLocation()) {
-				planks.remove(i);
+				if (frog.getHitbox().getX() < planks.get(i).getHitbox().getX()
+						+ planks.get(i).getHitbox().getWidth()  - 30
+						&& frog.getHitbox().getX() > planks.get(i).getHitbox().getX()
+								
+						&& frog.getHitbox().getY() <= planks.get(i).getHitbox().getY()
+								+ planks.get(i).getHitbox().getHeight() - 20
+						&& frog.getHitbox().getY() >= planks.get(i).getHitbox().getY() - frog.getHitbox().getHeight()) {
+					// System.out.println(3);
+					 index = i;
+				}
+				
 			}
 		}
 
 		// Di chuyển nhân vật theo ván
 		if (index != -1) {
+			System.out.println('v');
 			// (1: to right, -1: to left)
 			if (planks.get(index).getDirection() == 1) {
 				frog.update(delta, 0);
 			} else {
 				frog.update(delta, -1);
+			}
+		}
+		for (int i = 0; i < planks.size(); i++) {
+			planks.get(i).update(delta, check);
+			// Xóa ván
+			if (planks.get(i).checkLocation()) {
+				planks.remove(i);
 			}
 		}
 
