@@ -27,7 +27,7 @@ public class Obstacles extends GameObject {
 					this.img.getHeight() - 20);
 		}
 		if (url.equals("Data/Image/Obstacles4.png")) {
-			this.hitbox = new Rectangle(this.pos_x, this.pos_y, this.img.getWidth(), this.img.getHeight() - 20);
+			this.hitbox = new Rectangle(this.pos_x +15, this.pos_y, this.img.getWidth() - 20 , this.img.getHeight() - 20);
 		}
 		if (url.equals("Data/Image/Obstacles3.png")) {
 			this.hitbox = new Rectangle(this.pos_x, this.pos_y, this.img.getWidth(), this.img.getHeight());
