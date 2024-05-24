@@ -291,34 +291,34 @@ public class SignIn extends BasicGameState {
 			image.add(new Image("Data/Image/text_Z.png"));
 		} else if (input.isKeyPressed(Input.KEY_0)) {
 			inputTest.append('0');
-//			image.add(new Image("Data/Image/text_0.png"));
+			image.add(new Image("Data/Image/text_0.png"));
 		} else if (input.isKeyPressed(Input.KEY_1)) {
 			inputTest.append('1');
-//			image.add(new Image("Data/Image/text_1.png"));
+			image.add(new Image("Data/Image/text_1.png"));
 		} else if (input.isKeyPressed(Input.KEY_2)) {
 			inputTest.append('2');
-//			image.add(new Image("Data/Image/text_2.png"));
+			image.add(new Image("Data/Image/text_2.png"));
 		} else if (input.isKeyPressed(Input.KEY_3)) {
 			inputTest.append('3');
-//			image.add(new Image("Data/Image/text_3.png"));
+			image.add(new Image("Data/Image/text_3.png"));
 		} else if (input.isKeyPressed(Input.KEY_4)) {
 			inputTest.append('4');
-//			image.add(new Image("Data/Image/text_4.png"));
+			image.add(new Image("Data/Image/text_4.png"));
 		} else if (input.isKeyPressed(Input.KEY_5)) {
 			inputTest.append('5');
-//			image.add(new Image("Data/Image/text_5.png"));
+			image.add(new Image("Data/Image/text_5.png"));
 		} else if (input.isKeyPressed(Input.KEY_6)) {
 			inputTest.append('6');
-//			image.add(new Image("Data/Image/text_6.png"));
+			image.add(new Image("Data/Image/text_6.png"));
 		} else if (input.isKeyPressed(Input.KEY_7)) {
 			inputTest.append('7');
-//			image.add(new Image("Data/Image/text_7.png"));
+			image.add(new Image("Data/Image/text_7.png"));
 		} else if (input.isKeyPressed(Input.KEY_8)) {
 			inputTest.append('8');
-//			image.add(new Image("Data/Image/text_8.png"));
+			image.add(new Image("Data/Image/text_8.png"));
 		} else if (input.isKeyPressed(Input.KEY_9)) {
 			inputTest.append('9');
-//			image.add(new Image("Data/Image/text_9.png"));
+			image.add(new Image("Data/Image/text_9.png"));
 		} else if (input.isKeyPressed(Input.KEY_BACK)) {
 			if (inputTest.length() > 0) {
 				inputTest.deleteCharAt(inputTest.length() - 1);
