@@ -40,10 +40,10 @@ public class Frog extends GameObject implements gameConfig {
 		// Tạo chuyển động
 		animation = new Animation(new SpriteSheet(this.img, 120, 101), speedAction);
 
-		jump = new Animation(new SpriteSheet(new Image("Data/Image/MoveUp.png"), 120, 101), speedAction);
-		left = new Animation(new SpriteSheet(new Image("Data/Image/MoveLeft.png"), 120, 101), speedAction);
+		jump = new Animation(new SpriteSheet(new Image("Data/Image/MoveUp.png"), 120, 122), speedAction);
+		left = new Animation(new SpriteSheet(new Image("Data/Image/MoveLeft.png"), 120, 120), speedAction);
 		right = new Animation(
-				new SpriteSheet(new Image("Data/Image/MoveLeft.png").getFlippedCopy(true, false), 120, 101),
+				new SpriteSheet(new Image("Data/Image/MoveLeft.png").getFlippedCopy(true, false), 120, 120),
 				speedAction);
 
 		jump.setLooping(false);
