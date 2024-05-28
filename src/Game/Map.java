@@ -32,7 +32,10 @@ public class Map implements gameConfig {
 		// Di chuyển map
 		this.move(delta, check, frog.getHitbox());
 	}
-
+	public void update2(int delta) throws SlickException {
+		// Di chuyển map
+		this.moveMap2(delta);
+	}
 	// Vẽ Map
 	public void render() {
 		this.background.draw(pos_x, pos_y);
@@ -53,6 +56,11 @@ public class Map implements gameConfig {
 			this.pos_y += speedFrog * delta;
 		}
 	}
+	// Map movements similar to those of a frog
+		private void moveMap2(int delta) throws SlickException {
+				this.pos_y -= speedFrog * delta*10;	
+				
+		}
 
 	// Kiểm tra vị trí (ra ngoài thì trả về true)
 	public boolean checkLocation() {
