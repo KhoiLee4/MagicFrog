@@ -65,7 +65,9 @@ public class Fruit extends GameObject implements gameConfig {
 		// Kiểm tra trạng thái chuyển động của nhân vật
 		move(delta, check);
 	}
-
+	public void update2(int delta) throws SlickException {
+		move2(delta);
+	}
 	// bắt sự kiện di chuyển của ếch
 	private void move(int delta, int flag) throws SlickException {
 		Input input = PlayGame.gameContainer.getInput();
@@ -74,7 +76,12 @@ public class Fruit extends GameObject implements gameConfig {
 			this.hitbox.setY(this.pos_y);
 		}
 	}
+	private void move2(int delta) throws SlickException {
 
+		this.pos_y -= speedFrog * delta* 200;
+		this.hitbox.setY(this.pos_y);
+
+	}
 	// Vẽ trái cây
 	@Override
 	public void render() {

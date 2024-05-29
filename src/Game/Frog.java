@@ -223,8 +223,19 @@ public class Frog extends GameObject implements gameConfig {
 	}
 
 	// Đặt lại mạng cho nhân vật
-	public void setAlive(boolean alive) {
+	private void setAlive(boolean alive) {
 		this.alive = alive;
+	}
+
+	// Frog is dead
+	public void deathFrog() {
+		setAlive(false);
+	}
+
+	// Function solve logic of item
+	// Bottle HP, getter more life
+	public void useItem() {
+		setAlive(true);
 	}
 }
 

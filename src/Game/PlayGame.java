@@ -2,6 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
@@ -89,10 +90,15 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	private int bt_pauseAgain_X = screenWidth - (10 + 55) * 3;
 	private int bt_pauseAgain_Y = 10;
-
 	// Cờ kiểm tra
 	private boolean isPause = false;
 	private boolean isTutorial = true;
+
+	// Init Item
+	private static int itemShield;
+	private static int itemBottelHp;
+	private static int itemEnergyBar;
+	private static int itemCrown;
 
 	// Khởi tạo
 	@Override
@@ -105,6 +111,13 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Năng lượng
 		energy = 100;
+
+		// Init item
+		// Note: I assign the data item; you can try chancing something
+		itemShield = 2;
+		itemBottelHp = 2;
+		itemEnergyBar = 2;
+		itemCrown = 2;
 
 		// Tạo nút dừng
 		pause_background = new Image("Data/Image/Pause.png");
@@ -176,7 +189,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				time += (delta / 100000.0f);
 
 				// Tạo Map tự động
-				if (Map.totalHeight(map) < screenHeight + 620) {
+				if (Map.totalHeight(map) < screenHeight + 1620) {
 					createMap();
 				}
 
@@ -189,7 +202,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 				// Cờ trạng thái
 				int flag = 1;
-
+				int indexMap = 0;
 				// kiểm tra Map
 				for (Map x : map) {
 					// check frog return != 1 => touches obstacles
@@ -197,6 +210,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					if (flag != 1) {
 						break;
 					}
+					indexMap++;
 				}
 
 				// Cập nhật nhân vật theo trạng thái
@@ -204,23 +218,90 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 				// flag = -2 => drop water, touches car
 				if (flag == -2 || energy <= 0) {
+<<<<<<< HEAD
 					frog.setAlive(false);
 
 					System.out.println(score);
+=======
+					int choice;
+					Scanner sc = new Scanner(System.in);
+					frog.deathFrog();
+					// System.out.println(score);
+					boolean isUseItem = false;
+					if (energy <= 0 && itemEnergyBar > 0) { // solve item energy bar
+						System.out.println("Bạn có muốn dùng sấm sét không 1/0");
+						choice = sc.nextInt();
+						if (choice == 1) { // frog use item
+							frog.useItem();
+							isUseItem = true;
+							energy = 100;
+							itemEnergyBar--;
+						}
+					} else if (flag == -2 && itemShield > 0) { // solve shield
+						System.out.println("Bạn có muốn dùng khien không 1/0");
+						choice = sc.nextInt();
+						if (choice == 1) { // frog use item
+							frog.useItem();
+							isUseItem = true;
+							itemShield--;
+							// Chance position of frog
+>>>>>>> 91dca68c89bbbf4abcd2bb62a49594a9e376ed96
 
-					// Nhân vật chết
-					sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
-
-				} else {
-					for (int i = 0; i < map.size(); i++) {
-						// Cập nhật map
-						map.get(i).update(delta, flag, frog);
-
-						// Xóa map đã đi qua
-						if (map.get(i).checkLocation()) {
-							map.remove(i);
 						}
 					}
+					// solve bottle hp
+					if (itemBottelHp > 0 && !isUseItem) {
+						System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0"); 
+						choice = sc.nextInt();
+						if (choice == 1) { // frog use item
+							frog.useItem();
+							isUseItem = true;
+							energy = 100;
+							itemBottelHp--;
+
+						}
+					}
+					// solve item crown
+					if (!isUseItem && itemCrown > 0) {
+						System.out.println("Bạn có muốn nhan doi diem không 1/0");
+						choice = sc.nextInt();
+						if (choice == 1) { // frog use item
+							frog.useItem();
+							itemCrown--;
+							score *= 2;
+						}
+					}
+
+					if (!isUseItem) {
+						// Nhân vật chết
+						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
+					} else {
+						for (int i = 0; i < map.size(); i++) {
+							// Cập nhật map
+							map.get(i).update2(delta);
+						}
+						// Chance position of frog
+
+						frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - frog.getHitbox().getHeight() );
+						frog.getHitbox().setY(frog.getPos_y());
+						
+
+					}
+
+				} else {
+					// && (frog.getPos_y() <= 7*screenHeight/8)
+					if (frog.isAlive()) {
+						for (int i = 0; i < map.size(); i++) {
+							// Cập nhật map
+							map.get(i).update(delta, flag, frog);
+
+							// Xóa map đã đi qua
+							if (map.get(i).checkLocation()) {
+								map.remove(i);
+							}
+						}
+					}
+
 				}
 			}
 		} else {

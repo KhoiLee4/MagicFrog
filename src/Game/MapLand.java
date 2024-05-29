@@ -94,7 +94,11 @@ public final class MapLand extends Map implements gameConfig {
 			babyFrog = new BabyFrog(this.pos_y, obstacles);
 			isRenderFrogBaby = true;
 		}
+<<<<<<< HEAD
 		if (randomNumber >= 17 || energy <= 20) {
+=======
+		if (RandomNumber >= 17 || energy <= 20) {
+>>>>>>> 91dca68c89bbbf4abcd2bb62a49594a9e376ed96
 			fruit = new Fruit(this.pos_y, obstacles);
 			isRenderFruit = true;
 		}
@@ -127,6 +131,31 @@ public final class MapLand extends Map implements gameConfig {
 			// Cập nhật Map
 			super.update(delta, check, frog);
 		}
+	}
+
+	// Update 2
+	@Override
+	public void update2(int delta) throws SlickException {
+		// TODO Auto-generated method stub
+		// Cập nhật đối tượng trong Map
+		for (Obstacles x : obstacles) {
+			x.update2(delta);
+		}
+
+		// Cập nhật ếch con
+		if (isRenderFrogBaby) {
+			if (!isEat) {
+				babyFrog.update2(delta);
+			}
+		}
+
+		if (isRenderFruit) {
+			if (!fruit.getIsEat()) {
+				fruit.update2(delta);
+			}
+		}
+
+		super.update2(delta);
 	}
 
 	// Vẽ Map
