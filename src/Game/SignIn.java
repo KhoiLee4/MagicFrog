@@ -117,7 +117,7 @@ public class SignIn extends BasicGameState {
 			}
 		}
 
-		// Nhập username	
+		// Nhập username
 		if (cursorPosition == 1) {
 			input(container, username, img_username);
 		}
@@ -135,7 +135,7 @@ public class SignIn extends BasicGameState {
 			// Kiểm tra tài khoản, mật khẩu
 			sound.click();
 //			if (checkAccount()) {
-				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+			sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
 //			}
 		}
 

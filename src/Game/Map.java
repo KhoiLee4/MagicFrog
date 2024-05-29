@@ -58,13 +58,12 @@ public class Map implements gameConfig {
 	}
 	// Map movements similar to those of a frog
 		private void moveMap2(int delta) throws SlickException {
-				this.pos_y -= speedFrog * delta*10;	
-				
+				this.pos_y -= speedFrog * delta*200;		
 		}
 
 	// Kiểm tra vị trí (ra ngoài thì trả về true)
 	public boolean checkLocation() {
-		if (this.pos_y > screenHeight) {
+		if (this.pos_y > screenHeight + 1000) {
 			return true;
 		}
 		return false;

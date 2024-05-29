@@ -90,7 +90,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	private int bt_pauseAgain_X = screenWidth - (10 + 55) * 3;
 	private int bt_pauseAgain_Y = 10;
-
 	// Cờ kiểm tra
 	private boolean isPause = false;
 	private boolean isTutorial = true;
@@ -190,7 +189,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				time += (delta / 100000.0f);
 
 				// Tạo Map tự động
-				if (Map.totalHeight(map) < screenHeight + 620) {
+				if (Map.totalHeight(map) < screenHeight + 1620) {
 					createMap();
 				}
 
@@ -241,36 +240,19 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							isUseItem = true;
 							itemShield--;
 							// Chance position of frog
-							System.out.println(map.get(indexMap).getTypeMap());
-							if (map.get(indexMap).getTypeMap().equals("street")) {
-								System.out.println('s');
-								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - 40 );
-								frog.getHitbox().setY(frog.getPos_y());
-							} else {
-								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - 130);
-								frog.getHitbox().setY(frog.getPos_y());
-							}
 
 						}
 					}
 					// solve bottle hp
 					if (itemBottelHp > 0 && !isUseItem) {
-						System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0");
+						System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0"); 
 						choice = sc.nextInt();
 						if (choice == 1) { // frog use item
 							frog.useItem();
 							isUseItem = true;
 							energy = 100;
 							itemBottelHp--;
-							// Chance position of frog
-							if (map.get(indexMap).getTypeMap().equals("street")) {
-								System.out.println('s');
-								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - 40  );
-								frog.getHitbox().setY(frog.getPos_y());
-							} else {
-								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - 130);
-								frog.getHitbox().setY(frog.getPos_y());
-							}
+
 						}
 					}
 					// solve item crown
@@ -292,11 +274,17 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							// Cập nhật map
 							map.get(i).update2(delta);
 						}
+						// Chance position of frog
+
+						frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - frog.getHitbox().getHeight() );
+						frog.getHitbox().setY(frog.getPos_y());
+						
+
 					}
 
 				} else {
-				
-					if (frog.isAlive() && (frog.getPos_y() <= 7*screenHeight/8  )) {
+					// && (frog.getPos_y() <= 7*screenHeight/8)
+					if (frog.isAlive()) {
 						for (int i = 0; i < map.size(); i++) {
 							// Cập nhật map
 							map.get(i).update(delta, flag, frog);
