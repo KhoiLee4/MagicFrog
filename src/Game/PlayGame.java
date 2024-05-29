@@ -218,11 +218,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 				// flag = -2 => drop water, touches car
 				if (flag == -2 || energy <= 0) {
-<<<<<<< HEAD
-					frog.setAlive(false);
-
-					System.out.println(score);
-=======
 					int choice;
 					Scanner sc = new Scanner(System.in);
 					frog.deathFrog();
@@ -245,7 +240,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							isUseItem = true;
 							itemShield--;
 							// Chance position of frog
->>>>>>> 91dca68c89bbbf4abcd2bb62a49594a9e376ed96
 
 						}
 					}

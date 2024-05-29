@@ -94,11 +94,7 @@ public final class MapLand extends Map implements gameConfig {
 			babyFrog = new BabyFrog(this.pos_y, obstacles);
 			isRenderFrogBaby = true;
 		}
-<<<<<<< HEAD
 		if (randomNumber >= 17 || energy <= 20) {
-=======
-		if (RandomNumber >= 17 || energy <= 20) {
->>>>>>> 91dca68c89bbbf4abcd2bb62a49594a9e376ed96
 			fruit = new Fruit(this.pos_y, obstacles);
 			isRenderFruit = true;
 		}
