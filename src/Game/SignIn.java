@@ -137,7 +137,6 @@ public class SignIn extends BasicGameState {
 //			if (checkAccount()) {
 			sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
 //			}
-
 		}
 
 		// Bấm nút đăng ký

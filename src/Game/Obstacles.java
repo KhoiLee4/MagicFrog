@@ -27,7 +27,8 @@ public class Obstacles extends GameObject {
 					this.img.getHeight() - 20);
 		}
 		if (url.equals("Data/Image/Obstacles4.png")) {
-			this.hitbox = new Rectangle(this.pos_x +15, this.pos_y, this.img.getWidth() - 20 , this.img.getHeight() - 20);
+			this.hitbox = new Rectangle(this.pos_x + 15, this.pos_y, this.img.getWidth() - 20,
+					this.img.getHeight() - 20);
 		}
 		if (url.equals("Data/Image/Obstacles3.png")) {
 			this.hitbox = new Rectangle(this.pos_x, this.pos_y, this.img.getWidth(), this.img.getHeight());
@@ -55,6 +56,10 @@ public class Obstacles extends GameObject {
 		}
 	}
 
+	public void update2(int delta) throws SlickException {
+		this.move2(delta);
+	}
+
 	// Di chuyển đối tượng
 	private void move(int delta) throws SlickException {
 		Input input = PlayGame.gameContainer.getInput();
@@ -62,6 +67,12 @@ public class Obstacles extends GameObject {
 			this.pos_y += speedMap * delta;
 			this.hitbox.setY(this.hitbox.getY() + speedMap * delta);
 		}
+	}
+
+	private void move2(int delta) throws SlickException {
+		this.pos_y -= speedMap * delta* 200;
+		this.hitbox.setY(this.hitbox.getY() - speedMap * delta*200);
+
 	}
 }
 

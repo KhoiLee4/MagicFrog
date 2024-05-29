@@ -83,7 +83,7 @@ public class MapWater extends Map implements gameConfig {
 						&& frog.getHitbox().getY() <= planks.get(i).getHitbox().getY()
 								+ planks.get(i).getHitbox().getHeight() - 20
 						&& frog.getHitbox().getY() >= planks.get(i).getHitbox().getY() - frog.getHitbox().getHeight()) {
-					// System.out.println(3);
+		
 					 index = i;
 				}
 				
@@ -92,7 +92,7 @@ public class MapWater extends Map implements gameConfig {
 
 		// Di chuyển nhân vật theo ván
 		if (index != -1) {
-			System.out.println('v');
+			
 			// (1: to right, -1: to left)
 			if (planks.get(index).getDirection() == 1) {
 				frog.update(delta, 0);
@@ -112,6 +112,16 @@ public class MapWater extends Map implements gameConfig {
 		if (check == 1 || check == 4 || check == 3) {
 			super.update(delta, check, frog);
 		}
+	}
+	
+	@Override
+	public void update2(int delta) throws SlickException {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < planks.size(); i++) {
+			planks.get(i).setPos_y(planks.get(i).getPos_y() - speedFrog *delta *200);
+			planks.get(i).getHitbox().setY(planks.get(i).getPos_y());;
+		}
+		super.update2(delta);
 	}
 
 	// Vẽ map
@@ -135,7 +145,7 @@ public class MapWater extends Map implements gameConfig {
 		if (hitbox.getX() + hitbox.getWidth() / 2 > this.pos_x
 				&& hitbox.getX() + hitbox.getWidth() / 2 < this.pos_x + this.getImage().getWidth()
 				&& hitbox.getY() + hitbox.getHeight() / 2 > this.pos_y + 20
-				&& hitbox.getY() + hitbox.getHeight() / 2 < this.pos_y + this.getImage().getHeight() - 130) {
+				&& hitbox.getY() + hitbox.getHeight() / 2 < this.pos_y + this.getImage().getHeight() - 125) {
 			return -2;
 		}
 		return 1;

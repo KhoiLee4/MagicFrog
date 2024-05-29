@@ -65,6 +65,12 @@ public class BabyFrog extends GameObject implements gameConfig {
 		move(delta, check);
 	}
 
+	public void update2(int delta) throws SlickException {
+		// Kiểm tra trạng thái chuyển động của nhân vật
+		animation.update(delta);
+		move2(delta);
+	}
+
 	// bắt sự kiện di chuyển của ếch
 	private void move(int delta, int flag) throws SlickException {
 		Input input = PlayGame.gameContainer.getInput();
@@ -72,6 +78,13 @@ public class BabyFrog extends GameObject implements gameConfig {
 			this.pos_y += speedFrog * delta;
 			this.hitbox.setY(this.pos_y);
 		}
+	}
+
+	private void move2(int delta) throws SlickException {
+
+		this.pos_y -= speedFrog * delta*200;
+		this.hitbox.setY(this.pos_y);
+
 	}
 
 	// Vẽ nhân vật
