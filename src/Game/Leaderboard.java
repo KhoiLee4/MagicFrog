@@ -145,7 +145,7 @@ public class Leaderboard extends BasicGameState {
 
         // Vẽ danh sách điểm số
         int i = 0;
-        while (i < list_username.size() && i < 10) {
+        while (i < list_username.size() && i < 8) {
             g.drawString(list_username.get(i).getUsername(), x, y);
             g.drawString("" + list_username.get(i).getMaxScore(), x + 280, y);
             y += 72; // Tăng khoảng cách giữa các dòng văn bản

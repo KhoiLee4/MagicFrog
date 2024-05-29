@@ -82,18 +82,15 @@ public class Detail {
     }
 
     // Methods to add skins and items
-    public void addSkin(String skin) {
-        if (!this.skins.isEmpty()) {
-            this.skins += ",";
-        }
-        this.skins += skin;
-    }
-
-    public void addItem(String item, int quantity) {
-        if (!this.items.isEmpty()) {
-            this.items += ",";
-        }
-        this.items += item + ":" + quantity;
+    public int[] Items () {
+    	int[] result = new int[4];
+    	
+    	String[] itemArray = items.split(" ");
+    	for (int i = 0; i < 4; i++) {
+    		result[i] = Integer.parseInt(itemArray[i]);
+    	}
+    	
+    	return result;
     }
 
     @Override

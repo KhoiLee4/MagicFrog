@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -102,6 +100,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private static int itemBottelHp;
 	private static int itemEnergyBar;
 	private static int itemCrown;
+	
+	int[] itemArray = new int[4];
+	
+	boolean flagUseItem = false;
 
 	// Khởi tạo
 	@Override
@@ -118,10 +120,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Init item
 		// Note: I assign the data item; you can try chancing something
-		itemShield = 2;
-		itemBottelHp = 2;
-		itemEnergyBar = 2;
-		itemCrown = 2;
+		itemShield = 0;
+		itemBottelHp = 0;
+		itemEnergyBar = 0;
+		itemCrown = 0;
 
 		// Tạo nút dừng
 		pause_background = new Image("Data/Image/Pause.png");
@@ -163,6 +165,16 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
+		
+		itemArray = SignIn.acc_detail.Items();
+		
+		itemShield = itemArray[0];
+		itemBottelHp = itemArray[1];
+		itemEnergyBar = itemArray[2];
+		itemCrown = itemArray[3];
+		
+        // In ra kết quả để test
+        
 		// Bấm tạm dừng
 		if ((bt_pause.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_pause
@@ -222,16 +234,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 				// flag = -2 => drop water, touches car
 				if (flag == -2 || energy <= 0) {
-<<<<<<< HEAD
-					frog.setAlive(false);
+					// frog.setAlive(false);
+
 					
-					System.out.println(score);
-					
-					if(score > SignIn.acc_detail.getMaxScore()) {
-						SignIn.acc_detail.setMaxScore(score);
-						DetailDAO.getInstance().update(SignIn.acc_detail);
-					}
-=======
 					int choice;
 					Scanner sc = new Scanner(System.in);
 					frog.deathFrog();
@@ -245,6 +250,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							isUseItem = true;
 							energy = 100;
 							itemEnergyBar--;
+							flagUseItem = true;
 						}
 					} else if (flag == -2 && itemShield > 0) { // solve shield
 						System.out.println("Bạn có muốn dùng khien không 1/0");
@@ -254,20 +260,19 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							isUseItem = true;
 							itemShield--;
 							// Chance position of frog
->>>>>>> 91dca68c89bbbf4abcd2bb62a49594a9e376ed96
-
+							flagUseItem = true;
 						}
 					}
 					// solve bottle hp
 					if (itemBottelHp > 0 && !isUseItem) {
-						System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0"); 
+						System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0");
 						choice = sc.nextInt();
 						if (choice == 1) { // frog use item
 							frog.useItem();
 							isUseItem = true;
 							energy = 100;
 							itemBottelHp--;
-
+							flagUseItem = true;
 						}
 					}
 					// solve item crown
@@ -278,11 +283,24 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							frog.useItem();
 							itemCrown--;
 							score *= 2;
+							flagUseItem = true;
 						}
 					}
-
+					
+					if (flagUseItem) {
+						String itemsCombined = itemShield + " " + itemBottelHp + " " + itemEnergyBar + " " + itemCrown;
+						SignIn.acc_detail.setItems(itemsCombined);
+						DetailDAO.getInstance().update(SignIn.acc_detail);
+					}
+					
 					if (!isUseItem) {
 						// Nhân vật chết
+						
+						if (score > SignIn.acc_detail.getMaxScore()) {
+							SignIn.acc_detail.setMaxScore(score);
+							DetailDAO.getInstance().update(SignIn.acc_detail);
+						}
+						
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 					} else {
 						for (int i = 0; i < map.size(); i++) {
@@ -291,9 +309,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 						}
 						// Chance position of frog
 
-						frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - frog.getHitbox().getHeight() );
+						frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
+								- frog.getHitbox().getHeight());
 						frog.getHitbox().setY(frog.getPos_y());
-						
 
 					}
 
@@ -397,20 +415,20 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Tạo Map theo loại
 		switch (type) {
-		case WATER:
-			map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case WATER:
+				map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case STREET:
-			map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case STREET:
+				map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case LAND:
-			map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
-			break;
+			case LAND:
+				map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 
@@ -423,4 +441,4 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 // LƯU Ý
 // xem xét tối ưu cờ trạng thái
-// 
+//
