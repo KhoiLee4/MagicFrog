@@ -33,10 +33,10 @@ enum Type_map {
 
 public class PlayGame extends BasicGameState implements gameConfig {
 	// Âm thanh hiệu ứng
-	public SoundEffect sound;
+	private SoundEffect sound;
 
 	// Ếch
-	public Frog frog;
+	private Frog frog;
 
 	// Điểm
 	static int score;
@@ -68,7 +68,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private Rectangle bt_next;
 	private int bt_next_X = screenWidth / 2 - 65 / 2;
 	private int bt_next_Y = 670;
-	int index = 1;
+	private int indexTutorial = 1;
 
 	// Nút tạm dừng
 	private Image pause_background;
@@ -124,13 +124,13 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		energy_Y = energy_border_Y = 15;
 
 		// Tạo hướng dẫn
-		img_tutorial = new Image("Data/Image/Tutorial" + index + ".png");
+		img_tutorial = new Image("Data/Image/Tutorial" + indexTutorial + ".png");
 		img_bt_nextr = new Image("Data/Image/Button_Continue.png");
 		bt_next = new Rectangle(bt_next_X, bt_next_Y, 65, 70);
 
-		// Tạo nhân vật 
+		// Tạo nhân vật
 		frog = new Frog();
-		
+
 		// Tạo Map
 		map = new ArrayList<Map>();
 
@@ -164,10 +164,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 					sound.click();
-					index++;
-					img_tutorial = new Image("Data/Image/Tutorial" + index + ".png");
+					indexTutorial++;
+					img_tutorial = new Image("Data/Image/Tutorial" + indexTutorial + ".png");
 				}
-				if (index >= 4) {
+				if (indexTutorial >= 4) {
 					isTutorial = false;
 				}
 			} else {
@@ -205,7 +205,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				// flag = -2 => drop water, touches car
 				if (flag == -2 || energy <= 0) {
 					frog.setAlive(false);
-					
+
 					System.out.println(score);
 
 					// Nhân vật chết
@@ -334,4 +334,3 @@ public class PlayGame extends BasicGameState implements gameConfig {
 // LƯU Ý
 // xem xét tối ưu cờ trạng thái
 // 
-

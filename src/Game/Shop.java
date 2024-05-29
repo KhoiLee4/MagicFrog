@@ -15,26 +15,49 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-public class Shop extends BasicGameState {
+public class Shop extends BasicGameState implements gameConfig {
 	// Nhạc nền, âm thanh hiệu ứng
-	public SoundEffect sound;
+	private SoundEffect sound;
+
+	// Tiền
+	private int money = 100;
 
 	// Hình nền
 	private Image img_background = null;
+	private Image img_notice_shop = null;
+	private Image img_notice_price = null;
+
 	// Hình các nút
 	private Image img_bt_back = null;
 	private Image img_bt_buy_no = null;
 	private Image img_bt_buy_yes = null;
+	private Image img_bt_yes = null;
+	private Image img_bt_no = null;
 
 	// Hitbox các nút
 	private Rectangle bt_back = null;
+	private Rectangle bt_yes = null;
+	private Rectangle bt_no = null;
 	private ArrayList<Rectangle> bt_buy;
 
 	// Tọa độ các nút
 	private int bt_back_X = 11;
 	private int bt_back_Y = 851;
+
+	private int bt_yes_X = 293;
+	private int bt_yes_Y = 572;
+
+	private int bt_no_X = 632;
+	private int bt_no_Y = 572;
+
 	// Tọa độ các nút Buy
 	private int[] bt_buy_XY = { 221, 399, 576, 753, 221, 398, 576, 753, 552, 552, 552, 552, 753, 753, 753, 753 };
+
+	// Giá đồ
+	private int[] prices = { 100, 100, 0, 0, 50, 30, 30, 50 };
+
+	// Cờ kiểm tra
+	private int isNotice = -1;
 
 	// Khởi tạo các giá trị
 	@Override
@@ -44,12 +67,18 @@ public class Shop extends BasicGameState {
 
 		// Tạo hình ảnh
 		img_background = new Image("Data/Image/Shop.png");
+		img_notice_shop = new Image("Data/Image/Notice_Shop.png");
+		img_notice_price = new Image("Data/Image/Notice_Price.png");
 		img_bt_back = new Image("Data/Image/Button_Back.png");
 		img_bt_buy_no = new Image("Data/Image/Buy_no.png");
 		img_bt_buy_yes = new Image("Data/Image/Buy_yes.png");
+		img_bt_yes = new Image("Data/Image/Button_Yes.png");
+		img_bt_no = new Image("Data/Image/Button_No.png");
 
 		// Tạo hitbox
 		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
+		bt_yes = new Rectangle(bt_yes_X, bt_yes_Y, 128, 70);
+		bt_no = new Rectangle(bt_no_X, bt_no_Y, 128, 70);
 		bt_buy = new ArrayList<Rectangle>();
 		for (int i = 0; i < bt_buy_XY.length / 2; i++) {
 			bt_buy.add(new Rectangle(bt_buy_XY[i], bt_buy_XY[i + bt_buy_XY.length / 2], 78, 30));
@@ -61,15 +90,82 @@ public class Shop extends BasicGameState {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-		// Quay lại
-		if ((bt_back.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-				|| bt_back
-						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			sound.click();
-			sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+		// Thông mua hàng
+		if (isNotice >= 0) {
+			// Mua hàng
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				if (money >= prices[isNotice]) {
+					money -= prices[isNotice];
+					// Thay đổi món đồ thành sở hữu
+				} else {
+					// Thông báo không đủ tiền
+					bt_yes.setLocation(bt_yes_X, 613);
+					bt_no.setLocation(bt_no_X, 613);
+					isNotice = -2;
+				}
+			}
+			// Không mua hàng
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				isNotice = -1;
+			}
 		}
+		// Thông báo nạp thêm tiền
+		else if (isNotice == -2) {
+			// Nạp thêm tiền
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				isNotice = -1;
+			}
+			// Không nạp thêm
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				isNotice = -1;
+			}
+		}
+		// Cửa hàng
+		else {
+			// Quay lại
+			if ((bt_back
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_back.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+			}
 
+			// Mua hàng
+			for (int i = 0; i < bt_buy.size(); i++) {
+				if ((bt_buy.get(i).intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_buy.get(i).contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					// Kiểm tra đã sở hữu chưa
+//				if() {
+					isNotice = i;
+					bt_yes.setLocation(bt_yes_X, bt_yes_Y);
+					bt_no.setLocation(bt_no_X, bt_no_Y);
+//				}
+				}
+			}
+
+		}
 	}
 
 	// Hiển thị
@@ -77,21 +173,79 @@ public class Shop extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Vẽ hình nền
 		img_background.draw();
-
-		// Vẽ hitbox
-		g.setColor(Color.transparent);
-		for (Rectangle bt : bt_buy) {
-			g.draw(bt);
-		}
-		g.draw(bt_back);
+		renderMoney();
 
 		// Vẽ nút
-		// Xử lí vẽ nút theo giá trị của account
-//		for (int i = 0; i < bt_buy_XY.length / 2; i++) {
-//			img_bt_buy_yes.draw(bt_buy_XY[i], bt_buy_XY[i + bt_buy_XY.length / 2]);
-//		}
-		
 		img_bt_back.draw(bt_back_X, bt_back_Y);
+
+		// Xử lí vẽ nút theo giá trị của account
+		for (int i = 0; i < bt_buy_XY.length / 2; i++) {
+			// Kiểm tra có vật phẩm hay chưa
+//			if() {
+//				img_bt_buy_yes.draw(bt_buy_XY[i], bt_buy_XY[i + bt_buy_XY.length / 2]);
+//			}else {
+			img_bt_buy_no.draw(bt_buy_XY[i], bt_buy_XY[i + bt_buy_XY.length / 2]);
+//			}
+		}
+
+		// Vẽ thông báo
+		if (isNotice >= 0) {
+			img_notice_shop.draw();
+			renderPrice();
+		}
+
+		if (isNotice == -2) {
+			img_notice_price.draw();
+		}
+
+		// Vẽ hitbox
+		g.setColor(Color.red);
+		if (isNotice >= 0 || isNotice == -2) {
+			g.draw(bt_yes);
+			g.draw(bt_no);
+		} else {
+			for (Rectangle bt : bt_buy) {
+				g.draw(bt);
+			}
+			g.draw(bt_back);
+		}
+
+	}
+
+	// Vẽ giá
+	public void renderPrice() throws SlickException {
+		int number = prices[isNotice];
+		int width = 0;
+		ArrayList<Image> img = new ArrayList<Image>();
+		while (number > 0) {
+			img.add(new Image("Data/Image/text_" + (number % 10) + ".png"));
+			width += img.get(img.size() - 1).getWidth();
+			number = number / 10;
+		}
+		int x = screenWidth / 2 - width / 2;
+		int y = screenHeight / 2 - 16;
+		for (int i = img.size() - 1; i >= 0; i--) {
+			img.get(i).draw(x, y);
+			x += img.get(i).getWidth();
+		}
+	}
+
+	// Vẽ tiền
+	public void renderMoney() throws SlickException {
+		int number = money;
+		int width = 0;
+		ArrayList<Image> img = new ArrayList<Image>();
+		while (number > 0) {
+			img.add(new Image("Data/Image/text_" + (number % 10) + ".png"));
+			width += img.get(img.size() - 1).getWidth();
+			number = number / 10;
+		}
+		int x = 800 - width;
+		int y = 851;
+		for (int i = img.size() - 1; i >= 0; i--) {
+			img.get(i).draw(x, y);
+			x += img.get(i).getWidth();
+		}
 	}
 
 	// Lấy id trạng thái
@@ -100,3 +254,4 @@ public class Shop extends BasicGameState {
 		return 8;
 	}
 }
+//851

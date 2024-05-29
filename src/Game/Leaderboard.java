@@ -15,7 +15,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class Leaderboard extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
-	public SoundEffect sound;
+	private SoundEffect sound;
 
 	// Hình nền
 	private Image img_background = null;
@@ -60,6 +60,7 @@ public class Leaderboard extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Vẽ hình nền
 		img_background.draw();
+		img_bt_back.draw(bt_back_X, bt_back_Y);
 
 		// Vẽ hitbox
 		g.setColor(Color.transparent);

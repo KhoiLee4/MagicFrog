@@ -15,10 +15,11 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class GameWin extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
-	public SoundEffect sound;
+	private SoundEffect sound;
 
 	// Hình nền
 	private Image img_background;
+
 	// Hình các nút
 	private Image img_bt_menu;
 	private Image img_bt_playagain;

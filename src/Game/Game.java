@@ -9,6 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Game extends StateBasedGame implements gameConfig {
 	// Tiêu đề cửa sổ (tên game)
 	private static String gameTitle = "MagicFrog";
+
 	// Phần tử khởi chạy
 	private static AppGameContainer game;
 

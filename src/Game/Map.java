@@ -32,6 +32,17 @@ public class Map implements gameConfig {
 		// Di chuyển map
 		this.move(delta, check, frog.getHitbox());
 	}
+	
+	// Di chuyển Map
+	private void move(int delta, int check, Shape hitbox) throws SlickException {
+		Input input = PlayGame.gameContainer.getInput();
+		
+		// Kiểm tra cờ trạng thái của nhân vật
+		// Tiến lên
+		if (input.isKeyDown(Input.KEY_UP) && (check == 1 || check == 3 || check == 4)) {
+			this.pos_y += speedFrog * delta;
+		}
+	}
 
 	// Vẽ Map
 	public void render() {
@@ -42,17 +53,6 @@ public class Map implements gameConfig {
 	public int checkFrog(Shape hitbox) {
 		return 1;
 	}
- 
-	// Di chuyển Map
-	private void move(int delta, int check, Shape hitbox) throws SlickException {
-		Input input = PlayGame.gameContainer.getInput();
-
-		// Kiểm tra cờ trạng thái của nhân vật
-		// Tiến lên
-		if (input.isKeyDown(Input.KEY_UP) && (check == 1 || check == 3 || check == 4)) {
-			this.pos_y += speedFrog * delta;
-		}
-	}
 
 	// Kiểm tra vị trí (ra ngoài thì trả về true)
 	public boolean checkLocation() {
@@ -62,11 +62,6 @@ public class Map implements gameConfig {
 		return false;
 	}
 
-	// Lấy hình nền
-	public Image getImage() {
-		return this.background;
-	}
-
 	// Tính tổng chiều cao của các map
 	public static float totalHeight(ArrayList<Map> map) {
 		float total = 0;
@@ -74,6 +69,11 @@ public class Map implements gameConfig {
 			total += map.get(i).getImage().getHeight();
 		}
 		return total;
+	}
+	
+	// Lấy hình nền
+	public Image getImage() {
+		return this.background;
 	}
 
 	// Lấy loại của Map

@@ -17,20 +17,19 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class SignUp extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
-	public GameMusic music;
-	public SoundEffect sound;
+	private SoundEffect sound;
 
 	// Tài khoản
-	StringBuilder username;
-	ArrayList<Image> img_username;
+	private StringBuilder username;
+	private ArrayList<Image> img_username;
 
 	// Mật khẩu
-	StringBuilder password;
-	ArrayList<Image> img_password;
+	private StringBuilder password;
+	private ArrayList<Image> img_password;
 
 	// Xác nhận mật khẩu
-	StringBuilder confirmPassword;
-	ArrayList<Image> img_confirmPassword;
+	private StringBuilder confirmPassword;
+	private ArrayList<Image> img_confirmPassword;
 
 	// Hình nền
 	private Image img_background;
@@ -65,14 +64,11 @@ public class SignUp extends BasicGameState {
 
 	// Vị trí con trỏ chuột
 	private int cursorPosition = 0;
-	boolean flagCursor = true;
 
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Tạo nhạc nền, âm thanh hiệu ứng
-		music = new GameMusic();
-//		music.playMusic();
 		sound = new SoundEffect();
 
 		// Tạo hình ảnh
@@ -106,6 +102,7 @@ public class SignUp extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_username.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
+				sound.click();
 				cursorPosition = 1;
 			}
 			// Trỏ vào ô password
@@ -113,6 +110,7 @@ public class SignUp extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_password.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
+				sound.click();
 				cursorPosition = 2;
 			}
 			// Trỏ vào ô confirm password
@@ -120,10 +118,12 @@ public class SignUp extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_confirmPassword.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
+				sound.click();
 				cursorPosition = 3;
 			}
 			// Bỏ trỏ chuột
 			else {
+				sound.click();
 				cursorPosition = 0;
 			}
 		}
@@ -164,9 +164,8 @@ public class SignUp extends BasicGameState {
 		img_background.draw();
 		img_bt_SignUp.draw(bt_SignUp_X, bt_SignUp_Y);
 
-		g.setColor(Color.transparent);
-
 		// Vẽ hitbox
+		g.setColor(Color.transparent);
 		g.draw(bt_SignUp);
 		g.draw(box_username);
 		g.draw(box_password);
@@ -175,6 +174,7 @@ public class SignUp extends BasicGameState {
 		// Vẽ chữ
 		int x1 = box_username_X + 5, y1 = box_username_Y + 3, x2 = box_password_X + 5, y2 = box_password_Y + 3,
 				x3 = box_confirmPassword_X + 5, y3 = box_confirmPassword_Y + 3;
+
 		// tài khoản
 		if (img_username != null) {
 			for (Image img : img_username) {
@@ -347,6 +347,7 @@ public class SignUp extends BasicGameState {
 			inputTest.deleteCharAt(inputTest.length() - 1);
 			image.remove(image.size() - 1);
 		}
+		sound.click();
 	}
 
 	// Lấy id trạng trái

@@ -10,6 +10,9 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
 public final class MapLand extends Map implements gameConfig {
+	// Âm thanh hiệu ứng
+	private SoundEffect sound;
+
 	// Danh sách đối tượng trong Map
 	private ArrayList<Obstacles> obstacles;
 
@@ -23,10 +26,12 @@ public final class MapLand extends Map implements gameConfig {
 
 	// Biến chọn map ngẫu nhiên
 	private Random randomSpawn;
-	private int RandomNumber;
+	private int randomNumber;
+
 	// Flag render of frog and fruit
 	private boolean isRenderFrogBaby = false;
 	private boolean isRenderFruit = false;
+
 	// Init temp energy
 	private double tempEnergy;
 
@@ -34,6 +39,9 @@ public final class MapLand extends Map implements gameConfig {
 	protected MapLand(float x) throws SlickException {
 		// Tạo loại Map
 		super(null, x, 0, "land");
+
+		// Tạo âm thanh hiệu ứng
+		sound = new SoundEffect();
 
 		// Đặt hình nền, điều chỉnh vị trí
 		this.background = new Image("Data/Image/MapLand.png");
@@ -51,7 +59,11 @@ public final class MapLand extends Map implements gameConfig {
 	}
 
 	protected MapLand(float x, float y, double energy) throws SlickException {
+		// Tạo loại Map
 		super(null, x, 0, "land");
+
+		// Tạo âm thanh hiệu ứng
+		sound = new SoundEffect();
 
 		// Tạo Map ngẫu nhiên trong kho có sẵn
 		randomSpawn = new Random();
@@ -77,15 +89,15 @@ public final class MapLand extends Map implements gameConfig {
 		} else if (url.equals("Data/Image/MapLand6.png")) {
 			createMap6();
 		}
-		RandomNumber = (randomSpawn.nextInt(20));
-		if (RandomNumber <= 3) {
+		randomNumber = (randomSpawn.nextInt(20));
+		if (randomNumber <= 3) {
 			babyFrog = new BabyFrog(this.pos_y, obstacles);
 			isRenderFrogBaby = true;
-		} 
-		if (RandomNumber >= 17 || energy <= 20) {
+		}
+		if (randomNumber >= 17 || energy <= 20) {
 			fruit = new Fruit(this.pos_y, obstacles);
 			isRenderFruit = true;
-		} 
+		}
 
 	}
 
@@ -194,6 +206,7 @@ public final class MapLand extends Map implements gameConfig {
 	public void eatFrog(Shape hitbox) {
 		if (babyFrog.getHitbox().intersects(hitbox) || babyFrog.getHitbox().contains(hitbox)) {
 			isEat = true;
+			sound.levelUp();
 			PlayGame.score++;
 			babyFrog.setPos_x(-30);
 			babyFrog.setPos_y(0);
@@ -205,6 +218,7 @@ public final class MapLand extends Map implements gameConfig {
 	public void eatFruit(Shape hitbox) {
 		if (fruit.getHitbox().intersects(hitbox) || fruit.getHitbox().contains(hitbox)) {
 			fruit.Eat();
+			sound.levelUp();
 			PlayGame.energy += 20;
 			if (PlayGame.energy > 100) {
 				PlayGame.energy = 100;

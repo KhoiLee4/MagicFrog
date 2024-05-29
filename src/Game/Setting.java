@@ -15,8 +15,8 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class Setting extends BasicGameState implements gameConfig {
 	// Nhạc nền, âm thanh hiệu ứng
-	public GameMusic music;
-	public SoundEffect sound;
+	private GameMusic music;
+	private SoundEffect sound;
 
 	// Hình nền
 	private Image img_background = null;
@@ -41,8 +41,8 @@ public class Setting extends BasicGameState implements gameConfig {
 	private int bt_back_Y = 840;
 
 	// Trạng thái nút
-	int indexSound = Sound ? 0 : 1;
-	int indexMusic = Music ? 0 : 1;
+	private int indexSound = Sound ? 0 : 1;
+	private int indexMusic = Music ? 0 : 1;
 
 	// Từ đâu đến
 	static boolean isMenu = true;

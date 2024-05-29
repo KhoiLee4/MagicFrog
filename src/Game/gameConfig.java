@@ -1,5 +1,7 @@
 package Game;
 
+import org.newdawn.slick.Image;
+
 public interface gameConfig {
 	// Kích thước khung hình
 	int screenWidth = 1050;
@@ -12,11 +14,12 @@ public interface gameConfig {
 	float speedMap = speedFrog;
 
 	// Trạng thái âm thanh
-	boolean Music = false;
-	boolean Sound = false;
+	boolean Music = true;
+	boolean Sound = true;
 	
 	// Tốc độ giảm của năng lượng
 	float energyReduction = 0.001f;
+	
 
 }
 

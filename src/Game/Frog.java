@@ -13,15 +13,15 @@ import org.newdawn.slick.geom.Shape;
 // Đối tượng ếch
 public class Frog extends GameObject implements gameConfig {
 	// Chuyển động của nhân vật
-	Animation jump = null;
-	Animation left = null;
-	Animation right = null;
-	Animation animation = null;
-	int speedAction = 200;
-	boolean animationRunning = false;
+	private Animation jump = null;
+	private Animation left = null;
+	private Animation right = null;
+	private Animation animation = null;
+	private int speedAction = 200;
+	private boolean animationRunning = false;
 
 	// Mạng của nhân vật
-	boolean alive = true;
+	private boolean alive = true;
 
 	// Khởi tạo
 	protected Frog() throws SlickException {
@@ -34,16 +34,15 @@ public class Frog extends GameObject implements gameConfig {
 		this.img = new Image("Data/Image/Frog.png");
 
 		// Tạo hitbox
-		this.hitbox = new Rectangle(this.pos_x + 30, this.pos_y + 20, this.img.getWidth() - 55,
-				this.img.getHeight() - 45);
+		this.hitbox = new Rectangle(this.pos_x, this.pos_y, 120, 122);
 
 		// Tạo chuyển động
-		animation = new Animation(new SpriteSheet(this.img, 120, 101), speedAction);
+		animation = new Animation(new SpriteSheet(this.img, 120, 122), speedAction);
 
-		jump = new Animation(new SpriteSheet(new Image("Data/Image/MoveUp.png"), 120, 122), speedAction);
-		left = new Animation(new SpriteSheet(new Image("Data/Image/MoveLeft.png"), 120, 120), speedAction);
+		jump = new Animation(new SpriteSheet(new Image("Data/Image/MoveUp_Skin1.png"), 120, 122), speedAction);
+		left = new Animation(new SpriteSheet(new Image("Data/Image/MoveLeft_Skin1.png"), 120, 122), speedAction);
 		right = new Animation(
-				new SpriteSheet(new Image("Data/Image/MoveLeft.png").getFlippedCopy(true, false), 120, 120),
+				new SpriteSheet(new Image("Data/Image/MoveLeft_Skin1.png").getFlippedCopy(true, false), 120, 122),
 				speedAction);
 
 		jump.setLooping(false);
@@ -51,7 +50,7 @@ public class Frog extends GameObject implements gameConfig {
 		right.setLooping(false);
 	}
 
-	// Cập nhật 
+	// Cập nhật
 	public void update(int delta, int check) throws SlickException {
 		// Kiểm tra trạng thái chuyển động của nhân vật
 		if (animationRunning) {
@@ -68,10 +67,10 @@ public class Frog extends GameObject implements gameConfig {
 			this.hitbox.setY(screenHeight * 2 / 3 + 10);
 		} else if (this.pos_x < 0) {
 			this.pos_x = 0;
-			this.hitbox.setX(this.pos_x + 30);
+			this.hitbox.setX(this.pos_x);
 		} else if (this.pos_x > screenWidth - this.img.getWidth()) {
 			this.pos_x = screenWidth - this.img.getWidth();
-			this.hitbox.setX(screenWidth - this.img.getWidth() + 30);
+			this.hitbox.setX(screenWidth - this.img.getWidth());
 		}
 
 		// Di chuyển nhân vật
@@ -105,13 +104,13 @@ public class Frog extends GameObject implements gameConfig {
 		// flag = 4 => cham chieu dai ben trai cua hinh nhat
 		// flag = 5 => cham 2 diem dac biet cua hcn
 		Input input = PlayGame.gameContainer.getInput();
-		if(input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_UP) ) {
+		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_UP)) {
 			return;
 		}
-		if(input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_UP) ) {
+		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_UP)) {
 			return;
 		}
-		if(input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_RIGHT) ) {
+		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_RIGHT)) {
 			return;
 		}
 		if (flag == 1) {
