@@ -83,6 +83,15 @@ public class MapStreet extends Map implements gameConfig {
 			super.update(delta, check, frog);
 		}
 	}
+	
+	@Override
+	public void update2(int delta) throws SlickException {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < cars.size(); i++) {
+			cars.get(i).update2(delta);
+		}
+		super.update2(delta);
+	}
 
 	// Vẽ Map
 	public void render() {

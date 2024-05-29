@@ -151,6 +151,7 @@ public class SignIn extends BasicGameState {
 						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
 			// Kiểm tra tài khoản, mật khẩu
 			sound.click();
+<<<<<<< HEAD
 			if (checkAccount()) {
 				acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(username.toString()));
 				//Detail.setUsername(username.toString());
@@ -161,6 +162,11 @@ public class SignIn extends BasicGameState {
 				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
 			}
 
+=======
+//			if (checkAccount()) {
+			sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+//			}
+>>>>>>> 91dca68c89bbbf4abcd2bb62a49594a9e376ed96
 		}
 
 		// Bấm nút đăng ký

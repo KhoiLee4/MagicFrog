@@ -51,7 +51,7 @@ public class Frog extends GameObject implements gameConfig {
 		right.setLooping(false);
 	}
 
-	// Cập nhật 
+	// Cập nhật
 	public void update(int delta, int check) throws SlickException {
 		// Kiểm tra trạng thái chuyển động của nhân vật
 		if (animationRunning) {
@@ -105,13 +105,13 @@ public class Frog extends GameObject implements gameConfig {
 		// flag = 4 => cham chieu dai ben trai cua hinh nhat
 		// flag = 5 => cham 2 diem dac biet cua hcn
 		Input input = PlayGame.gameContainer.getInput();
-		if(input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_UP) ) {
+		if (input.isKeyDown(Input.KEY_RIGHT) && input.isKeyDown(Input.KEY_UP)) {
 			return;
 		}
-		if(input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_UP) ) {
+		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_UP)) {
 			return;
 		}
-		if(input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_RIGHT) ) {
+		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_RIGHT)) {
 			return;
 		}
 		if (flag == 1) {
@@ -224,8 +224,19 @@ public class Frog extends GameObject implements gameConfig {
 	}
 
 	// Đặt lại mạng cho nhân vật
-	public void setAlive(boolean alive) {
+	private void setAlive(boolean alive) {
 		this.alive = alive;
+	}
+
+	// Frog is dead
+	public void deathFrog() {
+		setAlive(false);
+	}
+
+	// Function solve logic of item
+	// Bottle HP, getter more life
+	public void useItem() {
+		setAlive(true);
 	}
 }
 
