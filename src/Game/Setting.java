@@ -13,7 +13,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.Detail;
+import GameData.DetailDAO;
+
 public class Setting extends BasicGameState implements gameConfig {
+	
 	// Nhạc nền, âm thanh hiệu ứng
 	public GameMusic music;
 	public SoundEffect sound;
@@ -46,13 +50,15 @@ public class Setting extends BasicGameState implements gameConfig {
 
 	// Từ đâu đến
 	static boolean isMenu = true;
-
+	
+	Detail acc_detail = null;
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Tạo nhạc nền, âm thanh hiệu ứng
 		music = new GameMusic();
 		sound = new SoundEffect();
+
 
 		// Tạo hình ảnh
 		img_background = new Image("Data/Image/Setting.png");
@@ -71,6 +77,9 @@ public class Setting extends BasicGameState implements gameConfig {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
+		
+		
+		
 		// Bật/tắt âm thanh hiệu ứng
 		if ((bt_sound.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_sound
@@ -79,9 +88,11 @@ public class Setting extends BasicGameState implements gameConfig {
 			sound.click();
 			if (SoundEffect.isCheckSound()) {
 				sound.turnOff();
+				acc_detail.setSoundEffect(false);
 				indexSound = 1;
 			} else {
 				sound.turnOn();
+				acc_detail.setSoundEffect(true);
 				indexSound = 0;
 			}
 		}
@@ -94,12 +105,16 @@ public class Setting extends BasicGameState implements gameConfig {
 			sound.click();
 			if (GameMusic.isCheckMusic()) {
 				music.stopMusic();
+				acc_detail.setGameMusic(false);
 				indexMusic = 1;
 			} else {
 				music.playMusic();
+				acc_detail.setGameMusic(true);
 				indexMusic = 0;
 			}
 		}
+		
+		DetailDAO.getInstance().update(acc_detail);
 
 		// Quay lại
 		if ((bt_back.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
@@ -118,6 +133,7 @@ public class Setting extends BasicGameState implements gameConfig {
 	// Hiển thị
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
+
 		// Vẽ hình nền
 		img_background.draw();
 
@@ -126,7 +142,20 @@ public class Setting extends BasicGameState implements gameConfig {
 		g.draw(bt_sound);
 		g.draw(bt_music);
 		g.draw(bt_back);
-
+		
+		acc_detail = SignIn.acc_detail;
+		if(acc_detail.isGameMusic()) {
+			indexMusic = 0;
+		}else {
+			indexMusic = 1;
+		}
+		
+		if(acc_detail.isSoundEffect()) {
+			indexSound = 0;
+		} else {
+			indexSound = 1;
+		}
+		
 		// Vẽ nút
 		img_bt_sound[indexSound].draw(bt_sound_X, bt_sound_Y);
 		img_bt_music[indexMusic].draw(bt_music_X, bt_music_Y);

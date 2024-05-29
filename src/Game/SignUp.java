@@ -2,6 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,6 +15,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
+
+import GameData.Account;
+import GameData.AccountDAO;
+import GameData.Detail;
+import GameData.DetailDAO;
 
 public class SignUp extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
@@ -66,6 +72,14 @@ public class SignUp extends BasicGameState {
 	// Vị trí con trỏ chuột
 	private int cursorPosition = 0;
 	boolean flagCursor = true;
+	
+	// Lưu ý khi tạo mật khẩu
+	private Image[] notice_pass;
+	private boolean[] show_notice;
+	
+	private Rectangle bt_back = null;
+	private int bt_back_X = 900;
+	private int bt_back_Y = 840;
 
 	// Khởi tạo
 	@Override
@@ -95,6 +109,12 @@ public class SignUp extends BasicGameState {
 		img_username = new ArrayList<Image>();
 		img_password = new ArrayList<Image>();
 		img_confirmPassword = new ArrayList<Image>();
+		
+		//Thông báo khi tạo mật khẩu
+		notice_pass = new Image[] {new Image("Data/Image/Notice_pass.png"),
+									new Image("Data/Image/Notice_pass2.png")};
+		show_notice = new boolean[] {false, false};
+		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
 	}
 
 	// Cập nhật
@@ -136,7 +156,13 @@ public class SignUp extends BasicGameState {
 			// Kiểm tra tài khoản, mật khẩu
 			sound.click();
 			if (checkPassword()) {
-				sbg.enterState(7, new FadeOutTransition(), new FadeInTransition());
+				Account acc = new Account(username.toString(), password.toString());
+				Detail acc_detail = new Detail(username.toString());
+				
+				AccountDAO.getInstance().insert(acc);
+				DetailDAO.getInstance().insert(acc_detail);
+				
+				sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
 			}
 		}
 
@@ -154,7 +180,9 @@ public class SignUp extends BasicGameState {
 		if (cursorPosition == 3) {
 			input(container, confirmPassword, img_confirmPassword);
 		}
-
+		
+		
+		
 	}
 
 	// Hiển thị
@@ -214,16 +242,63 @@ public class SignUp extends BasicGameState {
 		} else {
 			cursor.setLocation(-cursor.getWidth(), -cursor.getHeight());
 		}
+		
+		for(int i = 0; i < 2; i++) {
+			if(show_notice[i]) {
+				notice_pass[i].draw();
+				if ((bt_back.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_back
+								.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					show_notice[i] = false;
+				}
+				
+			}
+		}
 	}
 
 	// Kiểm tra mật khẩu
 	public boolean checkPassword() {
-		if (username != null && password != null) {
-			// Kiểm tra mật khẩu
-			// Đứng trả về true
-			// Sai trả về false
-		}
-		return false;
+		if (password.length() < 8) {
+	        System.out.println("Password must be at least 8 characters long.");
+	        show_notice[0] = true;
+	        return false;
+	    }
+
+	    // Kiểm tra mật khẩu và xác nhận mật khẩu có khớp nhau không
+	    if (!password.toString().equals(confirmPassword.toString())) {
+	        System.out.println("Passwords do not match.");
+	        show_notice[1] = true;
+	        return false;
+	    }
+
+//	    // Kiểm tra mật khẩu có chứa ít nhất một ký tự đặc biệt
+//	    if (!password.matches(".*[!@#$%^&*()].*")) {
+//	        System.out.println("Password must contain at least one special character.");
+//	        return false;
+//	    }
+//
+//	    // Kiểm tra mật khẩu có chứa ít nhất một chữ cái viết hoa
+//	    if (!password.matches(".*[A-Z].*")) {
+//	        System.out.println("Password must contain at least one uppercase letter.");
+//	        return false;
+//	    }
+//
+//	    // Kiểm tra mật khẩu có chứa ít nhất một chữ cái viết thường
+//	    if (!password.matches(".*[a-z].*")) {
+//	        System.out.println("Password must contain at least one lowercase letter.");
+//	        return false;
+//	    }
+//
+//	    // Kiểm tra mật khẩu có chứa ít nhất một chữ số
+//	    if (!password.matches(".*[0-9].*")) {
+//	        System.out.println("Password must contain at least one digit.");
+//	        return false;
+//	    }
+
+	    // Nếu tất cả các kiểm tra đều thành công
+	    return true;
 	}
 
 	// Nhập kí tự vào

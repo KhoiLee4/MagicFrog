@@ -17,6 +17,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.DetailDAO;
+
 // Loại Map
 enum Type_map {
 	WATER, LAND, STREET;
@@ -34,6 +36,7 @@ enum Type_map {
 public class PlayGame extends BasicGameState implements gameConfig {
 	// Âm thanh hiệu ứng
 	public SoundEffect sound;
+	public GameMusic music;
 
 	// Ếch
 	public Frog frog;
@@ -99,6 +102,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Tạo âm thanh hiệu ứng
 		sound = new SoundEffect();
+		music = new GameMusic();
 
 		// Điểm
 		score = 0;
@@ -207,6 +211,11 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					frog.setAlive(false);
 					
 					System.out.println(score);
+					
+					if(score > SignIn.acc_detail.getMaxScore()) {
+						SignIn.acc_detail.setMaxScore(score);
+						DetailDAO.getInstance().update(SignIn.acc_detail);
+					}
 
 					// Nhân vật chết
 					sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
