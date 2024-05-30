@@ -53,6 +53,10 @@ public abstract class GameObject implements gameConfig {
 		return hitbox;
 	}
 
+	public Image getImg() {
+		return img;
+	}
+
 	// Đặt lại hitbox
 	public void setHitbox(Shape hitbox) {
 		this.hitbox = hitbox;

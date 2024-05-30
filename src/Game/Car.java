@@ -59,8 +59,8 @@ public class Car extends GameObject implements gameConfig {
 		}
 	}
 	private void move2(int delta) throws SlickException {
-			this.pos_y -= speedFrog * delta* 200;
-			this.hitbox.setY(this.hitbox.getY() - speedFrog * delta*200);
+			this.pos_y -= speedFrog * delta* 100;
+			this.hitbox.setY(this.hitbox.getY() - speedFrog * delta*100);
 	
 	}
 	// Kiểm tra vị trí (ra ngoài thì trả về true)

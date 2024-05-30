@@ -70,8 +70,8 @@ public class Obstacles extends GameObject {
 	}
 
 	private void move2(int delta) throws SlickException {
-		this.pos_y -= speedMap * delta* 200;
-		this.hitbox.setY(this.hitbox.getY() - speedMap * delta*200);
+		this.pos_y -= speedMap * delta* 100;
+		this.hitbox.setY(this.hitbox.getY() - speedMap * delta*100);
 
 	}
 }

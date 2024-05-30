@@ -118,7 +118,7 @@ public class MapWater extends Map implements gameConfig {
 	public void update2(int delta) throws SlickException {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < planks.size(); i++) {
-			planks.get(i).setPos_y(planks.get(i).getPos_y() - speedFrog *delta *200);
+			planks.get(i).setPos_y(planks.get(i).getPos_y() - speedFrog *delta *100);
 			planks.get(i).getHitbox().setY(planks.get(i).getPos_y());;
 		}
 		super.update2(delta);
