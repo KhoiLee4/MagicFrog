@@ -90,15 +90,40 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	private int bt_pauseAgain_X = screenWidth - (10 + 55) * 3;
 	private int bt_pauseAgain_Y = 10;
+
+	// Thông báo Item
+	private Image img_notice_item = null;
+	private Image img_bt_yes = null;
+	private Image img_bt_no = null;
+	private Image img_item = null;
+	private Image img_item1 = null;
+	private Image img_item2 = null;
+	private Image img_item3 = null;
+	private Image img_item4 = null;
+
+	private Rectangle bt_yes = null;
+	private Rectangle bt_no = null;
+
+	private int bt_yes_X = 293;
+	private int bt_yes_Y = 572;
+
+	private int bt_no_X = 632;
+	private int bt_no_Y = 572;
+
+	private int item_X = 475;
+	private int item_Y = 431;
+
 	// Cờ kiểm tra
 	private boolean isPause = false;
 	private boolean isTutorial = true;
+	private boolean isNotice = false;
+	private boolean isUseItem = false;
 
 	// Init Item
-	private static int itemShield;
-	private static int itemBottelHp;
-	private static int itemEnergyBar;
-	private static int itemCrown;
+	private static int itemShield = 1;
+	private static int itemBottelHp = 1;
+	private static int itemEnergyBar = 1;
+	private static int itemCrown = 1;
 
 	// Khởi tạo
 	@Override
@@ -112,13 +137,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		// Năng lượng
 		energy = 100;
 
-		// Init item
-		// Note: I assign the data item; you can try chancing something
-		itemShield = 2;
-		itemBottelHp = 2;
-		itemEnergyBar = 2;
-		itemCrown = 2;
-
 		// Tạo nút dừng
 		pause_background = new Image("Data/Image/Pause.png");
 		img_bt_pauseOff = new Image("Data/Image/Pause_off.png");
@@ -129,6 +147,19 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		bt_pause = new Rectangle(bt_pause_X, bt_pause_Y, 55, 57);
 		bt_pauseSetting = new Rectangle(bt_pauseSetting_X, bt_pauseSetting_Y, 55, 57);
 		bt_pauseAgain = new Rectangle(bt_pauseAgain_X, bt_pauseAgain_Y, 55, 57);
+
+		// Tạo thông báo
+		img_notice_item = new Image("Data/Image/Notice_Item.png");
+		img_bt_yes = new Image("Data/Image/Button_Yes.png");
+		img_bt_no = new Image("Data/Image/Button_No.png");
+		img_item1 = new Image("Data/Image/Item1.png");
+		img_item2 = new Image("Data/Image/Item2.png");
+		img_item3 = new Image("Data/Image/Item3.png");
+		img_item4 = new Image("Data/Image/Item4.png");
+		img_item = img_item1;
+
+		bt_yes = new Rectangle(bt_yes_X, bt_yes_Y, 128, 70);
+		bt_no = new Rectangle(bt_no_X, bt_no_Y, 128, 70);
 
 		// Tạo thanh năng lượng
 		img_energy = new Image("Data/Image/Energy.png");
@@ -185,8 +216,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				}
 			} else {
 				// Giảm năng lượng
-				energy -= energyReduction * (int) time;
-				time += (delta / 100000.0f);
+				if (frog.isAlive()) {
+					energy -= energyReduction * (int) time;
+					time += (delta / 100000.0f);
+				}
 
 				// Tạo Map tự động
 				if (Map.totalHeight(map) < screenHeight + 1620) {
@@ -202,7 +235,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 				// Cờ trạng thái
 				int flag = 1;
-				int indexMap = 0;
+				int indexMap = -1;
 				// kiểm tra Map
 				for (Map x : map) {
 					// check frog return != 1 => touches obstacles
@@ -212,73 +245,42 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					}
 					indexMap++;
 				}
-
+				
 				// Cập nhật nhân vật theo trạng thái
 				frog.update(delta, flag);
 
 				// flag = -2 => drop water, touches car
-				if (flag == -2 || energy <= 0) {
-					int choice;
-					Scanner sc = new Scanner(System.in);
+				if ((flag == -2 || energy <= 0) && frog.isAlive()) {
 					frog.deathFrog();
-					// System.out.println(score);
-					boolean isUseItem = false;
-					if (energy <= 0 && itemEnergyBar > 0) { // solve item energy bar
-						System.out.println("Bạn có muốn dùng sấm sét không 1/0");
-						choice = sc.nextInt();
-						if (choice == 1) { // frog use item
-							frog.useItem();
-							isUseItem = true;
-							energy = 100;
-							itemEnergyBar--;
-						}
-					} else if (flag == -2 && itemShield > 0) { // solve shield
-						System.out.println("Bạn có muốn dùng khien không 1/0");
-						choice = sc.nextInt();
-						if (choice == 1) { // frog use item
-							frog.useItem();
-							isUseItem = true;
-							itemShield--;
-							// Chance position of frog
+				}
+				if (!frog.isAlive()) {
+					
+					// Sử dụng item
+					useItem(container, flag);
 
-						}
-					}
-					// solve bottle hp
-					if (itemBottelHp > 0 && !isUseItem) {
-						System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0"); 
-						choice = sc.nextInt();
-						if (choice == 1) { // frog use item
-							frog.useItem();
-							isUseItem = true;
-							energy = 100;
-							itemBottelHp--;
-
-						}
-					}
-					// solve item crown
-					if (!isUseItem && itemCrown > 0) {
-						System.out.println("Bạn có muốn nhan doi diem không 1/0");
-						choice = sc.nextInt();
-						if (choice == 1) { // frog use item
-							frog.useItem();
-							itemCrown--;
-							score *= 2;
-						}
-					}
-
-					if (!isUseItem) {
+					// Không dùng item
+//					if (!isUseItem && !isNotice) {
+					if (!isNotice && !frog.isAlive()) {
 						// Nhân vật chết
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
-					} else {
+					} else if (!isNotice && frog.isAlive()) {
+						
+						System.out.println(10);
+						System.out.println(indexMap);
+						System.out.println(map.size());
+						System.out.println(frog.getPos_x());
+						System.out.println(frog.getPos_y());
+						
+						isUseItem = false;
 						for (int i = 0; i < map.size(); i++) {
 							// Cập nhật map
 							map.get(i).update2(delta);
 						}
 						// Chance position of frog
 
-						frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight() - frog.getHitbox().getHeight() );
+						frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
+								- frog.getHitbox().getHeight());
 						frog.getHitbox().setY(frog.getPos_y());
-						
 
 					}
 
@@ -364,6 +366,13 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			img_bt_pauseOff.draw(bt_pause_X, bt_pause_Y);
 			g.draw(bt_pause);
 		}
+
+		if (isNotice) {
+			img_notice_item.draw();
+			img_item.draw(item_X, item_Y);
+			g.draw(bt_yes);
+			g.draw(bt_no);
+		}
 	}
 
 	// Tạm dừng trò chơi
@@ -372,6 +381,90 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			isPause = false;
 		} else {
 			isPause = true;
+		}
+	}
+
+	// Sử dụng item
+	public void useItem(GameContainer container, int flag) {
+		// Dùng năng lượng
+		if (energy <= 0 && itemEnergyBar > 0) {
+//			System.out.println("Bạn có muốn dùng sấm sét không 1/0");
+			img_item = img_item2;
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				frog.useItem();
+				isUseItem = true;
+				energy = 100;
+				itemEnergyBar--;
+				isNotice = false;
+			}
+		}
+		// Dùng khiên
+		else if (flag == -2 && itemShield > 0) {
+//			System.out.println("Bạn có muốn dùng khien không 1/0");
+			img_item = img_item3;
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				frog.useItem();
+				isUseItem = true;
+				itemShield--;
+				isNotice = false;
+			}
+		}
+		// Dùng bình máu
+		if (itemBottelHp > 0 && !isUseItem) {
+//			System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0");
+			img_item = img_item1;
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				frog.useItem();
+				isUseItem = true;
+				energy = 100;
+				itemBottelHp--;
+				isNotice = false;
+			}
+		}
+		// solve item crown
+		// Dùng tăng điểm
+		else if (!frog.isAlive() && itemCrown > 0) {
+//			System.out.println("Bạn có muốn nhan doi diem không 1/0");
+			img_item = img_item4;
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				itemCrown--;
+				score *= 2;
+				isNotice = false;
+			}
+		}
+		if (isNotice) {
+			// Không đồng ý
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				isNotice = false;
+			}
 		}
 	}
 
