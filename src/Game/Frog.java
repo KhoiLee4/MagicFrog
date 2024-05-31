@@ -24,14 +24,14 @@ public class Frog extends GameObject implements gameConfig {
 	private boolean alive = true;
 
 	// Khởi tạo
-	protected Frog() throws SlickException {
+	protected Frog(int type) throws SlickException {
 		super(null, screenWidth / 2, screenHeight - 100, null);
 
 		// Đặt tốc độ di chuyển
 		this.speed = speedFrog;
 
 		// Đặt ảnh
-		this.img = new Image("Data/Image/Frog.png");
+		this.img = new Image("Data/Image/Frog" + type + ".png");
 
 		// Tạo hitbox
 		this.hitbox = new Rectangle(this.pos_x + 30, this.pos_y + 40, this.img.getWidth() - 55,
@@ -40,10 +40,13 @@ public class Frog extends GameObject implements gameConfig {
 		// Tạo chuyển động
 		animation = new Animation(new SpriteSheet(this.img, 120, 122), speedAction);
 
-		jump = new Animation(new SpriteSheet(new Image("Data/Image/MoveUp_Skin1.png"), 120, 122), speedAction);
-		left = new Animation(new SpriteSheet(new Image("Data/Image/MoveLeft_Skin1.png"), 120, 122), speedAction);
+		jump = new Animation(new SpriteSheet(new Image("Data/Image/MoveUp_Skin" + type + ".png"), 120, 122),
+				speedAction);
+		left = new Animation(new SpriteSheet(new Image("Data/Image/MoveLeft_Skin" + type + ".png"), 120, 122),
+				speedAction);
 		right = new Animation(
-				new SpriteSheet(new Image("Data/Image/MoveLeft_Skin1.png").getFlippedCopy(true, false), 120, 122),
+				new SpriteSheet(new Image("Data/Image/MoveLeft_Skin" + type + ".png").getFlippedCopy(true, false), 120,
+						122),
 				speedAction);
 
 		jump.setLooping(false);
