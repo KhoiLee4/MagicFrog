@@ -34,7 +34,8 @@ public class Frog extends GameObject implements gameConfig {
 		this.img = new Image("Data/Image/Frog.png");
 
 		// Tạo hitbox
-		this.hitbox = new Rectangle(this.pos_x, this.pos_y, 120, 122);
+		this.hitbox = new Rectangle(this.pos_x + 30, this.pos_y + 40, this.img.getWidth() - 55,
+				this.img.getHeight() - 65);
 
 		// Tạo chuyển động
 		animation = new Animation(new SpriteSheet(this.img, 120, 122), speedAction);
@@ -64,13 +65,13 @@ public class Frog extends GameObject implements gameConfig {
 		// Kiểm tra vị trí của nhân vật
 		if (this.pos_y < screenHeight * 2 / 3) {
 			this.pos_y = screenHeight * 2 / 3;
-			this.hitbox.setY(screenHeight * 2 / 3 + 10);
+			this.hitbox.setY(screenHeight * 2 / 3 + 40);
 		} else if (this.pos_x < 0) {
 			this.pos_x = 0;
-			this.hitbox.setX(this.pos_x);
+			this.hitbox.setX(this.pos_x + 30);
 		} else if (this.pos_x > screenWidth - this.img.getWidth()) {
 			this.pos_x = screenWidth - this.img.getWidth();
-			this.hitbox.setX(screenWidth - this.img.getWidth());
+			this.hitbox.setX(screenWidth - this.img.getWidth() + 30);
 		}
 
 		// Di chuyển nhân vật

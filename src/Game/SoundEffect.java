@@ -49,6 +49,10 @@ public class SoundEffect implements gameConfig {
 	public void turnOff() {
 		checkSound = false;
 	}
+	
+	public void setSound(boolean isTurn) {
+		checkSound = isTurn;
+	}
 }
 
 //LƯU Ý

@@ -15,6 +15,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.Account;
+import GameData.AccountDAO;
+import GameData.Detail;
+import GameData.DetailDAO;
+
 public class SignIn extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
 	private GameMusic music;
@@ -63,6 +68,14 @@ public class SignIn extends BasicGameState {
 	// Vị trí con trỏ chuột
 	private int cursorPosition = 0;
 
+	static Detail acc_detail = null;
+
+	boolean check_pass;
+	private Image img_check_pass = null;
+	private Rectangle bt_back = null;
+	private int bt_back_X = 900;
+	private int bt_back_Y = 840;
+
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -90,6 +103,10 @@ public class SignIn extends BasicGameState {
 		password = new StringBuilder();
 		img_username = new ArrayList<Image>();
 		img_password = new ArrayList<Image>();
+
+		check_pass = false;
+		img_check_pass = new Image("Data/Image/Check_pass.png");
+
 	}
 
 	// Cập nhật
@@ -136,9 +153,16 @@ public class SignIn extends BasicGameState {
 						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
 			// Kiểm tra tài khoản, mật khẩu
 			sound.click();
-//			if (checkAccount()) {
-			sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
-//			}
+			if (checkAccount()) {
+				acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(username.toString()));
+				// Detail.setUsername(username.toString());
+
+				music.setMusic(acc_detail.isGameMusic());
+				sound.setSound(acc_detail.isSoundEffect());
+
+				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+			}
+
 		}
 
 		// Bấm nút đăng ký
@@ -197,14 +221,31 @@ public class SignIn extends BasicGameState {
 		} else {
 			cursor.setLocation(-cursor.getWidth(), -cursor.getHeight());
 		}
+
+		if (check_pass) {
+			img_check_pass.draw();
+			if ((bt_back
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_back
+							.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(),
+									0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				check_pass = false;
+			}
+		}
+		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
 	}
 
 	// Kiểm tra tài khoản, mật khẩu
 	public boolean checkAccount() {
 		if (username != null && password != null) {
-			// Kiểm tra tài khoản mật khẩu
-			// Đứng trả về true
-			// Sai trả về false
+			Account acc = new Account(username.toString(), "");
+			String pass = AccountDAO.getInstance().selectByUsername(acc).getPassword();
+			if (password.toString().equals(pass))
+				return true;
+			check_pass = true;
+			return false;
 		}
 		return false;
 	}

@@ -2,10 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,6 +14,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
+
+import GameData.DetailDAO;
 
 // Loại Map
 enum Type_map {
@@ -34,6 +33,8 @@ enum Type_map {
 
 public class PlayGame extends BasicGameState implements gameConfig {
 	// Âm thanh hiệu ứng
+
+	private GameMusic music;
 	private SoundEffect sound;
 
 	// Ếch
@@ -95,7 +96,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private Image img_notice_item = null;
 	private Image img_bt_yes = null;
 	private Image img_bt_no = null;
-	private Image img_item = null;
+	private ArrayList<Image> img_item = null;
 	private Image img_item1 = null;
 	private Image img_item2 = null;
 	private Image img_item3 = null;
@@ -118,24 +119,37 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private boolean isTutorial = true;
 	private boolean isNotice = false;
 	private boolean isUseItem = false;
+	private int indexItem = -1;
 
 	// Init Item
-	private static int itemShield = 1;
+	private static int itemShield = 10;
 	private static int itemBottelHp = 1;
 	private static int itemEnergyBar = 1;
 	private static int itemCrown = 1;
+
+	int[] itemArray = new int[4];
+
+	boolean flagUseItem = false;
 
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Tạo âm thanh hiệu ứng
 		sound = new SoundEffect();
+		music = new GameMusic();
 
 		// Điểm
 		score = 0;
 
 		// Năng lượng
 		energy = 100;
+
+		// Init item
+		// Note: I assign the data item; you can try chancing something
+		itemShield = 0;
+		itemBottelHp = 0;
+		itemEnergyBar = 0;
+		itemCrown = 0;
 
 		// Tạo nút dừng
 		pause_background = new Image("Data/Image/Pause.png");
@@ -156,7 +170,11 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		img_item2 = new Image("Data/Image/Item2.png");
 		img_item3 = new Image("Data/Image/Item3.png");
 		img_item4 = new Image("Data/Image/Item4.png");
-		img_item = img_item1;
+		img_item = new ArrayList<Image>();
+		img_item.add(img_item1);
+		img_item.add(img_item2);
+		img_item.add(img_item3);
+		img_item.add(img_item4);
 
 		bt_yes = new Rectangle(bt_yes_X, bt_yes_Y, 128, 70);
 		bt_no = new Rectangle(bt_no_X, bt_no_Y, 128, 70);
@@ -190,6 +208,16 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
+
+		itemArray = SignIn.acc_detail.Items();
+
+		itemShield = itemArray[2];
+		itemBottelHp = itemArray[0];
+		itemEnergyBar = itemArray[1];
+		itemCrown = itemArray[3];
+
+		// In ra kết quả để test
+
 		// Bấm tạm dừng
 		if ((bt_pause.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_pause
@@ -259,13 +287,22 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					useItem(container, flag);
 
 					// Không dùng item
-//					if (!isUseItem && !isNotice) {
+					// if (!isUseItem && !isNotice) {
 					if (!isNotice && !frog.isAlive()) {
 						// Nhân vật chết
+						if(score > 0) {
+							int money = SignIn.acc_detail.getMoney();
+							money += score * 100;
+							SignIn.acc_detail.setMoney(money);
+						}
+						if (score > SignIn.acc_detail.getMaxScore()) {
+							SignIn.acc_detail.setMaxScore(score);
+						}
+						DetailDAO.getInstance().update(SignIn.acc_detail);
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 					} else if (!isNotice && frog.isAlive()) {
 
-						System.out.println(10);
+						System.out.println(indexItem);
 						System.out.println(indexMap);
 						System.out.println(map.size());
 						System.out.println(frog.getPos_x());
@@ -280,10 +317,38 @@ public class PlayGame extends BasicGameState implements gameConfig {
 						if (indexMap == map.size()) {
 							indexMap--;
 						}
-						frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
-								- frog.getHitbox().getHeight());
-						frog.getHitbox().setY(frog.getPos_y());
+						if (map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
+								- frog.getHitbox().getHeight() < 0 && indexMap > 0) {
+							System.out.println(22222);
+							if (map.get(indexMap).typeMap.equals("water")
+									&& (map.get(indexMap - 1).typeMap.equals("street")
+											|| map.get(indexMap - 1).typeMap.equals("water"))) {
+								frog.setPos_y(map.get(indexMap - 1).pos_y - frog.getHitbox().getHeight() - 10);
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							} else {
+								frog.setPos_y(map.get(indexMap - 1).pos_y - frog.getHitbox().getHeight());
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							}
+						} else {
+							System.out.println(map.get(indexMap - 1).typeMap);
+							if (map.get(indexMap).typeMap.equals("water")
+									&& (map.get(indexMap - 1).typeMap.equals("street")
+											|| map.get(indexMap - 1).typeMap.equals("water"))) {
+								System.out.println(1111);
+								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
+										- frog.getHitbox().getHeight() - 10);
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							} else {
+								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
+										- frog.getHitbox().getHeight() - 30);
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							}
+						}
 
+						System.out.println(frog.getPos_x());
+						System.out.println(frog.getPos_y());
+						System.out.println(map.get(indexMap).typeMap);
+						System.out.println(frog.isAlive());
 					}
 
 				} else {
@@ -370,7 +435,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		}
 		if(isNotice) {
 			img_notice_item.draw();
-			img_item.draw(item_X, item_Y);
+			img_item.get(indexItem).draw(item_X, item_Y);
 			g.draw(bt_yes);
 			g.draw(bt_no);
 
@@ -389,107 +454,142 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	// Sử dụng item
 	public void useItem(GameContainer container, int flag) {
-		// Dùng năng lượng
-		if (energy <= 0 && itemEnergyBar > 0) {
-			System.out.println("Bạn có muốn dùng sấm sét không 1/0");
-			img_item = img_item2;
-			 isNotice = true;
-
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				frog.useItem();
-				isUseItem = true;
-				energy = 100;
-				itemEnergyBar--;
-				isNotice = false;
+		// Xét index item
+		if (indexItem == -1) {
+			// Dùng năng lượng
+			if (energy <= 0 && itemEnergyBar > 0) {
+				indexItem = 1;
+			}
+			// Dùng khiên
+			else if (flag == -2 && itemShield > 0) {
+				indexItem = 2;
+			}
+			// Dùng bình máu
+			else if (itemBottelHp > 0) {
+				indexItem = 0;
+			}
+			// Dùng tăng điểm
+			else if (!frog.isAlive() && itemCrown > 0) {
+				indexItem = 3;
 			}
 		}
-		// Dùng khiên
-		else if (flag == -2 && itemShield > 0) {
-			System.out.println("Bạn có muốn dùng khien không 1/0");
-			img_item = img_item3;
-			isNotice = true;
-			boolean isChoice = false;
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				frog.useItem();
-				isUseItem = true;
-				itemShield--;
-				isNotice = false;
-				isChoice = true;
-				return;
-			}
+
+		switch (indexItem) {
+			case 0:
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					frog.useItem();
+					energy = 100;
+					itemBottelHp--;
+					indexItem = -1;
+					isNotice = false;
+				}
+				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f))
+				// || bt_no.contains(
+				// new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f)))
+				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				// sound.click();
+				// indexItem = -1;
+				// isNotice = false;
+				// }
+				break;
+			case 1:
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					frog.useItem();
+					energy = 100;
+					itemEnergyBar--;
+					indexItem = -1;
+					isNotice = false;
+				}
+				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f))
+				// || bt_no.contains(
+				// new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f)))
+				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				// sound.click();
+				// indexItem = 0;
+				// }
+				break;
+			case 2:
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					frog.useItem();
+					itemShield--;
+					indexItem = -1;
+					isNotice = false;
+				}
+				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f))
+				// || bt_no.contains(
+				// new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f)))
+				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				// sound.click();
+				// indexItem = 0;
+				// }
+				break;
+			case 3:
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					itemCrown--;
+					score *= 2;
+					indexItem = -1;
+					isNotice = false;
+				}
+				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f))
+				// || bt_no.contains(
+				// new Circle(container.getInput().getMouseX(),
+				// container.getInput().getMouseY(), 0.5f)))
+				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				// sound.click();
+				// indexItem = -1;
+				// isNotice = false;
+				// }
+				break;
+		}
+
+		if (isNotice) {
+			// Không đồng ý
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				System.out.println(1);
-				isUseItem = false;
-				isNotice = false;
-				isChoice = true;
-			}
-			if (isNotice && !isChoice ) {
-				return;
-			}
-
-		}
-		if (itemBottelHp > 0 && !isUseItem  ) { // Dùng bình máu
-			 System.out.println("Bạn có muốn dùng thuoc hoi sinh không 1/0");
-			img_item = img_item1;
-			isNotice = true;
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				frog.useItem();
-				isUseItem = true;
-				energy = 100;
-				itemBottelHp--;
-				isNotice = false;
-			}else if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_no.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) { // Không đồng ý
 				sound.click();
 				isNotice = false;
 			}
-			return;
-
-		}
-		// solve item crown
-		// Dùng tăng điểm
-		else if (!frog.isAlive() && itemCrown > 0 ) {
-			// System.out.println("Bạn có muốn nhan doi diem không 1/0");
-			img_item = img_item4;
-			isNotice = true;
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				itemCrown--;
-				score *= 2;
-				isNotice = false;
-			}else if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_no.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) { // Không đồng ý
-				sound.click();
-				isNotice = false;
-			}
-			return;
+		} else {
+			String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+			SignIn.acc_detail.setItems(itemsCombined);
+			DetailDAO.getInstance().update(SignIn.acc_detail);
 		}
 
 	}
@@ -501,20 +601,20 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Tạo Map theo loại
 		switch (type) {
-		case WATER:
-			map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case WATER:
+				map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case STREET:
-			map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case STREET:
+				map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case LAND:
-			map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
-			break;
+			case LAND:
+				map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 
@@ -527,4 +627,4 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 // LƯU Ý
 // xem xét tối ưu cờ trạng thái
-// 
+//
