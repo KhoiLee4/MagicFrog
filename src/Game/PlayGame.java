@@ -456,14 +456,15 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				indexItem = -1;
 				isNotice = false;
 			}
-//			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-//					|| bt_no.contains(
-//							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-//					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-//				sound.click();
-//				indexItem = -1;
-//				isNotice = false;
-//			}
+			// Không đồng ý
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				indexItem = -1;
+				isNotice = false;
+			}
 			break;
 		case 1:
 			isNotice = true;
@@ -479,13 +480,17 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				indexItem = -1;
 				isNotice = false;
 			}
-//			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-//					|| bt_no.contains(
-//							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-//					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-//				sound.click();
-//				indexItem = 0;
-//			}
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				if (itemBottelHp > 0) {
+					indexItem = 0;
+				} else {
+					isNotice = false;
+				}
+			}
 			break;
 		case 2:
 			isNotice = true;
@@ -500,13 +505,17 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				indexItem = -1;
 				isNotice = false;
 			}
-//			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-//					|| bt_no.contains(
-//							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-//					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-//				sound.click();
-//				indexItem = 0;
-//			}
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				if (itemBottelHp > 0) {
+					indexItem = 0;
+				} else {
+					isNotice = false;
+				}
+			}
 			break;
 		case 3:
 			isNotice = true;
@@ -521,28 +530,27 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				indexItem = -1;
 				isNotice = false;
 			}
-//			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-//					|| bt_no.contains(
-//							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-//					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-//				sound.click();
-//				indexItem = -1;
-//				isNotice = false;
-//			}
-			break;
-		}
-
-		
-		if (isNotice) {
-			// Không đồng ý
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
+				indexItem = -1;
 				isNotice = false;
 			}
+			break;
 		}
+
+//		if (isNotice) {
+//			// Không đồng ý
+//			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+//					|| bt_no.contains(
+//							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+//					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+//				sound.click();
+//				isNotice = false;
+//			}
+//		}
 	}
 
 	// Tạo Map ngẫu nhiên
