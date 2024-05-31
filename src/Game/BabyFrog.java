@@ -82,7 +82,7 @@ public class BabyFrog extends GameObject implements gameConfig {
 
 	private void move2(int delta) throws SlickException {
 
-		this.pos_y -= speedFrog * delta*200;
+		this.pos_y -= speedFrog * delta*100;
 		this.hitbox.setY(this.pos_y);
 
 	}

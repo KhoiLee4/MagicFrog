@@ -18,8 +18,8 @@ public class Detail {
         this.username = username;
         this.money = 0;
         this.maxScore = 0;
-        this.skins = "";
-        this.items = "";
+        this.skins = "0 0 0 0";
+        this.items = "0 0 0 0";
         this.gameMusic = true;
         this.soundEffect = true;
     }
@@ -93,6 +93,18 @@ public class Detail {
     	return result;
     }
 
+    public boolean[] Skins () {
+    	 boolean[] result = new boolean[4];
+         
+         String[] itemArray = items.split(" ");
+         for (int i = 0; i < 4; i++) {
+             int value = Integer.parseInt(itemArray[i]);
+             result[i] = (value != 0); // Chuyển đổi số nguyên thành boolean
+         }
+         
+         return result;
+    }
+    
     @Override
     public String toString() {
         return "Detail{" +

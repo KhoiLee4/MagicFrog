@@ -1,6 +1,7 @@
 package Game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -60,6 +61,11 @@ public class Shop extends BasicGameState implements gameConfig {
 
 	// Cờ kiểm tra
 	private int isNotice = -1;
+	
+	// Mảng lưu skins và items
+	
+	private static boolean[] skins = new boolean[4];
+	private static int[] items = new int[4];
 
 	// Khởi tạo các giá trị
 	@Override
@@ -87,13 +93,17 @@ public class Shop extends BasicGameState implements gameConfig {
 		}
 		
 		money = 0;
-		//
+		skins = new boolean[] {false, false, false, false};
+        items = new int[] {0, 0, 0, 0};
 	}
 
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 		money = SignIn.acc_detail.getMoney();
+		
+		skins = SignIn.acc_detail.Skins();
+		items = SignIn.acc_detail.Items();
 		
 		// Thông mua hàng
 		if (isNotice >= 0) {
@@ -105,7 +115,10 @@ public class Shop extends BasicGameState implements gameConfig {
 				sound.click();
 				if (money >= prices[isNotice]) {
 					money -= prices[isNotice];
+					
 					// Thay đổi món đồ thành sở hữu
+					processNotice();
+					
 				} else {
 					// Thông báo không đủ tiền
 					bt_yes.setLocation(bt_yes_X, 613);
@@ -162,11 +175,11 @@ public class Shop extends BasicGameState implements gameConfig {
 						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 					sound.click();
 					// Kiểm tra đã sở hữu chưa
-//				if() {
-					isNotice = i;
-					bt_yes.setLocation(bt_yes_X, bt_yes_Y);
-					bt_no.setLocation(bt_no_X, bt_no_Y);
-//				}
+					if((i >= 0 && i <= 3 && !skins[i]) || (i >= 4 && i <= 7)) {
+						isNotice = i;
+						bt_yes.setLocation(bt_yes_X, bt_yes_Y);
+						bt_no.setLocation(bt_no_X, bt_no_Y);
+					}
 				}
 			}
 
@@ -257,6 +270,23 @@ public class Shop extends BasicGameState implements gameConfig {
 			x += img.get(i).getWidth();
 		}
 	}
+	
+	public void processNotice() {
+
+        if (isNotice >= 0 && isNotice <= 3) {
+            skins[isNotice] = true;
+            String skinsCombined = Arrays.toString(skins).replaceAll("true", "1")
+										                    .replaceAll("false", "0")
+										                    .replaceAll("[\\[\\],]", "")
+										                    .trim();
+            SignIn.acc_detail.setSkins(skinsCombined);
+        } else if (isNotice >= 4 && isNotice <= 7) {
+            items[isNotice - 4]++;
+            String itemsCombined = Arrays.toString(items).replaceAll("[\\[\\],]", "");
+            SignIn.acc_detail.setItems(itemsCombined);
+        }
+        DetailDAO.getInstance().update(SignIn.acc_detail);
+    }
 
 	// Lấy id trạng thái
 	@Override

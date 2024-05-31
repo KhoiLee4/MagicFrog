@@ -81,7 +81,7 @@ public class SignIn extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Tạo nhạc nền, âm thanh hiệu ứng
 		music = new GameMusic();
-		music.playMusic();
+//		music.playMusic();
 		sound = new SoundEffect();
 
 		// Tạo hình ảnh
