@@ -14,8 +14,8 @@ public class JDBCUtil {
 			// Register the Oracle JDBC driver with DriverManager
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			String url = "jdbc:mysql://localhost:3306/game_data";
-            String user = "btl";
-            String password = "000000";
+            String user = "root";
+            String password = "792004+zZ";
             c = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
