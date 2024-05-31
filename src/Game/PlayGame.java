@@ -2,10 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
-import org.newdawn.slick.Animation;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -17,6 +14,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
+
+import GameData.DetailDAO;
 
 // Loại Map
 enum Type_map {
@@ -34,6 +33,8 @@ enum Type_map {
 
 public class PlayGame extends BasicGameState implements gameConfig {
 	// Âm thanh hiệu ứng
+
+	private GameMusic music;
 	private SoundEffect sound;
 
 	// Ếch
@@ -126,17 +127,29 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private static int itemEnergyBar = 1;
 	private static int itemCrown = 1;
 
+	int[] itemArray = new int[4];
+
+	boolean flagUseItem = false;
+
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Tạo âm thanh hiệu ứng
 		sound = new SoundEffect();
+		music = new GameMusic();
 
 		// Điểm
 		score = 0;
 
 		// Năng lượng
 		energy = 100;
+
+		// Init item
+		// Note: I assign the data item; you can try chancing something
+		itemShield = 0;
+		itemBottelHp = 0;
+		itemEnergyBar = 0;
+		itemCrown = 0;
 
 		// Tạo nút dừng
 		pause_background = new Image("Data/Image/Pause.png");
@@ -195,6 +208,16 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
+
+		itemArray = SignIn.acc_detail.Items();
+
+		itemShield = itemArray[2];
+		itemBottelHp = itemArray[0];
+		itemEnergyBar = itemArray[1];
+		itemCrown = itemArray[3];
+
+		// In ra kết quả để test
+
 		// Bấm tạm dừng
 		if ((bt_pause.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_pause
@@ -264,9 +287,18 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					useItem(container, flag);
 
 					// Không dùng item
-//					if (!isUseItem && !isNotice) {
+					// if (!isUseItem && !isNotice) {
 					if (!isNotice && !frog.isAlive()) {
 						// Nhân vật chết
+						if(score > 0) {
+							int money = SignIn.acc_detail.getMoney();
+							money += score * 100;
+							SignIn.acc_detail.setMoney(money);
+						}
+						if (score > SignIn.acc_detail.getMaxScore()) {
+							SignIn.acc_detail.setMaxScore(score);
+						}
+						DetailDAO.getInstance().update(SignIn.acc_detail);
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 					} else if (!isNotice && frog.isAlive()) {
 
@@ -455,6 +487,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				itemBottelHp--;
 				indexItem = -1;
 				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
 			}
 			// Không đồng ý
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
@@ -479,6 +514,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				itemEnergyBar--;
 				indexItem = -1;
 				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
 			}
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
@@ -504,6 +542,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				itemShield--;
 				indexItem = -1;
 				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
 			}
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
@@ -529,7 +570,11 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				score *= 2;
 				indexItem = -1;
 				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
 			}
+
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
@@ -539,18 +584,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				isNotice = false;
 			}
 			break;
-		}
-
-//		if (isNotice) {
-//			// Không đồng ý
-//			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-//					|| bt_no.contains(
-//							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-//					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-//				sound.click();
-//				isNotice = false;
-//			}
-//		}
+		} 
 	}
 
 	// Tạo Map ngẫu nhiên
@@ -560,20 +594,20 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Tạo Map theo loại
 		switch (type) {
-		case WATER:
-			map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case WATER:
+				map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case STREET:
-			map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case STREET:
+				map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case LAND:
-			map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
-			break;
+			case LAND:
+				map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 
@@ -586,4 +620,4 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 // LƯU Ý
 // xem xét tối ưu cờ trạng thái
-// 
+//
