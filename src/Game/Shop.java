@@ -180,6 +180,10 @@ public class Shop extends BasicGameState implements gameConfig {
 						bt_yes.setLocation(bt_yes_X, bt_yes_Y);
 						bt_no.setLocation(bt_no_X, bt_no_Y);
 					}
+					else {
+						System.out.println("Ban da so huu");
+						//bt_no.setLocation(bt_no_X, bt_no_Y);
+					}
 				}
 			}
 

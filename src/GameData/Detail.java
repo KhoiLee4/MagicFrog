@@ -96,9 +96,9 @@ public class Detail {
     public boolean[] Skins () {
     	 boolean[] result = new boolean[4];
          
-         String[] itemArray = items.split(" ");
+         String[] skinArray = skins.split(" ");
          for (int i = 0; i < 4; i++) {
-             int value = Integer.parseInt(itemArray[i]);
+             int value = Integer.parseInt(skinArray[i]);
              result[i] = (value != 0); // Chuyển đổi số nguyên thành boolean
          }
          
