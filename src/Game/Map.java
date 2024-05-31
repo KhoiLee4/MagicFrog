@@ -32,6 +32,7 @@ public class Map implements gameConfig {
 		// Di chuyển map
 		this.move(delta, check, frog.getHitbox());
 	}
+
 	public void update2(int delta) throws SlickException {
 		// Di chuyển map
 		this.moveMap2(delta);
@@ -69,11 +70,6 @@ public class Map implements gameConfig {
 		return false;
 	}
 
-	// Lấy hình nền
-	public Image getImage() {
-		return this.background;
-	}
-
 	// Tính tổng chiều cao của các map
 	public static float totalHeight(ArrayList<Map> map) {
 		float total = 0;
@@ -81,6 +77,11 @@ public class Map implements gameConfig {
 			total += map.get(i).getImage().getHeight();
 		}
 		return total;
+	}
+	
+	// Lấy hình nền
+	public Image getImage() {
+		return this.background;
 	}
 
 	// Lấy loại của Map

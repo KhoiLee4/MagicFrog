@@ -22,16 +22,16 @@ import GameData.DetailDAO;
 
 public class SignIn extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
-	public GameMusic music;
-	public SoundEffect sound;
+	private GameMusic music;
+	private SoundEffect sound;
 
 	// Tài khoản
-	StringBuilder username;
-	ArrayList<Image> img_username;
+	private StringBuilder username;
+	private ArrayList<Image> img_username;
 
 	// Mật khẩu
-	StringBuilder password;
-	ArrayList<Image> img_password;
+	private StringBuilder password;
+	private ArrayList<Image> img_password;
 
 	// Hình nền
 	private Image img_background;
@@ -67,7 +67,6 @@ public class SignIn extends BasicGameState {
 
 	// Vị trí con trỏ chuột
 	private int cursorPosition = 0;
-	boolean flagCursor = true;
 
 	static Detail acc_detail = null;
 
@@ -82,7 +81,7 @@ public class SignIn extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
 		// Tạo nhạc nền, âm thanh hiệu ứng
 		music = new GameMusic();
-		// music.playMusic();
+		music.playMusic();
 		sound = new SoundEffect();
 
 		// Tạo hình ảnh
@@ -119,6 +118,7 @@ public class SignIn extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_username.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
+				sound.click();
 				cursorPosition = 1;
 			}
 			// Trỏ vào ô password
@@ -126,10 +126,12 @@ public class SignIn extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_password.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
+				sound.click();
 				cursorPosition = 2;
 			}
 			// Bỏ trỏ chuột
 			else {
+				sound.click();
 				cursorPosition = 0;
 			}
 		}
@@ -181,9 +183,8 @@ public class SignIn extends BasicGameState {
 		img_bt_SignIn.draw(bt_SignIn_X, bt_SignIn_Y);
 		img_bt_SignUp.draw(bt_SignUp_X, bt_SignUp_Y);
 
-		g.setColor(Color.transparent);
-
 		// Vẽ hitbox
+		g.setColor(Color.transparent);
 		g.draw(bt_SignIn);
 		g.draw(bt_SignUp);
 		g.draw(box_username);
@@ -191,6 +192,7 @@ public class SignIn extends BasicGameState {
 
 		// Vẽ chữ
 		int x1 = box_username_X + 5, y1 = box_username_Y + 3, x2 = box_password_X + 5, y2 = box_password_Y + 3;
+
 		// tài khoản
 		if (img_username != null) {
 			for (Image img : img_username) {
@@ -216,7 +218,6 @@ public class SignIn extends BasicGameState {
 		} else if (cursorPosition == 2) {
 			cursor.setLocation(x2, y2);
 			g.draw(cursor);
-			flagCursor = false;
 		} else {
 			cursor.setLocation(-cursor.getWidth(), -cursor.getHeight());
 		}
@@ -370,6 +371,7 @@ public class SignIn extends BasicGameState {
 			inputTest.deleteCharAt(inputTest.length() - 1);
 			image.remove(image.size() - 1);
 		}
+		sound.click();
 	}
 
 	// Lấy id trạng trái

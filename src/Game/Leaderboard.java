@@ -1,7 +1,6 @@
 package Game;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -47,7 +46,7 @@ import GameData.DetailDAO;
 
 public class Leaderboard extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
-	public SoundEffect sound;
+	private SoundEffect sound;
 
 	// Hình nền
 	private Image img_background = null;
@@ -61,11 +60,11 @@ public class Leaderboard extends BasicGameState {
 	// Tọa độ các nút
 	private int bt_back_X = 30;
 	private int bt_back_Y = 830;
-	
-//	private List<Score> scores;
+
+	// private List<Score> scores;
 	ArrayList<Detail> list_username = null;
-	
-	//Biến để cài đặt font chữ
+
+	// Biến để cài đặt font chữ
 	private UnicodeFont font;
 
 	@SuppressWarnings("unchecked")
@@ -80,29 +79,29 @@ public class Leaderboard extends BasicGameState {
 
 		// Tạo hitbox
 		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
-		
-		//Cài đặt font chữ
+
+		// Cài đặt font chữ
 		try {
-            font = new UnicodeFont("Data/Font/SundayMilk.ttf", 40, true, false);
-            font.addAsciiGlyphs();
-            font.getEffects().add(new ColorEffect(java.awt.Color.white));
-            font.loadGlyphs();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-		
-		//Lấy danh sách điểm từ csdl
-//		 scores = new ArrayList<>();
+			font = new UnicodeFont("Data/Font/SundayMilk.ttf", 40, true, false);
+			font.addAsciiGlyphs();
+			font.getEffects().add(new ColorEffect(java.awt.Color.white));
+			font.loadGlyphs();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Lấy danh sách điểm từ csdl
+		// scores = new ArrayList<>();
 		list_username = DetailDAO.getInstance().selectAll();
-		 
-//		 int i = 0;
-//		 while (i < list_username.size() && i < 10) {
-//		         String user = list_username.get(i).getUsername();
-//		         int score = list_username.get(i).getMaxScore();
-//		         scores.add(new Score(user, score));
-//		     i++;
-//		 }
-		 
+
+		// int i = 0;
+		// while (i < list_username.size() && i < 10) {
+		// String user = list_username.get(i).getUsername();
+		// int score = list_username.get(i).getMaxScore();
+		// scores.add(new Score(user, score));
+		// i++;
+		// }
+
 	}
 
 	@Override
@@ -120,38 +119,38 @@ public class Leaderboard extends BasicGameState {
 
 	@Override
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
-        // Vẽ hình nền
-        img_background.draw();
+		// Vẽ hình nền
+		img_background.draw();
+		img_bt_back.draw(bt_back_X, bt_back_Y);
 
-        // Vẽ hitbox
-        g.setColor(Color.transparent);
-        g.draw(bt_back);
+		// Vẽ hitbox
+		g.setColor(Color.transparent);
+		g.draw(bt_back);
 
-        g.setColor(new Color(40, 144, 255));
-        g.setFont(font);
+		g.setColor(new Color(40, 144, 255));
+		g.setFont(font);
 
-        drawScoreboard(g);
-    }
+		drawScoreboard(g);
+	}
 
-    @Override
-    public int getID() {
-        return 3;
-    }
+	@Override
+	public int getID() {
+		return 3;
+	}
 
-    private void drawScoreboard(Graphics g) {
+	private void drawScoreboard(Graphics g) {
 
-    	int x = 350; // Xác định tọa độ X bắt đầu của văn bản
-        int y = 320; // Xác định tọa độ Y bắt đầu của văn bản
+		int x = 350; // Xác định tọa độ X bắt đầu của văn bản
+		int y = 320; // Xác định tọa độ Y bắt đầu của văn bản
 
-        // Vẽ danh sách điểm số
-        int i = 0;
-        while (i < list_username.size() && i < 8) {
-            g.drawString(list_username.get(i).getUsername(), x, y);
-            g.drawString("" + list_username.get(i).getMaxScore(), x + 280, y);
-            y += 72; // Tăng khoảng cách giữa các dòng văn bản
-            i++;
-        }
-    }
+		// Vẽ danh sách điểm số
+		int i = 0;
+		while (i < list_username.size() && i < 8) {
+			g.drawString(list_username.get(i).getUsername(), x, y);
+			g.drawString("" + list_username.get(i).getMaxScore(), x + 280, y);
+			y += 72; // Tăng khoảng cách giữa các dòng văn bản
+			i++;
+		}
+	}
 
-    
 }

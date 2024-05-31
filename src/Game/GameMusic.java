@@ -41,6 +41,8 @@ public class GameMusic implements gameConfig {
 		checkMusic = isTurn;
 		if (checkMusic) {
 			backgroundMusic.loop();
+		}else {
+			backgroundMusic.stop();
 		}
 	}
 }

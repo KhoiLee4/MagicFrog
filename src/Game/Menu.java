@@ -17,12 +17,12 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class Menu extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
-	public GameMusic music;
-	public SoundEffect sound;
+	private SoundEffect sound;
 
 	// Hình nền
 	private Image img_background = null;
 	private Image img_bag = null;
+
 	// Hình các nút
 	private Image img_bt_setting = null;
 	private Image img_bt_leaderboard = null;
@@ -58,8 +58,6 @@ public class Menu extends BasicGameState {
 		container.setIcons(new String[] { "Data/Image/Icon.png" });
 
 		// Tạo nhạc nền, âm thanh hiệu ứng
-		music = new GameMusic();
-//		music.playMusic();
 		sound = new SoundEffect();
 
 		// Tạo hình ảnh
@@ -143,6 +141,10 @@ public class Menu extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
 		// Vẽ hình nền
 		img_background.draw();
+		img_bt_setting.draw(bt_setting_X, bt_setting_Y);
+		img_bt_leaderboard.draw(bt_leaderboard_X, bt_leaderboard_Y);
+		img_bt_shop.draw(bt_shop_X, bt_shop_Y);
+		img_bt_bag.draw(bt_bag_X, bt_bag_Y);
 
 		// Vẽ hitbox
 		if (isBag) {

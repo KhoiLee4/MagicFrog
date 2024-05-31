@@ -15,7 +15,7 @@ public class MapStreet extends Map implements gameConfig {
 	private Random randomSpawn;
 
 	// Biến chọn thời gian ngẫu nhiên
-	int randomTime = 0;
+	private int randomTime = 0;
 
 	// Khởi tạo
 	protected MapStreet(float x) throws SlickException {

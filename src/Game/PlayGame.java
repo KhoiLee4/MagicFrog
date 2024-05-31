@@ -34,11 +34,12 @@ enum Type_map {
 
 public class PlayGame extends BasicGameState implements gameConfig {
 	// Âm thanh hiệu ứng
-	public SoundEffect sound;
-	public GameMusic music;
+
+	private GameMusic music;
+	private SoundEffect sound;
 
 	// Ếch
-	public Frog frog;
+	private Frog frog;
 
 	// Điểm
 	static int score;
@@ -70,7 +71,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private Rectangle bt_next;
 	private int bt_next_X = screenWidth / 2 - 65 / 2;
 	private int bt_next_Y = 670;
-	int index = 1;
+	private int indexTutorial = 1;
 
 	// Nút tạm dừng
 	private Image pause_background;
@@ -100,9 +101,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private static int itemBottelHp;
 	private static int itemEnergyBar;
 	private static int itemCrown;
-	
+
 	int[] itemArray = new int[4];
-	
+
 	boolean flagUseItem = false;
 
 	// Khởi tạo
@@ -143,7 +144,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		energy_Y = energy_border_Y = 15;
 
 		// Tạo hướng dẫn
-		img_tutorial = new Image("Data/Image/Tutorial" + index + ".png");
+		img_tutorial = new Image("Data/Image/Tutorial" + indexTutorial + ".png");
 		img_bt_nextr = new Image("Data/Image/Button_Continue.png");
 		bt_next = new Rectangle(bt_next_X, bt_next_Y, 65, 70);
 
@@ -165,16 +166,16 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-		
+
 		itemArray = SignIn.acc_detail.Items();
-		
+
 		itemShield = itemArray[0];
 		itemBottelHp = itemArray[1];
 		itemEnergyBar = itemArray[2];
 		itemCrown = itemArray[3];
-		
-        // In ra kết quả để test
-        
+
+		// In ra kết quả để test
+
 		// Bấm tạm dừng
 		if ((bt_pause.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 				|| bt_pause
@@ -193,10 +194,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 					sound.click();
-					index++;
-					img_tutorial = new Image("Data/Image/Tutorial" + index + ".png");
+					indexTutorial++;
+					img_tutorial = new Image("Data/Image/Tutorial" + indexTutorial + ".png");
 				}
-				if (index >= 4) {
+				if (indexTutorial >= 4) {
 					isTutorial = false;
 				}
 			} else {
@@ -236,7 +237,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				if (flag == -2 || energy <= 0) {
 					// frog.setAlive(false);
 
-					
 					int choice;
 					Scanner sc = new Scanner(System.in);
 					frog.deathFrog();
@@ -286,21 +286,21 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							flagUseItem = true;
 						}
 					}
-					
+
 					if (flagUseItem) {
 						String itemsCombined = itemShield + " " + itemBottelHp + " " + itemEnergyBar + " " + itemCrown;
 						SignIn.acc_detail.setItems(itemsCombined);
 						DetailDAO.getInstance().update(SignIn.acc_detail);
 					}
-					
+
 					if (!isUseItem) {
 						// Nhân vật chết
-						
+
 						if (score > SignIn.acc_detail.getMaxScore()) {
 							SignIn.acc_detail.setMaxScore(score);
 							DetailDAO.getInstance().update(SignIn.acc_detail);
 						}
-						
+
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 					} else {
 						for (int i = 0; i < map.size(); i++) {

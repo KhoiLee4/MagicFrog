@@ -13,10 +13,10 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
 public class BabyFrog extends GameObject implements gameConfig {
-
 	// Chuyển động của nhân vật
-	Animation animation = null;
-	int speedAction = 200;
+	private Animation animation = null;
+	private int speedAction = 200;
+	
 	// Biến tạo ngẫu nhiên
 	private Random randomSpawn;
 
