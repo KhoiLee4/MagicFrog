@@ -1,5 +1,7 @@
 package GameData;
 
+import java.util.Arrays;
+
 public class Detail {
     public String username;
     private int money;
@@ -8,12 +10,12 @@ public class Detail {
     private String items; 
     private boolean gameMusic;
     private boolean soundEffect;
-    
-    public Detail() {
-		super();
-	}
 
-	// Constructor
+    public Detail() {
+        super();
+    }
+
+    // Constructor
     public Detail(String username) {
         this.username = username;
         this.money = 0;
@@ -30,7 +32,7 @@ public class Detail {
     }
 
     public void setUsername(String username) {
-    	this.username = username;
+        this.username = username;
     }
 
     public int getMoney() {
@@ -82,29 +84,33 @@ public class Detail {
     }
 
     // Methods to add skins and items
-    public int[] Items () {
-    	int[] result = new int[4];
-    	
-    	String[] itemArray = items.split(" ");
-    	for (int i = 0; i < 4; i++) {
-    		result[i] = Integer.parseInt(itemArray[i]);
-    	}
-    	
-    	return result;
+    public int[] Items() {
+        int[] result = new int[4];
+        String[] itemArray = items.split(" ");
+        for (int i = 0; i < 4; i++) {
+            result[i] = Integer.parseInt(itemArray[i]);
+        }
+        return result;
     }
 
-    public boolean[] Skins () {
-    	 boolean[] result = new boolean[4];
-         
-         String[] skinArray = skins.split(" ");
-         for (int i = 0; i < 4; i++) {
-             int value = Integer.parseInt(skinArray[i]);
-             result[i] = (value != 0); // Chuyển đổi số nguyên thành boolean
-         }
-         
-         return result;
+    public int[] Skins() {
+        int[] result = new int[4];
+        String[] skinArray = skins.split(" ");
+        for (int i = 0; i < 4; i++) {
+            result[i] = Integer.parseInt(skinArray[i]);
+        }
+        return result;
     }
-    
+
+    // New methods to set skins and items using arrays
+    public void setSkins(int[] skins) {
+        this.skins = Arrays.toString(skins).replaceAll("[\\[\\],]", "").trim();
+    }
+
+    public void setItems(int[] items) {
+        this.items = Arrays.toString(items).replaceAll("[\\[\\],]", "").trim();
+    }
+
     @Override
     public String toString() {
         return "Detail{" +

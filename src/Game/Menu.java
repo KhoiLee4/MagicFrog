@@ -17,6 +17,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.DetailDAO;
+
 public class Menu extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
 	private SoundEffect sound;
@@ -98,6 +100,8 @@ public class Menu extends BasicGameState {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
+		getUseSkins();
+		
 		if (isBag) {
 			// Đổi skin
 			for (int i = 0; i < bt_use.size(); i++) {
@@ -108,6 +112,7 @@ public class Menu extends BasicGameState {
 						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 					sound.click();
 					if (type.get(i) != currentType) {
+						updateUseSkin(type.get(i) - 1, currentType - 1);
 						currentType = type.get(i);
 					} 
 				}
@@ -211,19 +216,23 @@ public class Menu extends BasicGameState {
 		ArrayList<Image> img_skin = new ArrayList<Image>();
 		ArrayList<Rectangle> hitbox_use = new ArrayList<Rectangle>();
 		int x = skin_X;
-		for (int i = 0; i < SignIn.acc_detail.Skins().length; i++) {
-			if (SignIn.acc_detail.Skins()[i]) {
+		
+		type.clear();
+		
+		for (int i = 0; i < SignIn.acc_detail.Skins().length + 1; i++) {
+			if (i == 0 || SignIn.acc_detail.Skins()[i-1] > 0) {
 				img_skin.add(new Image("Data/Image/Skin" + i + ".png"));
 				if(i == currentType) {
 					img_bt_use.add(new Image("Data/Image/Button_Use_yes.png"));
 				}else {
 					img_bt_use.add(new Image("Data/Image/Button_Use_no.png"));
 				}
-				hitbox_use.add(new Rectangle(x + 11, skin_Y + img_skin.get(i).getHeight() + 10, 78, 30));
-				x += img_skin.get(i).getWidth() + 30;
+				hitbox_use.add(new Rectangle(x + 11, skin_Y + img_skin.get(0).getHeight() + 10, 78, 30));
+				x += img_skin.get(0).getWidth() + 30;
 				type.add(i);
 			}
 		}
+
 		bt_use = hitbox_use;
 		x = skin_X;
 		for (int i = 0; i < img_skin.size(); i++) {
@@ -243,12 +252,32 @@ public class Menu extends BasicGameState {
 			isBag = true;
 		}
 	}
+	
+	public void getUseSkins() {
+		for(int i = 0; i < SignIn.acc_detail.Skins().length; i++) {
+			if(SignIn.acc_detail.Skins()[i] == 2)
+				currentType = i + 1;
+		}
+	}
+	
+	public void updateUseSkin(int indexSkins, int beforeUseSkin) {
+		int[] skinsArray = SignIn.acc_detail.Skins();
+		if(indexSkins != -1)
+			skinsArray[indexSkins] = 2;
+		if(beforeUseSkin != -1)
+			skinsArray[beforeUseSkin] = 1;
+		SignIn.acc_detail.setSkins(skinsArray); 
+		DetailDAO.getInstance().update(SignIn.acc_detail); 
+
+	}
 
 	// Lấy id trạng thái
 	@Override
 	public int getID() {
 		return 0;
 	}
+	
+	
 }
 
 // LƯU Ý 
