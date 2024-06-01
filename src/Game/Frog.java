@@ -73,7 +73,9 @@ public class Frog extends GameObject implements gameConfig {
 			this.pos_x = screenWidth - this.img.getWidth();
 			this.hitbox.setX(screenWidth - this.img.getWidth() + 30);
 		}
-
+		if(check == -2) {
+			return;
+		}
 		// Di chuyển nhân vật
 		// 2 if đầu sử dụng khi nhân vật đứng trên ván
 		if (check == -1) {
@@ -114,6 +116,7 @@ public class Frog extends GameObject implements gameConfig {
 		if (input.isKeyDown(Input.KEY_LEFT) && input.isKeyDown(Input.KEY_RIGHT)) {
 			return;
 		}
+		
 		if (flag == 1) {
 			// Qua phải
 			if (input.isKeyDown(Input.KEY_RIGHT)) {

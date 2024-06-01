@@ -136,6 +136,7 @@ public class MapWater extends Map implements gameConfig {
 	// Kiểm tra nhân vật so với Map
 	@Override
 	public int checkFrog(Shape hitbox) {
+		
 		for (Plank x : planks) {
 			if (x.getHitbox().contains(hitbox.getX() + hitbox.getWidth() / 2, hitbox.getY() + hitbox.getHeight() / 2)
 					|| x.getHitbox().intersects(hitbox)) {
@@ -150,6 +151,9 @@ public class MapWater extends Map implements gameConfig {
 		}
 		return 1;
 	}
+
+
+	
 }
 
 // LƯU Ý
