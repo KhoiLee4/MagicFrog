@@ -122,7 +122,6 @@ public class SignUp extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_username.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
-				sound.click();
 				cursorPosition = 1;
 			}
 			// Trỏ vào ô password
@@ -130,7 +129,6 @@ public class SignUp extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_password.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
-				sound.click();
 				cursorPosition = 2;
 			}
 			// Trỏ vào ô confirm password
@@ -138,12 +136,10 @@ public class SignUp extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_confirmPassword.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
-				sound.click();
 				cursorPosition = 3;
 			}
 			// Bỏ trỏ chuột
 			else {
-				sound.click();
 				cursorPosition = 0;
 			}
 		}
@@ -422,7 +418,6 @@ public class SignUp extends BasicGameState {
 			inputTest.deleteCharAt(inputTest.length() - 1);
 			image.remove(image.size() - 1);
 		}
-		sound.click();
 	}
 
 	// Lấy id trạng trái
