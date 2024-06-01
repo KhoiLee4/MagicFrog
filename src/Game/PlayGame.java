@@ -474,122 +474,117 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		}
 
 		switch (indexItem) {
-			case 0:
-				isNotice = true;
-				// Đồng ý
-				if ((bt_yes.intersects(
-						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-						|| bt_yes.contains(
-								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					sound.click();
-					frog.useItem();
-					energy = 100;
-					itemBottelHp--;
-					indexItem = -1;
-					isNotice = false;
-				}
-				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f))
-				// || bt_no.contains(
-				// new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f)))
-				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				// sound.click();
-				// indexItem = -1;
-				// isNotice = false;
-				// }
-				break;
-			case 1:
-				isNotice = true;
-				// Đồng ý
-				if ((bt_yes.intersects(
-						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-						|| bt_yes.contains(
-								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					sound.click();
-					frog.useItem();
-					energy = 100;
-					itemEnergyBar--;
-					indexItem = -1;
-					isNotice = false;
-				}
-				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f))
-				// || bt_no.contains(
-				// new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f)))
-				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				// sound.click();
-				// indexItem = 0;
-				// }
-				break;
-			case 2:
-				isNotice = true;
-				// Đồng ý
-				if ((bt_yes.intersects(
-						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-						|| bt_yes.contains(
-								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					sound.click();
-					frog.useItem();
-					itemShield--;
-					indexItem = -1;
-					isNotice = false;
-				}
-				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f))
-				// || bt_no.contains(
-				// new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f)))
-				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				// sound.click();
-				// indexItem = 0;
-				// }
-				break;
-			case 3:
-				isNotice = true;
-				// Đồng ý
-				if ((bt_yes.intersects(
-						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-						|| bt_yes.contains(
-								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-					sound.click();
-					itemCrown--;
-					score *= 2;
-					indexItem = -1;
-					isNotice = false;
-				}
-				// if ((bt_no.intersects(new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f))
-				// || bt_no.contains(
-				// new Circle(container.getInput().getMouseX(),
-				// container.getInput().getMouseY(), 0.5f)))
-				// && container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				// sound.click();
-				// indexItem = -1;
-				// isNotice = false;
-				// }
-				break;
-		}
-
-		if (isNotice) {
+		case 0:
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				frog.useItem();
+				energy = 100;
+				itemBottelHp--;
+				indexItem = -1;
+				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
+			}
 			// Không đồng ý
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
+				indexItem = -1;
 				isNotice = false;
 			}
-		} else {
-			String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-			SignIn.acc_detail.setItems(itemsCombined);
-			DetailDAO.getInstance().update(SignIn.acc_detail);
-		}
+			break;
+		case 1:
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				frog.useItem();
+				energy = 100;
+				itemEnergyBar--;
+				indexItem = -1;
+				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
+			}
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				if (itemBottelHp > 0) {
+					indexItem = 0;
+				} else {
+					isNotice = false;
+				}
+			}
+			break;
+		case 2:
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				frog.useItem();
+				itemShield--;
+				indexItem = -1;
+				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
+			}
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				if (itemBottelHp > 0) {
+					indexItem = 0;
+				} else {
+					isNotice = false;
+				}
+			}
+			break;
+		case 3:
+			isNotice = true;
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				itemCrown--;
+				score *= 2;
+				indexItem = -1;
+				isNotice = false;
+				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
+				SignIn.acc_detail.setItems(itemsCombined);
+				DetailDAO.getInstance().update(SignIn.acc_detail);
+			}
+
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				indexItem = -1;
+				isNotice = false;
+			}
+			break;
+		} 
 	}
 
 	// Tạo Map ngẫu nhiên

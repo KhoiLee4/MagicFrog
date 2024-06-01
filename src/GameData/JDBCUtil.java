@@ -48,30 +48,4 @@ public class JDBCUtil {
 
 	}
 
-	public static void main(String[] args) {
-		// try {
-		// Connection connection = JDBCUtil.getConnection();
-		//
-		// Statement st = connection.createStatement();
-		//
-		// String sql = "INSERT INTO account (username, password) VALUES \r\n"
-		// + "('user1', 'password1'),\r\n"
-		// + "('user2', 'password2');";
-		//
-		// int check = st.executeUpdate(sql);
-		//
-		// System.out.println("Số dòng thay đổi: " + check);
-		//
-		// if(check > 0) {
-		// System.out.println("Thêm dữ liệu thành công!");
-		// }else {
-		// System.out.println("Thêm dữ liệu thất bại!");
-		// }
-		//
-		// JDBCUtil.closeConnection(connection);
-		// } catch (Exception e) {
-		// // TODO: handle exception
-		// e.printStackTrace();
-		// }
-	}
 }
