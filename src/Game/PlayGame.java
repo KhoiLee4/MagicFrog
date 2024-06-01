@@ -191,7 +191,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		bt_next = new Rectangle(bt_next_X, bt_next_Y, 65, 70);
 
 		// Tạo nhân vật
-		frog = new Frog();
+		frog = new Frog(Menu.currentType);
 
 		// Tạo Map
 		map = new ArrayList<Map>();

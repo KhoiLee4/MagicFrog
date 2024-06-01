@@ -118,7 +118,6 @@ public class SignIn extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_username.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
-				sound.click();
 				cursorPosition = 1;
 			}
 			// Trỏ vào ô password
@@ -126,12 +125,10 @@ public class SignIn extends BasicGameState {
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| box_password.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
-				sound.click();
 				cursorPosition = 2;
 			}
 			// Bỏ trỏ chuột
 			else {
-				sound.click();
 				cursorPosition = 0;
 			}
 		}
@@ -156,6 +153,9 @@ public class SignIn extends BasicGameState {
 			if (checkAccount()) {
 				acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(username.toString()));
 				// Detail.setUsername(username.toString());
+				
+				Shop.skins = SignIn.acc_detail.Skins();
+				Shop.items = SignIn.acc_detail.Items();
 
 				music.setMusic(acc_detail.isGameMusic());
 				sound.setSound(acc_detail.isSoundEffect());
@@ -226,9 +226,8 @@ public class SignIn extends BasicGameState {
 			img_check_pass.draw();
 			if ((bt_back
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_back
-							.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(),
-									0.5f)))
+					|| bt_back.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
 				check_pass = false;
@@ -371,7 +370,6 @@ public class SignIn extends BasicGameState {
 			inputTest.deleteCharAt(inputTest.length() - 1);
 			image.remove(image.size() - 1);
 		}
-		sound.click();
 	}
 
 	// Lấy id trạng trái
