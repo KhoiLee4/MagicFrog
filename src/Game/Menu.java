@@ -130,7 +130,7 @@ public class Menu extends BasicGameState {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-		getUseSkins();
+		getUseSkin();
 
 		if (isBag) {
 			// Đổi skin
@@ -162,7 +162,8 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-
+				toggleOut(container);
+				sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
 			}
 			// Không đồng ý
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
@@ -324,7 +325,7 @@ public class Menu extends BasicGameState {
 			}
 		}
 
-	public void getUseSkins() {
+	public void getUseSkin() {
 		for (int i = 0; i < SignIn.acc_detail.Skins().length; i++) {
 			if (SignIn.acc_detail.Skins()[i] == 2)
 				currentType = i + 1;

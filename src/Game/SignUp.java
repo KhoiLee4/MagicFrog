@@ -79,6 +79,7 @@ public class SignUp extends BasicGameState {
 	private int bt_back_X = 900;
 	private int bt_back_Y = 840;
 
+
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -107,10 +108,13 @@ public class SignUp extends BasicGameState {
 		img_confirmPassword = new ArrayList<Image>();
 
 		// Thông báo khi tạo mật khẩu
-		notice_pass = new Image[] { new Image("Data/Image/Notice_pass.png"),
-				new Image("Data/Image/Notice_pass2.png") };
-		show_notice = new boolean[] { false, false };
+		notice_pass = new Image[] { new Image("Data/Image/Check_Null.png"),
+									new Image("Data/Image/Check_Exist.png"),
+									new Image("Data/Image/Notice_pass.png"),
+									new Image("Data/Image/Notice_pass2.png") };
+		show_notice = new boolean[] { false, false, false , false};
 		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
+		
 	}
 
 	// Cập nhật
@@ -151,15 +155,18 @@ public class SignUp extends BasicGameState {
 						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
 			// Kiểm tra tài khoản, mật khẩu
 			sound.click();
-			if (checkPassword()) {
-				Account acc = new Account(username.toString(), password.toString());
-				Detail acc_detail = new Detail(username.toString());
+			if (checkUsername()) {
+				if (checkPassword()) {
+					Account acc = new Account(username.toString(), password.toString());
+					Detail acc_detail = new Detail(username.toString());
 
-				AccountDAO.getInstance().insert(acc);
-				DetailDAO.getInstance().insert(acc_detail);
+					AccountDAO.getInstance().insert(acc);
+					DetailDAO.getInstance().insert(acc_detail);
 
-				sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
+					sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
+				}
 			}
+			
 		}
 
 		// Nhập username
@@ -237,7 +244,7 @@ public class SignUp extends BasicGameState {
 			cursor.setLocation(-cursor.getWidth(), -cursor.getHeight());
 		}
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < show_notice.length; i++) {
 			if (show_notice[i]) {
 				notice_pass[i].draw();
 				if ((bt_back.intersects(
@@ -252,20 +259,21 @@ public class SignUp extends BasicGameState {
 
 			}
 		}
+
 	}
 
 	// Kiểm tra mật khẩu
 	public boolean checkPassword() {
 		if (password.length() < 8) {
 			System.out.println("Password must be at least 8 characters long.");
-			show_notice[0] = true;
+			show_notice[2] = true;
 			return false;
 		}
 
 		// Kiểm tra mật khẩu và xác nhận mật khẩu có khớp nhau không
 		if (!password.toString().equals(confirmPassword.toString())) {
 			System.out.println("Passwords do not match.");
-			show_notice[1] = true;
+			show_notice[3] = true;
 			return false;
 		}
 
@@ -297,6 +305,18 @@ public class SignUp extends BasicGameState {
 		return true;
 	}
 
+	public boolean checkUsername() {
+		if (username.length() == 0) {
+			show_notice[0] = true;
+			return false;
+		}
+		else if(AccountDAO.getInstance().selectByUsername(new Account(username.toString(),"")) != null) {
+			show_notice[1] = true;
+			return false;
+		}
+		return true;
+	}
+	
 	// Nhập kí tự vào
 	public void input(GameContainer container, StringBuilder inputTest, ArrayList<Image> image) throws SlickException {
 		Input input = container.getInput();
