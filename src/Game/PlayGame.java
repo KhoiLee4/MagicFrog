@@ -59,7 +59,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	static double energy;
 
 	// Thời gian chạy
-	private float time = 1;
+	private float time;
 
 	// Map
 	private ArrayList<Map> map;
@@ -147,7 +147,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Năng lượng
 		energy = 100;
-
+		
+		// Init time
+		time = 1;
+		
 		// Init item
 		// Note: I assign the data item; you can try chancing something
 		itemShield = 0;
