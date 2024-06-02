@@ -88,6 +88,7 @@ public class Map implements gameConfig {
 	public String getTypeMap() {
 		return typeMap;
 	}
+
 }
 
 // LƯU Ý

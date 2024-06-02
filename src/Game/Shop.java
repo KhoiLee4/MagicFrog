@@ -57,15 +57,15 @@ public class Shop extends BasicGameState implements gameConfig {
 	private int[] bt_buy_XY = { 221, 399, 576, 753, 221, 398, 576, 753, 552, 552, 552, 552, 753, 753, 753, 753 };
 
 	// Giá đồ
-	private int[] prices = { 100, 100, 0, 0, 50, 30, 30, 50 };
+	private int[] prices = { 5000, 5000, 0, 0, 500, 300, 300, 500 };
 
 	// Cờ kiểm tra
 	private int isNotice = -1;
 
 	// Mảng lưu skins và items
 
-	static boolean[] skins = new boolean[4];
-	static int[] items = new int[4];
+	private int[] skins = new int[4];
+	private int[] items = new int[4];
 
 	// Khởi tạo các giá trị
 	@Override
@@ -93,7 +93,7 @@ public class Shop extends BasicGameState implements gameConfig {
 		}
 
 		money = 0;
-		skins = new boolean[] { false, false, false, false };
+		skins = new int[] { 0, 0, 0, 0 };
 		items = new int[] { 0, 0, 0, 0 };
 	}
 
@@ -115,10 +115,9 @@ public class Shop extends BasicGameState implements gameConfig {
 				sound.click();
 				if (money >= prices[isNotice]) {
 					money -= prices[isNotice];
-					isNotice = -1;
 					
-					// Thay đổi món đồ thành sở hữu
 					processNotice();
+					isNotice = -1;
 
 				} else {
 					// Thông báo không đủ tiền
@@ -176,7 +175,7 @@ public class Shop extends BasicGameState implements gameConfig {
 						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 					sound.click();
 					// Kiểm tra đã sở hữu chưa
-					if ((i >= 0 && i <= 3 && !skins[i]) || (i >= 4 && i <= 7)) {
+					if ((i >= 0 && i <= 3 && skins[i] == 0) || (i >= 4 && i <= 7)) {
 						isNotice = i;
 						bt_yes.setLocation(bt_yes_X, bt_yes_Y);
 						bt_no.setLocation(bt_no_X, bt_no_Y);
@@ -277,14 +276,11 @@ public class Shop extends BasicGameState implements gameConfig {
 
 	public void processNotice() {
 		if (isNotice >= 0 && isNotice <= 3) {
-			skins[isNotice] = true;
-			String skinsCombined = Arrays.toString(skins).replaceAll("true", "1").replaceAll("false", "0")
-					.replaceAll("[\\[\\],]", "").trim();
-			SignIn.acc_detail.setSkins(skinsCombined);
+			skins[isNotice] = 1;
+			SignIn.acc_detail.setSkins(skins);
 		} else if (isNotice >= 4 && isNotice <= 7) {
 			items[isNotice - 4]++;
-			String itemsCombined = Arrays.toString(items).replaceAll("[\\[\\],]", "");
-			SignIn.acc_detail.setItems(itemsCombined);
+			SignIn.acc_detail.setItems(items);
 		}
 		DetailDAO.getInstance().update(SignIn.acc_detail);
 	}

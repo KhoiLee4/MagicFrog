@@ -55,7 +55,7 @@ public class MapStreet extends Map implements gameConfig {
 			if (randomTime == 100) {
 				int random = randomSpawn.nextBoolean() ? 1 : -1;
 				// 1 là bên trái -1 là bên phải direction
-				// 1 là đường trên 
+				// 1 là đường trên
 				// -1 là đường dưới
 				cars.add(new Car((random == 1) ? this.pos_x : this.pos_x + 945,
 						this.pos_y + 20 + 125 * ((random == 1) ? 0 : 1), url + (randomSpawn.nextInt(3) + 1) + ".png",
@@ -83,7 +83,7 @@ public class MapStreet extends Map implements gameConfig {
 			super.update(delta, check, frog);
 		}
 	}
-	
+
 	@Override
 	public void update2(int delta) throws SlickException {
 		// TODO Auto-generated method stub
@@ -98,7 +98,7 @@ public class MapStreet extends Map implements gameConfig {
 		super.render();
 		for (int i = 0; i < cars.size(); i++) {
 			if (i >= 1) {
-				if (cars.get(i - 1).getDirection() == cars.get(i).getDirection()) {	
+				if (cars.get(i - 1).getDirection() == cars.get(i).getDirection()) {
 					cars.remove(i);
 					continue;
 				}
@@ -117,6 +117,8 @@ public class MapStreet extends Map implements gameConfig {
 		}
 		return 1;
 	}
+
+
 }
 
 // LƯU Ý

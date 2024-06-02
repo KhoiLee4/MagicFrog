@@ -71,7 +71,10 @@ public class SignIn extends BasicGameState {
 	static Detail acc_detail = null;
 
 	boolean check_pass;
+	boolean check_null;
+	
 	private Image img_check_pass = null;
+	private Image img_check_null = null;
 	private Rectangle bt_back = null;
 	private int bt_back_X = 900;
 	private int bt_back_Y = 840;
@@ -104,9 +107,10 @@ public class SignIn extends BasicGameState {
 		img_username = new ArrayList<Image>();
 		img_password = new ArrayList<Image>();
 
-		check_pass = false;
+		check_pass = true;
+		check_null = false;
 		img_check_pass = new Image("Data/Image/Check_pass.png");
-
+		img_check_null = new Image("Data/Image/Check_Null.png");
 	}
 
 	// Cập nhật
@@ -152,10 +156,6 @@ public class SignIn extends BasicGameState {
 			sound.click();
 			if (checkAccount()) {
 				acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(username.toString()));
-				// Detail.setUsername(username.toString());
-				
-				Shop.skins = SignIn.acc_detail.Skins();
-				Shop.items = SignIn.acc_detail.Items();
 
 				music.setMusic(acc_detail.isGameMusic());
 				sound.setSound(acc_detail.isSoundEffect());
@@ -222,7 +222,7 @@ public class SignIn extends BasicGameState {
 			cursor.setLocation(-cursor.getWidth(), -cursor.getHeight());
 		}
 
-		if (check_pass) {
+		if (!check_pass) {
 			img_check_pass.draw();
 			if ((bt_back
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
@@ -230,7 +230,20 @@ public class SignIn extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-				check_pass = false;
+				check_pass = true;
+			}
+		}
+		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
+		
+		if (check_null) {
+			img_check_null.draw();
+			if ((bt_back
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_back.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				check_null = false;
 			}
 		}
 		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
@@ -238,15 +251,19 @@ public class SignIn extends BasicGameState {
 
 	// Kiểm tra tài khoản, mật khẩu
 	public boolean checkAccount() {
-		if (username != null && password != null) {
+		if (username.length() == 0) {
+			check_null = true;
+			return false;
+		}
+		else{
 			Account acc = new Account(username.toString(), "");
 			String pass = AccountDAO.getInstance().selectByUsername(acc).getPassword();
 			if (password.toString().equals(pass))
 				return true;
-			check_pass = true;
+			check_pass = false;
 			return false;
 		}
-		return false;
+		
 	}
 
 	// Nhập kí tự vào

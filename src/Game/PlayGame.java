@@ -42,7 +42,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	// Điểm
 	static int score;
-
+	
+	// map index of frog
+	static int indexMapFrog = 0;
+	
 	// Năng lượng
 	private Image img_energy;
 	private Image img_energy_border;
@@ -56,7 +59,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	static double energy;
 
 	// Thời gian chạy
-	private float time = 1;
+	private float time;
 
 	// Map
 	private ArrayList<Map> map;
@@ -143,7 +146,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Năng lượng
 		energy = 100;
-
+		
+		// Tạo thời gian
+		time = 1;
+		
 		// Init item
 		// Note: I assign the data item; you can try chancing something
 		itemShield = 0;
@@ -161,7 +167,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		bt_pause = new Rectangle(bt_pause_X, bt_pause_Y, 55, 57);
 		bt_pauseSetting = new Rectangle(bt_pauseSetting_X, bt_pauseSetting_Y, 55, 57);
 		bt_pauseAgain = new Rectangle(bt_pauseAgain_X, bt_pauseAgain_Y, 55, 57);
-
+		
 		// Tạo thông báo
 		img_notice_item = new Image("Data/Image/Notice_Item.png");
 		img_bt_yes = new Image("Data/Image/Button_Yes.png");
@@ -269,20 +275,24 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					// check frog return != 1 => touches obstacles
 					flag = x.checkFrog(frog.getHitbox());
 					if (flag != 1) {
+						indexMapFrog = indexMap;
+//						System.out.println("Map bi dung " + x.getTypeMap());
 						break;
 					}
+
 					indexMap++;
+
 				}
 
 				// Cập nhật nhân vật theo trạng thái
-				frog.update(delta, flag);
-
+				if(frog.isAlive()) {
+					frog.update(delta, flag);
+				}
 				// flag = -2 => drop water, touches car
-				if ((flag == -2 || energy <= 0) && frog.isAlive()) {
+				if ((flag == -2 || energy <= 0)) {
 					frog.deathFrog();
 				}
 				if (!frog.isAlive()) {
-
 					// Sử dụng item
 					useItem(container, flag);
 
@@ -290,7 +300,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					// if (!isUseItem && !isNotice) {
 					if (!isNotice && !frog.isAlive()) {
 						// Nhân vật chết
-						if(score > 0) {
+						if (score > 0) {
 							int money = SignIn.acc_detail.getMoney();
 							money += score * 100;
 							SignIn.acc_detail.setMoney(money);
@@ -302,53 +312,52 @@ public class PlayGame extends BasicGameState implements gameConfig {
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 					} else if (!isNotice && frog.isAlive()) {
 
-						System.out.println(indexItem);
-						System.out.println(indexMap);
-						System.out.println(map.size());
-						System.out.println(frog.getPos_x());
-						System.out.println(frog.getPos_y());
+//						System.out.println("indexItem " + indexItem);
+//						System.out.println("indexMap " + indexMap);
+//						System.out.println("map.size " + map.size());
+//						System.out.println(frog.getPos_x());
+//						System.out.println(frog.getPos_y());
 
 						isUseItem = false;
 						for (int i = 0; i < map.size(); i++) {
 							// Cập nhật map
 							map.get(i).update2(delta);
 						}
-						// Chance position of frog
-						if (indexMap == map.size()) {
-							indexMap--;
-						}
-						if (map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
-								- frog.getHitbox().getHeight() < 0 && indexMap > 0) {
-							System.out.println(22222);
-							if (map.get(indexMap).typeMap.equals("water")
-									&& (map.get(indexMap - 1).typeMap.equals("street")
-											|| map.get(indexMap - 1).typeMap.equals("water"))) {
-								frog.setPos_y(map.get(indexMap - 1).pos_y - frog.getHitbox().getHeight() - 10);
+						
+						
+						if (map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
+								- frog.getHitbox().getHeight() < 0 && indexMapFrog > 0) {
+							// System.out.println(22222);
+							if (map.get(indexMapFrog).typeMap.equals("water")
+									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
+											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
+								frog.setPos_y(map.get(indexMapFrog - 1).pos_y - frog.getHitbox().getHeight() - 10);
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							} else {
-								frog.setPos_y(map.get(indexMap - 1).pos_y - frog.getHitbox().getHeight());
+								frog.setPos_y(map.get(indexMapFrog - 1).pos_y - frog.getHitbox().getHeight());
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							}
 						} else {
-							System.out.println(map.get(indexMap - 1).typeMap);
-							if (map.get(indexMap).typeMap.equals("water")
-									&& (map.get(indexMap - 1).typeMap.equals("street")
-											|| map.get(indexMap - 1).typeMap.equals("water"))) {
-								System.out.println(1111);
-								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
-										- frog.getHitbox().getHeight() - 10);
+						//	System.out.println(map.get(indexMapFrog - 1).typeMap);
+							
+							if (map.get(indexMapFrog).typeMap.equals("water")
+									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
+											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
+							//	System.out.println(1111);
+								frog.setPos_y(map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
+										- frog.getHitbox().getHeight() - 20);
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							} else {
-								frog.setPos_y(map.get(indexMap).pos_y + map.get(indexMap).getImage().getHeight()
+								frog.setPos_y(map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
 										- frog.getHitbox().getHeight() - 30);
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							}
 						}
-
-						System.out.println(frog.getPos_x());
-						System.out.println(frog.getPos_y());
-						System.out.println(map.get(indexMap).typeMap);
-						System.out.println(frog.isAlive());
+						
+//						System.out.println(frog.getPos_x());
+//						System.out.println(frog.getPos_y());
+//						System.out.println(map.get(indexMap).typeMap);
+//						System.out.println(frog.isAlive());
 					}
 
 				} else {
@@ -360,6 +369,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 							// Xóa map đã đi qua
 							if (map.get(i).checkLocation()) {
+								//System.out.println("Xoa map " + i);
 								map.remove(i);
 							}
 						}
@@ -433,13 +443,14 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			img_bt_pauseOff.draw(bt_pause_X, bt_pause_Y);
 			g.draw(bt_pause);
 		}
-
 		if (isNotice) {
 			img_notice_item.draw();
 			img_item.get(indexItem).draw(item_X, item_Y);
 			g.draw(bt_yes);
 			g.draw(bt_no);
+
 		}
+
 	}
 
 	// Tạm dừng trò chơi
@@ -495,10 +506,15 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) { // Không đồng ý
 				sound.click();
-				indexItem = -1;
-				isNotice = false;
+				if (itemCrown > 0) {
+					indexItem = 3;
+				} else {
+					indexItem = -1;
+					isNotice = false;
+				}
+
 			}
 			break;
 		case 1:
@@ -527,10 +543,11 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					indexItem = 0;
 				} else {
 					isNotice = false;
+					indexItem = -1;
 				}
 			}
 			break;
-		case 2:
+		case 2: // Shield
 			isNotice = true;
 			// Đồng ý
 			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
@@ -555,6 +572,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					indexItem = 0;
 				} else {
 					isNotice = false;
+					indexItem = -1;
 				}
 			}
 			break;
@@ -584,7 +602,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				isNotice = false;
 			}
 			break;
-		} 
+		}
 	}
 
 	// Tạo Map ngẫu nhiên
@@ -594,20 +612,20 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Tạo Map theo loại
 		switch (type) {
-			case WATER:
-				map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-				break;
+		case WATER:
+			map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+			break;
 
-			case STREET:
-				map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-				break;
+		case STREET:
+			map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+			break;
 
-			case LAND:
-				map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
-				break;
+		case LAND:
+			map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 
