@@ -134,6 +134,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	boolean flagUseItem = false;
 
+	
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -323,8 +324,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 						
 						
 						if (map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
-								- frog.getHitbox().getHeight() < 0 && indexMapFrog > 0) {
-							// System.out.println(22222);
+								- frog.getHitbox().getHeight() < 0) {
+							 System.out.println(22222);
 							if (map.get(indexMapFrog).typeMap.equals("water")
 									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
 											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
@@ -340,9 +341,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							if (map.get(indexMapFrog).typeMap.equals("water")
 									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
 											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
-							//	System.out.println(1111);
+								System.out.println(1111);
 								frog.setPos_y(map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
-										- frog.getHitbox().getHeight() - 20);
+										- frog.getHitbox().getHeight() - 30);
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							} else {
 								frog.setPos_y(map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()

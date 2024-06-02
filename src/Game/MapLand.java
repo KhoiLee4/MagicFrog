@@ -34,8 +34,10 @@ public final class MapLand extends Map implements gameConfig {
 	private boolean isRenderFrogBaby = false;
 	private boolean isRenderFruit = false;
 
-	// Init temp energy
-	private double tempEnergy;
+
+	// Count random again
+	private int cntChildFrog = 0;
+	private int cntFruit = 0;
 
 	// Khởi tạo
 	protected MapLand(float x) throws SlickException {
@@ -92,55 +94,100 @@ public final class MapLand extends Map implements gameConfig {
 			createMap6();
 		}
 		randomNumber = (randomSpawn.nextInt(20));
-		if (randomNumber <= 20) {
+		if (randomNumber <= 10) {
 			babyFrog = new BabyFrog(this.pos_y);
 			isRenderFrogBaby = true;
+			changePosChildFrog(obstacles);
 		}
-		 changePosYChildFrog(obstacles);
 		
-		if (randomNumber >= 17 || energy <= 20) {
-			fruit = new Fruit(this.pos_y, obstacles);
-			isRenderFruit = true;
-		}
 
+		if (randomNumber >= 15 || energy <= 20) {
+			fruit = new Fruit(this.pos_y);
+			isRenderFruit = true;
+			changePosFruit(obstacles);
+		}
+	
 	}
 
-	public void changePosYChildFrog(ArrayList<Obstacles> obstacles) {
+	public void changePosChildFrog(ArrayList<Obstacles> obstacles) {
 		boolean finalCheck = false;
 		while (!finalCheck) {
 			// Find the obstacle
 			boolean check = true;
 			int i = 0;
 			for (Obstacles obstacle : obstacles) {
-				if (obstacle.getHitbox().intersects(babyFrog.getHitbox()) || obstacle.getHitbox().contains(babyFrog.getHitbox())) {
+				if (obstacle.getHitbox().intersects(babyFrog.getHitbox())
+						|| obstacle.getHitbox().contains(babyFrog.getHitbox())) {
 					check = false;
-					System.out.println("Random again children frog");
+				//	System.out.println("Random again children frog");
+					break;
+				}
+				i++;
+			}
+
+			if (!check) {
+			//	System.out.println("Baby Frog before: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
+				// Example 1 : the obstacle in 1/2 side left
+				if (obstacles.get(i).getPos_x() < 1 / 2 * screenWidth) {
+				//	System.out.println("Enter EX 1");
+					babyFrog.setPos_x(obstacles.get(i).getPos_x() + obstacles.get(i).getHitbox().getWidth() + 10);
+					babyFrog.hitbox.setX(babyFrog.getPos_x());
+				} else {// Example 2 : the obstacle in 1/2 side right
+				//	System.out.println("Enter EX 2");
+					babyFrog.setPos_x(obstacles.get(i).getPos_x() - babyFrog.getHitbox().getWidth());
+					babyFrog.hitbox.setX(babyFrog.getPos_x());
+				}
+				cntChildFrog++;
+				if (this.pos_y - babyFrog.hitbox.getY() >= 0 || cntChildFrog >= 10 ) {
+					babyFrog.setPos_x(babyFrog.getPos_x() + screenWidth);
+					babyFrog.getHitbox().setX(babyFrog.getPos_x());
+					finalCheck = true;
+				}
+			//	System.out.println("Baby Frog after: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
+			} else {
+				finalCheck = true;
+			}
+		}
+	}
+
+	public void changePosFruit(ArrayList<Obstacles> obstacles) {
+		boolean finalCheck = false;
+		while (!finalCheck) {
+			// Find the obstacle
+			boolean check = true;
+			int i = 0;
+			for (Obstacles obstacle : obstacles) {
+				if (obstacle.getHitbox().intersects(fruit.getHitbox())
+						|| obstacle.getHitbox().contains(fruit.getHitbox())) {
+					check = false;
+				//	System.out.println("Random again Fruit");
 					break;
 				}
 				i++;
 			}
 			if (!check) {
-				System.out.println("Baby Frog before: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
-				//Example 1 : the obstacle in 1/2 side left
-				if(obstacles.get(i).getPos_x() < 1/2 * screenWidth) {
-					System.out.println("Enter EX 1");
-					babyFrog.setPos_x(obstacles.get(i).getPos_x() + obstacles.get(i).getHitbox().getWidth() + 10);
-					babyFrog.hitbox.setX(babyFrog.getPos_x());
-				}else {//Example 2 : the obstacle in 1/2 side right
-					System.out.println("Enter EX 2");
-					babyFrog.setPos_x(obstacles.get(i).getPos_x() - 30);
-					babyFrog.hitbox.setX(babyFrog.getPos_x());
+			//	System.out.println("Fruit before: " + fruit.getPos_x() + " " + fruit.getPos_y());
+				// Example 1 : the obstacle in 1/2 side left
+				if (obstacles.get(i).getPos_x() < 1 / 2 * screenWidth) {
+				//	System.out.println("Enter EX 1");
+					fruit.setPos_x(obstacles.get(i).getPos_x() + obstacles.get(i).getHitbox().getWidth() + 10);
+					fruit.getHitbox().setX(fruit.getPos_x());
+				} else {// Example 2 : the obstacle in 1/2 side right
+			//		System.out.println("Enter EX 2");
+					fruit.setPos_x(obstacles.get(i).getPos_x() - fruit.getHitbox().getWidth() - 1);
+					fruit.getHitbox().setX(fruit.getPos_x());
 				}
-				if (this.pos_y - babyFrog.hitbox.getY() >= 0) {
-					babyFrog.setPos_x(babyFrog.getPos_x() + screenWidth);
+				cntFruit++;
+				if (this.pos_y - fruit.hitbox.getY() >= 0 || cntFruit >= 10) {
+					fruit.setPos_x(fruit.getPos_x() + screenWidth);
+					fruit.getHitbox().setX(fruit.getPos_x());
 					finalCheck = true;
 				}
-				System.out.println("Baby Frog after: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
+			//	System.out.println("Fruit after: " + fruit.getPos_x() + " " + fruit.getPos_y());
 			} else {
 				finalCheck = true;
 			}
 		}
-
 	}
 
 	// Cập nhật
