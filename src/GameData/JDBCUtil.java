@@ -10,7 +10,6 @@ public class JDBCUtil {
 		Connection c = null;
 
 		try {
-		 
 	          // Register the Oracle JDBC driver with DriverManager
 	 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 	 			String url = "jdbc:mysql://LAPTOP-9UDVFSM0/game_data";

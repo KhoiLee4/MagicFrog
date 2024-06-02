@@ -42,10 +42,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	// Điểm
 	static int score;
-	
+
 	// map index of frog
 	static int indexMapFrog = 0;
-	
+
 	// Năng lượng
 	private Image img_energy;
 	private Image img_energy_border;
@@ -134,7 +134,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	boolean flagUseItem = false;
 
-	
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -147,10 +146,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Năng lượng
 		energy = 100;
-		
+
 		// Init time
 		time = 1;
-		
+
 		// Init item
 		// Note: I assign the data item; you can try chancing something
 		itemShield = 0;
@@ -286,7 +285,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				}
 
 				// Cập nhật nhân vật theo trạng thái
-				if(frog.isAlive()) {
+				if (frog.isAlive()) {
 					frog.update(delta, flag);
 				}
 				// flag = -2 => drop water, touches car
@@ -298,7 +297,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					useItem(container, flag);
 
 					// Không dùng item
-					// if (!isUseItem && !isNotice) {
+					
 					if (!isNotice && !frog.isAlive()) {
 						// Nhân vật chết
 						if (score > 0) {
@@ -312,7 +311,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 						DetailDAO.getInstance().update(SignIn.acc_detail);
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 					} else if (!isNotice && frog.isAlive()) {
-
+						System.out.println("O");
 //						System.out.println("indexItem " + indexItem);
 //						System.out.println("indexMap " + indexMap);
 //						System.out.println("map.size " + map.size());
@@ -324,11 +323,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							// Cập nhật map
 							map.get(i).update2(delta);
 						}
-						
-						
+
 						if (map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
 								- frog.getHitbox().getHeight() < 0) {
-							 System.out.println(22222);
+							System.out.println(22222);
 							if (map.get(indexMapFrog).typeMap.equals("water")
 									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
 											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
@@ -339,8 +337,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							}
 						} else {
-						//	System.out.println(map.get(indexMapFrog - 1).typeMap);
-							
+							// System.out.println(map.get(indexMapFrog - 1).typeMap);
+
 							if (map.get(indexMapFrog).typeMap.equals("water")
 									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
 											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
@@ -350,11 +348,12 @@ public class PlayGame extends BasicGameState implements gameConfig {
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							} else {
 								frog.setPos_y(map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
-										- frog.getHitbox().getHeight() - 30);
+										- frog.getHitbox().getHeight() - 40);
 								frog.getHitbox().setY(frog.getPos_y() + 40);
 							}
+
 						}
-						
+
 //						System.out.println(frog.getPos_x());
 //						System.out.println(frog.getPos_y());
 //						System.out.println(map.get(indexMap).typeMap);
@@ -362,7 +361,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					}
 
 				} else {
-					// && (frog.getPos_y() <= 7*screenHeight/8)
+					
 					if (frog.isAlive()) {
 						for (int i = 0; i < map.size(); i++) {
 							// Cập nhật map
@@ -370,7 +369,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 							// Xóa map đã đi qua
 							if (map.get(i).checkLocation()) {
-								//System.out.println("Xoa map " + i);
+								// System.out.println("Xoa map " + i);
 								map.remove(i);
 							}
 						}
