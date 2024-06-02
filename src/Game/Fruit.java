@@ -19,7 +19,7 @@ public class Fruit extends GameObject implements gameConfig {
 	private boolean isEat;
 	// Khởi tạo
 
-	protected Fruit(float y, ArrayList<Obstacles> obstacles) throws SlickException {
+	protected Fruit(float y) throws SlickException {
 		super(null, 0, 0, null);
 		isEat = false;
 
@@ -29,34 +29,11 @@ public class Fruit extends GameObject implements gameConfig {
 		this.img = new Image("Data/Image/Fruit0.png");
 
 		this.pos_x = randomSpawn.nextInt(screenWidth - this.img.getWidth());
-		this.pos_y = randomSpawn.nextInt(622 - this.img.getHeight()) + y;
+		this.pos_y = randomSpawn.nextInt(622 - this.img.getHeight() - 5) + y;
 
 		// Tạo hitbox
 		this.hitbox = new Rectangle(this.pos_x, this.pos_y, this.img.getWidth(), this.img.getHeight());
-		float temp_y = 0;
-
-		// Đổi tọa độ nếu trùng vật
-		for (Obstacles obstacle : obstacles) {
-			if (obstacle.getHitbox().intersects(this.hitbox) || obstacle.getHitbox().contains(this.hitbox)) {
-				if (randomSpawn.nextBoolean()) {
-					if (randomSpawn.nextBoolean()) {
-						this.setPos_y(randomSpawn.nextBoolean() ? obstacle.getPos_y() - this.img.getHeight()
-								: obstacle.getPos_y() + obstacle.getHitbox().getHeight());
-					}
-					this.setPos_x((randomSpawn.nextBoolean() ? obstacle.getPos_x() - this.img.getWidth()
-							: obstacle.getPos_x() + obstacle.getHitbox().getWidth()));
-				} else {
-					this.setPos_y(randomSpawn.nextBoolean() ? obstacle.getPos_y() - this.img.getHeight()
-							: obstacle.getPos_y() + obstacle.getHitbox().getHeight());
-				}
-				if (y - this.hitbox.getY() >= 0) {
-					this.setPos_x(this.getPos_y() + screenWidth);
-
-				}
-				this.hitbox.setLocation(this.pos_x, this.pos_y);
-				break;
-			}
-		}
+		this.hitbox.setLocation(this.pos_x, this.pos_y);
 
 	}
 

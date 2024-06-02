@@ -21,42 +21,26 @@ public class BabyFrog extends GameObject implements gameConfig {
 	private Random randomSpawn;
 
 	// Khởi tạo
-	protected BabyFrog(float y, ArrayList<Obstacles> obstacles) throws SlickException {
+	protected BabyFrog(float y) throws SlickException {
 		super(null, 0, 0, null);
 
 		animation = new Animation(new SpriteSheet(new Image("Data/Image/BabyFrog.png"), 30, 29), speedAction);
 
 		randomSpawn = new Random();
 
-		this.pos_x = randomSpawn.nextInt(screenWidth - this.animation.getWidth());
+		this.pos_x = randomSpawn.nextInt(screenWidth - this.animation.getWidth() - 10);
 		this.pos_y = randomSpawn.nextInt(622 - this.animation.getHeight()) + y;
 
 		// Tạo hitbox
-		this.hitbox = new Rectangle(this.pos_x, this.pos_y, 30, 29);
-
-		// Đổi tọa độ nếu trùng vật
-		for (Obstacles obstacle : obstacles) {
-			if (obstacle.getHitbox().intersects(this.hitbox) || obstacle.getHitbox().contains(this.hitbox)) {
-				if (randomSpawn.nextBoolean()) {
-					if (randomSpawn.nextBoolean()) {
-						this.setPos_y(randomSpawn.nextBoolean() ? obstacle.getPos_y() - this.animation.getHeight()
-								: obstacle.getPos_y() + obstacle.getHitbox().getHeight());
-					}
-					this.setPos_x((randomSpawn.nextBoolean() ? obstacle.getPos_x() - this.animation.getWidth()
-							: obstacle.getPos_x() + obstacle.getHitbox().getWidth()));
-				} else {
-					this.setPos_y(randomSpawn.nextBoolean() ? obstacle.getPos_y() - this.animation.getHeight()
-							: obstacle.getPos_y() + obstacle.getHitbox().getHeight());
-				}
-				if (y - this.hitbox.getY() >= 0) {
-					this.setPos_x(this.getPos_y() + screenWidth);
-
-				}
-				this.hitbox.setLocation(this.pos_x, this.pos_y);
-				break;
-			}
-		}
+		this.hitbox = new Rectangle(this.pos_x, this.pos_y, 30, 29);	
+		this.hitbox.setLocation(this.pos_x, this.pos_y);
+	
 	}
+
+	public Animation getAnimation() {
+		return animation;
+	}
+
 
 	// Cập nhật
 	public void update(int delta, int check) throws SlickException {
@@ -98,13 +82,7 @@ public class BabyFrog extends GameObject implements gameConfig {
 		PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 	}
 
-//	public void render(boolean isPause) {
-//		if (isPause) {
-//			super.render();
-//		} else {
-//			render();
-//		}
-//	}
+	
 }
 
 // LƯU Ý
