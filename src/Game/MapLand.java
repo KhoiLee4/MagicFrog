@@ -9,6 +9,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
+import com.mysql.cj.protocol.x.SyncFlushDeflaterOutputStream;
+
 public final class MapLand extends Map implements gameConfig {
 	// Âm thanh hiệu ứng
 	private SoundEffect sound;
@@ -90,13 +92,53 @@ public final class MapLand extends Map implements gameConfig {
 			createMap6();
 		}
 		randomNumber = (randomSpawn.nextInt(20));
-		if (randomNumber <= 3) {
-			babyFrog = new BabyFrog(this.pos_y, obstacles);
+		if (randomNumber <= 20) {
+			babyFrog = new BabyFrog(this.pos_y);
 			isRenderFrogBaby = true;
 		}
+		 changePosYChildFrog(obstacles);
+		
 		if (randomNumber >= 17 || energy <= 20) {
 			fruit = new Fruit(this.pos_y, obstacles);
 			isRenderFruit = true;
+		}
+
+	}
+
+	public void changePosYChildFrog(ArrayList<Obstacles> obstacles) {
+		boolean finalCheck = false;
+		while (!finalCheck) {
+			// Find the obstacle
+			boolean check = true;
+			int i = 0;
+			for (Obstacles obstacle : obstacles) {
+				if (obstacle.getHitbox().intersects(babyFrog.getHitbox()) || obstacle.getHitbox().contains(babyFrog.getHitbox())) {
+					check = false;
+					System.out.println("Random again children frog");
+					break;
+				}
+				i++;
+			}
+			if (!check) {
+				System.out.println("Baby Frog before: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
+				//Example 1 : the obstacle in 1/2 side left
+				if(obstacles.get(i).getPos_x() < 1/2 * screenWidth) {
+					System.out.println("Enter EX 1");
+					babyFrog.setPos_x(obstacles.get(i).getPos_x() + obstacles.get(i).getHitbox().getWidth() + 10);
+					babyFrog.hitbox.setX(babyFrog.getPos_x());
+				}else {//Example 2 : the obstacle in 1/2 side right
+					System.out.println("Enter EX 2");
+					babyFrog.setPos_x(obstacles.get(i).getPos_x() - 30);
+					babyFrog.hitbox.setX(babyFrog.getPos_x());
+				}
+				if (this.pos_y - babyFrog.hitbox.getY() >= 0) {
+					babyFrog.setPos_x(babyFrog.getPos_x() + screenWidth);
+					finalCheck = true;
+				}
+				System.out.println("Baby Frog after: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
+			} else {
+				finalCheck = true;
+			}
 		}
 
 	}

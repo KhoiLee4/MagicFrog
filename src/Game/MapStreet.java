@@ -117,9 +117,8 @@ public class MapStreet extends Map implements gameConfig {
 		}
 		return 1;
 	}
-
+	
 
 }
 
-// LƯU Ý
-// xử lý khởi tạo xe chồng lên nhau
+
