@@ -37,6 +37,7 @@ public class Map implements gameConfig {
 		// Di chuyển map
 		this.moveMap2(delta);
 	}
+	
 	// Vẽ Map
 	public void render() {
 		this.background.draw(pos_x, pos_y);

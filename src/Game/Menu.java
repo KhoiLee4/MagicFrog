@@ -62,14 +62,14 @@ public class Menu extends BasicGameState {
 	private Rectangle bt_yes = null;
 	private Rectangle bt_no = null;
 
-	private int bt_signOut_X = 10;
-	private int bt_signOut_Y = 10;
+	private int bt_signOut_X = 30;
+	private int bt_signOut_Y = 884;
 
 	private int bt_yes_X = 293;
-	private int bt_yes_Y = 572;
+	private int bt_yes_Y = 545;
 
 	private int bt_no_X = 632;
-	private int bt_no_Y = 572;
+	private int bt_no_Y = 545;
 
 	private boolean isOut = false;
 
@@ -113,10 +113,10 @@ public class Menu extends BasicGameState {
 		bt_bag = new Rectangle(bt_bag_X, bt_bag_Y, 80, 86);
 
 		// Tạo đăng xuất
-		img_notice = new Image("Data/Image/Notice_Item.png");
+		img_notice = new Image("Data/Image/Notice_SignOut.png");
 		img_bt_yes = new Image("Data/Image/Button_Yes.png");
 		img_bt_no = new Image("Data/Image/Button_No.png");
-		img_bt_signOut = new Image("Data/Image/Button_Bag.png");
+		img_bt_signOut = new Image("Data/Image/Button_SignOut.png");
 		bt_signOut = new Rectangle(bt_signOut_X, bt_signOut_Y, 80, 86);
 		bt_yes = new Rectangle(bt_yes_X, bt_yes_Y, 128, 70);
 		bt_no = new Rectangle(bt_no_X, bt_no_Y, 128, 70);
