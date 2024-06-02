@@ -52,6 +52,27 @@ public class Menu extends BasicGameState {
 	private int bt_bag_X = 940;
 	private int bt_bag_Y = 884;
 
+	// Nút đăng xuất
+	private Image img_notice;
+	private Image img_bt_yes = null;
+	private Image img_bt_no = null;
+	private Image img_bt_signOut = null;
+
+	private Rectangle bt_signOut;
+	private Rectangle bt_yes = null;
+	private Rectangle bt_no = null;
+
+	private int bt_signOut_X = 10;
+	private int bt_signOut_Y = 10;
+
+	private int bt_yes_X = 293;
+	private int bt_yes_Y = 572;
+
+	private int bt_no_X = 632;
+	private int bt_no_Y = 572;
+
+	private boolean isOut = false;
+
 	// Tọa độ số lượng
 	private int[] quantity_XY = { 324, 465, 626, 793, 364, 364, 364, 364 };
 
@@ -91,6 +112,15 @@ public class Menu extends BasicGameState {
 		bt_shop = new Rectangle(bt_shop_X, bt_shop_Y, 130, 140);
 		bt_bag = new Rectangle(bt_bag_X, bt_bag_Y, 80, 86);
 
+		// Tạo đăng xuất
+		img_notice = new Image("Data/Image/Notice_Item.png");
+		img_bt_yes = new Image("Data/Image/Button_Yes.png");
+		img_bt_no = new Image("Data/Image/Button_No.png");
+		img_bt_signOut = new Image("Data/Image/Button_Bag.png");
+		bt_signOut = new Rectangle(bt_signOut_X, bt_signOut_Y, 80, 86);
+		bt_yes = new Rectangle(bt_yes_X, bt_yes_Y, 128, 70);
+		bt_no = new Rectangle(bt_no_X, bt_no_Y, 128, 70);
+
 		// Tạo túi đồ
 		img_bt_bag = new Image("Data/Image/Button_Bag.png");
 		bt_use = new ArrayList<Rectangle>();
@@ -100,8 +130,8 @@ public class Menu extends BasicGameState {
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-		getUseSkins();
-		
+		getUseSkin();
+
 		if (isBag) {
 			// Đổi skin
 			for (int i = 0; i < bt_use.size(); i++) {
@@ -114,7 +144,7 @@ public class Menu extends BasicGameState {
 					if (type.get(i) != currentType) {
 						updateUseSkin(type.get(i) - 1, currentType - 1);
 						currentType = type.get(i);
-					} 
+					}
 				}
 			}
 			// Đóng túi đồ
@@ -123,7 +153,25 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-				toggle(container);
+				toggleBag(container);
+			}
+		} else if (isOut) {
+			// Đồng ý
+			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_yes.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				toggleOut(container);
+				sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
+			}
+			// Không đồng ý
+			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_no.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) { // Không đồng ý
+				sound.click();
+				toggleOut(container);
 			}
 		} else {
 			// Chuyển sang setting
@@ -163,7 +211,17 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-				toggle(container);
+				toggleBag(container);
+			}
+
+			// Đăng xuất
+			if ((bt_signOut
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_signOut.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				toggleOut(container);
 			}
 
 			// Bắt đầu chơi
@@ -184,12 +242,17 @@ public class Menu extends BasicGameState {
 		img_bt_leaderboard.draw(bt_leaderboard_X, bt_leaderboard_Y);
 		img_bt_shop.draw(bt_shop_X, bt_shop_Y);
 		img_bt_bag.draw(bt_bag_X, bt_bag_Y);
+		img_bt_signOut.draw(bt_signOut_X, bt_signOut_Y);
 
 		// Vẽ hitbox
 		if (isBag) {
 			img_bag.draw();
 			renderQuantity();
 			renderSkin(g);
+		} else if (isOut) {
+			img_notice.draw();
+			g.draw(bt_yes);
+			g.draw(bt_no);
 		} else {
 			g.setColor(Color.transparent);
 			g.draw(bt_setting);
@@ -216,15 +279,15 @@ public class Menu extends BasicGameState {
 		ArrayList<Image> img_skin = new ArrayList<Image>();
 		ArrayList<Rectangle> hitbox_use = new ArrayList<Rectangle>();
 		int x = skin_X;
-		
+
 		type.clear();
-		
+
 		for (int i = 0; i < SignIn.acc_detail.Skins().length + 1; i++) {
-			if (i == 0 || SignIn.acc_detail.Skins()[i-1] > 0) {
+			if (i == 0 || SignIn.acc_detail.Skins()[i - 1] > 0) {
 				img_skin.add(new Image("Data/Image/Skin" + i + ".png"));
-				if(i == currentType) {
+				if (i == currentType) {
 					img_bt_use.add(new Image("Data/Image/Button_Use_yes.png"));
-				}else {
+				} else {
 					img_bt_use.add(new Image("Data/Image/Button_Use_no.png"));
 				}
 				hitbox_use.add(new Rectangle(x + 11, skin_Y + img_skin.get(0).getHeight() + 10, 78, 30));
@@ -245,7 +308,7 @@ public class Menu extends BasicGameState {
 	}
 
 	// Mở đóng túi
-	public void toggle(GameContainer gc) {
+	public void toggleBag(GameContainer gc) {
 		if (isBag) {
 			isBag = false;
 		} else {
@@ -253,21 +316,30 @@ public class Menu extends BasicGameState {
 		}
 	}
 	
-	public void getUseSkins() {
-		for(int i = 0; i < SignIn.acc_detail.Skins().length; i++) {
-			if(SignIn.acc_detail.Skins()[i] == 2)
+	// Đóng mở đăng xuất
+		public void toggleOut(GameContainer gc) {
+			if (isOut) {
+				isOut = false;
+			} else {
+				isOut = true;
+			}
+		}
+
+	public void getUseSkin() {
+		for (int i = 0; i < SignIn.acc_detail.Skins().length; i++) {
+			if (SignIn.acc_detail.Skins()[i] == 2)
 				currentType = i + 1;
 		}
 	}
-	
+
 	public void updateUseSkin(int indexSkins, int beforeUseSkin) {
 		int[] skinsArray = SignIn.acc_detail.Skins();
-		if(indexSkins != -1)
+		if (indexSkins != -1)
 			skinsArray[indexSkins] = 2;
-		if(beforeUseSkin != -1)
+		if (beforeUseSkin != -1)
 			skinsArray[beforeUseSkin] = 1;
-		SignIn.acc_detail.setSkins(skinsArray); 
-		DetailDAO.getInstance().update(SignIn.acc_detail); 
+		SignIn.acc_detail.setSkins(skinsArray);
+		DetailDAO.getInstance().update(SignIn.acc_detail);
 
 	}
 
@@ -276,8 +348,7 @@ public class Menu extends BasicGameState {
 	public int getID() {
 		return 0;
 	}
-	
-	
+
 }
 
 // LƯU Ý 

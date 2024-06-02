@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 
 public class GameMusic implements gameConfig {
 	// Nhạc nền
-	private Music backgroundMusic;
+	static Music backgroundMusic;
 
 	// Trạng thái nhạc
 	private static volatile boolean checkMusic = Music;
@@ -15,7 +15,7 @@ public class GameMusic implements gameConfig {
 		backgroundMusic = new Music("Data/Sound/Background_Music.ogg");
 		
 	}
-
+	
 	// Lấy trạng thái nhạc
 	public static boolean isCheckMusic() {
 		return checkMusic;
