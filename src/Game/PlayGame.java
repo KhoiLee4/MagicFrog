@@ -148,7 +148,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		// Năng lượng
 		energy = 100;
 		
-		// Init time
+		// Tạo thời gian
 		time = 1;
 		
 		// Init item
@@ -168,7 +168,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		bt_pause = new Rectangle(bt_pause_X, bt_pause_Y, 55, 57);
 		bt_pauseSetting = new Rectangle(bt_pauseSetting_X, bt_pauseSetting_Y, 55, 57);
 		bt_pauseAgain = new Rectangle(bt_pauseAgain_X, bt_pauseAgain_Y, 55, 57);
-
+		
 		// Tạo thông báo
 		img_notice_item = new Image("Data/Image/Notice_Item.png");
 		img_bt_yes = new Image("Data/Image/Button_Yes.png");

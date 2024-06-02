@@ -19,6 +19,11 @@ public class JDBCUtil {
 			// String url = "jdbc:mysql://localhost:3306/game_data";
 			// String user = "root";
 			// String password = "792004+zZ";
+
+			// String url = "jdbc:mysql://localhost:3306/game_data";
+			// String user = "root";
+			// String password = "khoile";
+
 			c = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

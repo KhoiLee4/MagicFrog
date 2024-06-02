@@ -57,7 +57,7 @@ public class Shop extends BasicGameState implements gameConfig {
 	private int[] bt_buy_XY = { 221, 399, 576, 753, 221, 398, 576, 753, 552, 552, 552, 552, 753, 753, 753, 753 };
 
 	// Giá đồ
-	private int[] prices = { 100, 100, 0, 0, 50, 30, 30, 50 };
+	private int[] prices = { 5000, 5000, 0, 0, 500, 300, 300, 500 };
 
 	// Cờ kiểm tra
 	private int isNotice = -1;

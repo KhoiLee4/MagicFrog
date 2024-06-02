@@ -28,7 +28,7 @@ public class BabyFrog extends GameObject implements gameConfig {
 
 		randomSpawn = new Random();
 
-		this.pos_x = randomSpawn.nextInt(screenWidth - this.animation.getWidth());
+		this.pos_x = randomSpawn.nextInt(screenWidth - this.animation.getWidth() - 10);
 		this.pos_y = randomSpawn.nextInt(622 - this.animation.getHeight()) + y;
 
 		// Tạo hitbox

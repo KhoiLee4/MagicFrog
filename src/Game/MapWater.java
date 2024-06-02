@@ -146,7 +146,7 @@ public class MapWater extends Map implements gameConfig {
 		if (hitbox.getX() + hitbox.getWidth() / 2 > this.pos_x
 				&& hitbox.getX() + hitbox.getWidth() / 2 < this.pos_x + this.getImage().getWidth()
 				&& hitbox.getY() + hitbox.getHeight() / 2 > this.pos_y + 20
-				&& hitbox.getY() + hitbox.getHeight() / 2 < this.pos_y + this.getImage().getHeight() - 125) {
+				&& hitbox.getY() + hitbox.getHeight() / 2 < this.pos_y + this.getImage().getHeight() - 108) {
 			return -2;
 		}
 		return 1;
