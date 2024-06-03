@@ -16,7 +16,12 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.Detail;
 import GameData.DetailDAO;
+import GameData.ItemsOfUser;
+import GameData.ItemsOfUserDAO;
+import GameData.SkinsOfUser;
+import GameData.SkinsOfUserDAO;
 
 public class Shop extends BasicGameState implements gameConfig {
 	// Nhạc nền, âm thanh hiệu ứng
@@ -57,7 +62,7 @@ public class Shop extends BasicGameState implements gameConfig {
 	private int[] bt_buy_XY = { 221, 399, 576, 753, 221, 398, 576, 753, 552, 552, 552, 552, 753, 753, 753, 753 };
 
 	// Giá đồ
-	private int[] prices = { 5000, 5000, 0, 0, 500, 300, 300, 500 };
+	private int[] prices = { 100, 100, 0, 0, 50, 30, 30, 50 };
 
 	// Cờ kiểm tra
 	private int isNotice = -1;
@@ -66,6 +71,11 @@ public class Shop extends BasicGameState implements gameConfig {
 
 	private int[] skins = new int[4];
 	private int[] items = new int[4];
+	
+
+	ItemsOfUser acc_items;
+	SkinsOfUser acc_skins;
+	Detail acc_detail;
 
 	// Khởi tạo các giá trị
 	@Override
@@ -95,15 +105,19 @@ public class Shop extends BasicGameState implements gameConfig {
 		money = 0;
 		skins = new int[] { 0, 0, 0, 0 };
 		items = new int[] { 0, 0, 0, 0 };
+		
+		
 	}
 
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-		money = SignIn.acc_detail.getMoney();
 
-		skins = SignIn.acc_detail.Skins();
-		items = SignIn.acc_detail.Items();
+		acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(SignIn.username.toString()));
+		money = acc_detail.getMoney();
+		
+		items = ItemsOfUserDAO.getInstance().selectQuantitiesByUsername(SignIn.username.toString());
+		skins = SkinsOfUserDAO.getInstance().selectStatesByUsername(SignIn.username.toString());
 
 		// Thông mua hàng
 		if (isNotice >= 0) {
@@ -188,9 +202,9 @@ public class Shop extends BasicGameState implements gameConfig {
 
 		}
 
-		if (money != SignIn.acc_detail.getMoney()) {
-			SignIn.acc_detail.setMoney(money);
-			DetailDAO.getInstance().update(SignIn.acc_detail);
+		if (money != acc_detail.getMoney()) {
+			acc_detail.setMoney(money);
+			DetailDAO.getInstance().update(acc_detail);
 		}
 	}
 
@@ -277,12 +291,16 @@ public class Shop extends BasicGameState implements gameConfig {
 	public void processNotice() {
 		if (isNotice >= 0 && isNotice <= 3) {
 			skins[isNotice] = 1;
-			SignIn.acc_detail.setSkins(skins);
+			String skinName = "Skin" + (isNotice + 1);
+			acc_skins = new SkinsOfUser(SignIn.username.toString(), skinName, 1);
+			SkinsOfUserDAO.getInstance().update(acc_skins);
 		} else if (isNotice >= 4 && isNotice <= 7) {
 			items[isNotice - 4]++;
-			SignIn.acc_detail.setItems(items);
+			String itemName = "Item" + (isNotice - 3);
+			acc_items = new ItemsOfUser(SignIn.username.toString(), itemName, items[isNotice - 4]++);
+			ItemsOfUserDAO.getInstance().update(acc_items);
 		}
-		DetailDAO.getInstance().update(SignIn.acc_detail);
+
 	}
 
 	// Lấy id trạng thái

@@ -3,11 +3,14 @@ package Game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
@@ -15,7 +18,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.Detail;
 import GameData.DetailDAO;
+import GameData.ItemsOfUser;
+import GameData.ItemsOfUserDAO;
 
 // Loại Map
 enum Type_map {
@@ -42,6 +48,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	// Điểm
 	static int score;
+	private UnicodeFont font;
 
 	// map index of frog
 	static int indexMapFrog = 0;
@@ -134,6 +141,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	boolean flagUseItem = false;
 
+	ItemsOfUser acc_items;
+
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -209,13 +218,23 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		}
 
 		gameContainer = container;
+		
+		try {
+			font = new UnicodeFont("Data/Font/SundayMilk.ttf", 40, true, false);
+			font.addAsciiGlyphs();
+			font.getEffects().add(new ColorEffect(java.awt.Color.white));
+			font.loadGlyphs();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 
-		itemArray = SignIn.acc_detail.Items();
+		itemArray = ItemsOfUserDAO.getInstance().selectQuantitiesByUsername(SignIn.username.toString());
 
 		itemShield = itemArray[2];
 		itemBottelHp = itemArray[0];
@@ -252,7 +271,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				// Giảm năng lượng
 				if (frog.isAlive()) {
 					energy -= energyReduction * (int) time;
-					time += (delta / 100000.0f);
+					time += (delta*100 / 100000.0f);
 				}
 
 				// Tạo Map tự động
@@ -276,7 +295,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					flag = x.checkFrog(frog.getHitbox());
 					if (flag != 1) {
 						indexMapFrog = indexMap;
-//						System.out.println("Map bi dung " + x.getTypeMap());
+						// System.out.println("Map bi dung " + x.getTypeMap());
 						break;
 					}
 
@@ -300,12 +319,17 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					// Không dùng item
 
 					if (!isNotice && !frog.isAlive()) {
+						Detail acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(SignIn.username.toString()));
 						// Nhân vật chết
 						if (score > 0) {
-							int money = SignIn.acc_detail.getMoney();
+
+							int money = acc_detail.getMoney();
 							money += score * 100;
-							SignIn.acc_detail.setMoney(money);
+
+							acc_detail.setMoney(money);
+
 						}
+<<<<<<< HEAD
 
 						if (score > SignIn.acc_detail.getMaxScore()) {
 							SignIn.acc_detail.setMaxScore(score);
@@ -313,6 +337,21 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 						DetailDAO.getInstance().update(SignIn.acc_detail);
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
+=======
+						if (score > acc_detail.getMaxScore()) {
+							acc_detail.setMaxScore(score);
+						}
+						DetailDAO.getInstance().update(acc_detail);
+						
+						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
+					} else if (!isNotice && frog.isAlive()) {
+						System.out.println("O");
+						// System.out.println("indexItem " + indexItem);
+						// System.out.println("indexMap " + indexMap);
+						// System.out.println("map.size " + map.size());
+						// System.out.println(frog.getPos_x());
+						// System.out.println(frog.getPos_y());
+>>>>>>> 5030335d3091605b5553474656f825cec9fe899a
 
 					} else if (!isNotice && frog.isAlive()) {
 						isUseItem = false;
@@ -323,8 +362,50 @@ public class PlayGame extends BasicGameState implements gameConfig {
 							// Cập nhật map
 							map.get(i).update2(delta, distance);
 						}
+<<<<<<< HEAD
+=======
+
+						if (map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
+								- frog.getHitbox().getHeight() < 0) {
+							System.out.println(22222);
+							if (map.get(indexMapFrog).typeMap.equals("water")
+									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
+											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
+								frog.setPos_y(map.get(indexMapFrog - 1).pos_y - frog.getHitbox().getHeight() - 10);
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							} else {
+								frog.setPos_y(map.get(indexMapFrog - 1).pos_y - frog.getHitbox().getHeight());
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							}
+						} else {
+							// System.out.println(map.get(indexMapFrog - 1).typeMap);
+
+							if (map.get(indexMapFrog).typeMap.equals("water")
+									&& (map.get(indexMapFrog - 1).typeMap.equals("street")
+											|| map.get(indexMapFrog - 1).typeMap.equals("water"))) {
+								System.out.println(1111);
+								frog.setPos_y(map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
+										- frog.getHitbox().getHeight() - 30);
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							} else {
+								frog.setPos_y(map.get(indexMapFrog).pos_y + map.get(indexMapFrog).getImage().getHeight()
+										- frog.getHitbox().getHeight() - 40);
+								frog.getHitbox().setY(frog.getPos_y() + 40);
+							}
+
+						}
+
+						// System.out.println(frog.getPos_x());
+						// System.out.println(frog.getPos_y());
+						// System.out.println(map.get(indexMap).typeMap);
+						// System.out.println(frog.isAlive());
+>>>>>>> 5030335d3091605b5553474656f825cec9fe899a
 					}
 				} else {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5030335d3091605b5553474656f825cec9fe899a
 					if (frog.isAlive()) {
 						for (int i = 0; i < map.size(); i++) {
 							// Cập nhật map
@@ -411,6 +492,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			g.draw(bt_no);
 
 		}
+		
+		g.setColor(new Color(40, 144, 255));
+		g.setFont(font);
+		g.drawString("SCORE: " + score, 50, 20);
 
 	}
 
@@ -440,129 +525,134 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				indexItem = 0;
 			}
 			// Dùng tăng điểm
-			else if (!frog.isAlive() && itemCrown > 0) {
+			else if (!frog.isAlive() && itemCrown > 0 && score > 0) {
 				indexItem = 3;
 			}
 		}
 
 		switch (indexItem) {
-		case 0:
-			isNotice = true;
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				frog.useItem();
-				energy = 100;
-				itemBottelHp--;
-				indexItem = -1;
-				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
-			}
-			// Không đồng ý
-			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_no.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) { // Không đồng ý
-				sound.click();
-				if (itemCrown > 0) {
-					indexItem = 3;
-				} else {
+			case 0:
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					frog.useItem();
+					energy = 100;
+					itemBottelHp--;
 					indexItem = -1;
 					isNotice = false;
+					acc_items = new ItemsOfUser(SignIn.username.toString(), "Item1", itemBottelHp);
+					ItemsOfUserDAO.getInstance().update(acc_items);
+				}
+				// Không đồng ý
+				if ((bt_no.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_no.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) { // Không đồng ý
+					sound.click();
+					if (itemCrown > 0) {
+						indexItem = 3;
+					} else {
+						indexItem = -1;
+						isNotice = false;
+					}
+
+				}
+				break;
+			case 1:
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					frog.useItem();
+					energy = 100;
+					itemEnergyBar--;
+					indexItem = -1;
+					isNotice = false;
+					acc_items = new ItemsOfUser(SignIn.username.toString(), "Item2", itemEnergyBar);
+					ItemsOfUserDAO.getInstance().update(acc_items);
+				}
+				if ((bt_no.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_no.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					if (itemBottelHp > 0) {
+						indexItem = 0;
+					} else {
+						isNotice = false;
+						indexItem = -1;
+					}
+				}
+				break;
+			case 2: // Shield
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					frog.useItem();
+					itemShield--;
+					indexItem = -1;
+					isNotice = false;
+					acc_items = new ItemsOfUser(SignIn.username.toString(), "Item3", itemShield);
+					ItemsOfUserDAO.getInstance().update(acc_items);
+
+				}
+				if ((bt_no.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_no.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					if (itemBottelHp > 0) {
+						indexItem = 0;
+					} else {
+						isNotice = false;
+						indexItem = -1;
+					}
+				}
+				break;
+			case 3:
+				isNotice = true;
+				// Đồng ý
+				if ((bt_yes.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_yes.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
+					itemCrown--;
+					score *= 2;
+					indexItem = -1;
+					isNotice = false;
+					acc_items = new ItemsOfUser(SignIn.username.toString(), "Item4", itemCrown);
+					ItemsOfUserDAO.getInstance().update(acc_items);
 				}
 
-			}
-			break;
-		case 1:
-			isNotice = true;
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				frog.useItem();
-				energy = 100;
-				itemEnergyBar--;
-				indexItem = -1;
-				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
-			}
-			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_no.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				if (itemBottelHp > 0) {
-					indexItem = 0;
-				} else {
-					isNotice = false;
+				if ((bt_no.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| bt_no.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+					sound.click();
 					indexItem = -1;
-				}
-			}
-			break;
-		case 2: // Shield
-			isNotice = true;
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				frog.useItem();
-				itemShield--;
-				indexItem = -1;
-				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
-			}
-			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_no.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				if (itemBottelHp > 0) {
-					indexItem = 0;
-				} else {
 					isNotice = false;
-					indexItem = -1;
 				}
-			}
-			break;
-		case 3:
-			isNotice = true;
-			// Đồng ý
-			if ((bt_yes.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_yes.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				itemCrown--;
-				score *= 2;
-				indexItem = -1;
-				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
-			}
-
-			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_no.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				indexItem = -1;
-				isNotice = false;
-			}
-			break;
+				break;
 		}
 	}
 
@@ -573,20 +663,20 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 		// Tạo Map theo loại
 		switch (type) {
-		case WATER:
-			map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case WATER:
+				map.add(new MapWater(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case STREET:
-			map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
-			break;
+			case STREET:
+				map.add(new MapStreet(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y));
+				break;
 
-		case LAND:
-			map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
-			break;
+			case LAND:
+				map.add(new MapLand(map.get(map.size() - 1).pos_x, map.get(map.size() - 1).pos_y, energy));
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 

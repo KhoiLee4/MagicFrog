@@ -103,7 +103,7 @@ public class Setting extends BasicGameState implements gameConfig {
 						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			sound.click();
-			System.out.println(GameMusic.isCheckMusic());
+
 			if (GameMusic.isCheckMusic()) {
 				music.stopMusic();
 				acc_detail.setGameMusic(false);
@@ -144,7 +144,7 @@ public class Setting extends BasicGameState implements gameConfig {
 		g.draw(bt_music);
 		g.draw(bt_back);
 		
-		acc_detail = SignIn.acc_detail;
+		acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(SignIn.username.toString()));
 		if(acc_detail.isGameMusic()) {
 			indexMusic = 0;
 		}else {
