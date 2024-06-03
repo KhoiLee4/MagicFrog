@@ -26,7 +26,7 @@ public class SignIn extends BasicGameState {
 	private SoundEffect sound;
 
 	// Tài khoản
-	private StringBuilder username;
+	static StringBuilder username;
 	private ArrayList<Image> img_username;
 
 	// Mật khẩu
@@ -68,8 +68,6 @@ public class SignIn extends BasicGameState {
 	// Vị trí con trỏ chuột
 	private int cursorPosition = 0;
 
-	static Detail acc_detail = null;
-
 	boolean check_pass;
 	boolean check_null;
 	
@@ -78,6 +76,8 @@ public class SignIn extends BasicGameState {
 	private Rectangle bt_back = null;
 	private int bt_back_X = 900;
 	private int bt_back_Y = 840;
+	
+	static Detail acc_detail;
 
 	// Khởi tạo
 	@Override

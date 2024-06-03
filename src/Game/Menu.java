@@ -17,7 +17,12 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.Detail;
 import GameData.DetailDAO;
+import GameData.ItemsOfUser;
+import GameData.ItemsOfUserDAO;
+import GameData.SkinsOfUser;
+import GameData.SkinsOfUserDAO;
 
 public class Menu extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
@@ -89,6 +94,11 @@ public class Menu extends BasicGameState {
 
 	// Túi
 	private boolean isBag = false;
+	
+	ItemsOfUser acc_items;
+	SkinsOfUser acc_skins;
+	private int[] skins = new int[5];
+	private int[] items = new int[4];
 
 	// Khởi tạo các giá trị
 	@Override
@@ -125,12 +135,17 @@ public class Menu extends BasicGameState {
 		img_bt_bag = new Image("Data/Image/Button_Bag.png");
 		bt_use = new ArrayList<Rectangle>();
 		type = new ArrayList<Integer>();
+		
+		
 	}
 
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 		getUseSkin();
+		
+		items = ItemsOfUserDAO.getInstance().selectQuantitiesByUsername(SignIn.username.toString());
+		skins = SkinsOfUserDAO.getInstance().selectStatesByUsername(SignIn.username.toString());
 
 		if (isBag) {
 			// Đổi skin
@@ -265,7 +280,7 @@ public class Menu extends BasicGameState {
 	// Vẽ số lượng
 	public void renderQuantity() throws SlickException {
 		ArrayList<Image> quantity = new ArrayList<Image>();
-		for (int item : SignIn.acc_detail.Items()) {
+		for (int item : items) {
 			quantity.add(new Image("Data/Image/text_" + item + ".png"));
 		}
 		for (int i = 0; i < quantity.size(); i++) {
@@ -282,8 +297,8 @@ public class Menu extends BasicGameState {
 
 		type.clear();
 
-		for (int i = 0; i < SignIn.acc_detail.Skins().length + 1; i++) {
-			if (i == 0 || SignIn.acc_detail.Skins()[i - 1] > 0) {
+		for (int i = 0; i < skins.length + 1; i++) {
+			if (i == 0 || skins[i - 1] > 0) {
 				img_skin.add(new Image("Data/Image/Skin" + i + ".png"));
 				if (i == currentType) {
 					img_bt_use.add(new Image("Data/Image/Button_Use_yes.png"));
@@ -326,20 +341,23 @@ public class Menu extends BasicGameState {
 		}
 
 	public void getUseSkin() {
-		for (int i = 0; i < SignIn.acc_detail.Skins().length; i++) {
-			if (SignIn.acc_detail.Skins()[i] == 2)
+		for (int i = 0; i <skins.length; i++) {
+			if (skins[i] == 2)
 				currentType = i + 1;
 		}
 	}
 
 	public void updateUseSkin(int indexSkins, int beforeUseSkin) {
-		int[] skinsArray = SignIn.acc_detail.Skins();
-		if (indexSkins != -1)
-			skinsArray[indexSkins] = 2;
-		if (beforeUseSkin != -1)
-			skinsArray[beforeUseSkin] = 1;
-		SignIn.acc_detail.setSkins(skinsArray);
-		DetailDAO.getInstance().update(SignIn.acc_detail);
+		String skinName;
+		if (indexSkins != -1) {
+			skinName = "Skin" + (indexSkins + 1);
+			acc_skins = new SkinsOfUser(SignIn.username.toString(), skinName, 2);
+		}
+		if (beforeUseSkin != -1) {
+			skinName = "Skin" + (beforeUseSkin + 1);
+			acc_skins = new SkinsOfUser(SignIn.username.toString(), skinName, 1);
+		}
+		SkinsOfUserDAO.getInstance().update(acc_skins);
 
 	}
 

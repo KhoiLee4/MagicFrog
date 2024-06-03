@@ -19,6 +19,8 @@ import GameData.Account;
 import GameData.AccountDAO;
 import GameData.Detail;
 import GameData.DetailDAO;
+import GameData.ItemsOfUserDAO;
+import GameData.SkinsOfUserDAO;
 
 public class SignUp extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
@@ -162,6 +164,8 @@ public class SignUp extends BasicGameState {
 
 					AccountDAO.getInstance().insert(acc);
 					DetailDAO.getInstance().insert(acc_detail);
+					ItemsOfUserDAO.getInstance().insert(username.toString());
+					SkinsOfUserDAO.getInstance().insert(username.toString());
 
 					sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
 				}

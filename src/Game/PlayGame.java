@@ -15,7 +15,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import GameData.Detail;
 import GameData.DetailDAO;
+import GameData.ItemsOfUser;
+import GameData.ItemsOfUserDAO;
 
 // Loại Map
 enum Type_map {
@@ -134,7 +137,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	boolean flagUseItem = false;
 
-	
+	ItemsOfUser acc_items;
+
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
@@ -210,13 +214,15 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		}
 
 		gameContainer = container;
+		
 	}
 
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 
-		itemArray = SignIn.acc_detail.Items();
+		itemArray = ItemsOfUserDAO.getInstance().selectQuantitiesByUsername(SignIn.username.toString());
+
 
 		itemShield = itemArray[2];
 		itemBottelHp = itemArray[0];
@@ -302,14 +308,18 @@ public class PlayGame extends BasicGameState implements gameConfig {
 					if (!isNotice && !frog.isAlive()) {
 						// Nhân vật chết
 						if (score > 0) {
+							
 							int money = SignIn.acc_detail.getMoney();
 							money += score * 100;
+							
 							SignIn.acc_detail.setMoney(money);
+							
 						}
 						if (score > SignIn.acc_detail.getMaxScore()) {
 							SignIn.acc_detail.setMaxScore(score);
 						}
 						DetailDAO.getInstance().update(SignIn.acc_detail);
+						System.out.println(DetailDAO.getInstance().update(SignIn.acc_detail));
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 					} else if (!isNotice && frog.isAlive()) {
 
@@ -499,9 +509,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				itemBottelHp--;
 				indexItem = -1;
 				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
+				acc_items = new ItemsOfUser(SignIn.username.toString(), "Item1", itemBottelHp);
+				ItemsOfUserDAO.getInstance().update(acc_items);
 			}
 			// Không đồng ý
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
@@ -531,9 +540,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				itemEnergyBar--;
 				indexItem = -1;
 				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
+				acc_items = new ItemsOfUser(SignIn.username.toString(), "Item2", itemEnergyBar);
+				ItemsOfUserDAO.getInstance().update(acc_items);
 			}
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
@@ -560,9 +568,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				itemShield--;
 				indexItem = -1;
 				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
+				acc_items = new ItemsOfUser(SignIn.username.toString(), "Item3", itemShield);
+				ItemsOfUserDAO.getInstance().update(acc_items);
+				
 			}
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
 					|| bt_no.contains(
@@ -589,9 +597,8 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				score *= 2;
 				indexItem = -1;
 				isNotice = false;
-				String itemsCombined = itemBottelHp + " " + itemEnergyBar + " " + itemShield + " " + itemCrown;
-				SignIn.acc_detail.setItems(itemsCombined);
-				DetailDAO.getInstance().update(SignIn.acc_detail);
+				acc_items = new ItemsOfUser(SignIn.username.toString(), "Item4", itemCrown);
+				ItemsOfUserDAO.getInstance().update(acc_items);
 			}
 
 			if ((bt_no.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))

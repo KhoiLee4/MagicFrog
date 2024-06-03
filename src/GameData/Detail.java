@@ -1,13 +1,9 @@
 package GameData;
 
-import java.util.Arrays;
-
 public class Detail {
     public String username;
     private int money;
     private int maxScore;
-    private String skins;  
-    private String items; 
     private boolean gameMusic;
     private boolean soundEffect;
 
@@ -20,8 +16,6 @@ public class Detail {
         this.username = username;
         this.money = 0;
         this.maxScore = 0;
-        this.skins = "0 0 0 0";
-        this.items = "0 0 0 0";
         this.gameMusic = true;
         this.soundEffect = true;
     }
@@ -51,22 +45,6 @@ public class Detail {
         this.maxScore = maxScore;
     }
 
-    public String getSkins() {
-        return skins;
-    }
-
-    public void setSkins(String skins) {
-        this.skins = skins;
-    }
-
-    public String getItems() {
-        return items;
-    }
-
-    public void setItems(String items) {
-        this.items = items;
-    }
-
     public boolean isGameMusic() {
         return gameMusic;
     }
@@ -83,42 +61,12 @@ public class Detail {
         this.soundEffect = soundEffect;
     }
 
-    // Methods to add skins and items
-    public int[] Items() {
-        int[] result = new int[4];
-        String[] itemArray = items.split(" ");
-        for (int i = 0; i < 4; i++) {
-            result[i] = Integer.parseInt(itemArray[i]);
-        }
-        return result;
-    }
-
-    public int[] Skins() {
-        int[] result = new int[4];
-        String[] skinArray = skins.split(" ");
-        for (int i = 0; i < 4; i++) {
-            result[i] = Integer.parseInt(skinArray[i]);
-        }
-        return result;
-    }
-
-    // New methods to set skins and items using arrays
-    public void setSkins(int[] skins) {
-        this.skins = Arrays.toString(skins).replaceAll("[\\[\\],]", "").trim();
-    }
-
-    public void setItems(int[] items) {
-        this.items = Arrays.toString(items).replaceAll("[\\[\\],]", "").trim();
-    }
-
     @Override
     public String toString() {
         return "Detail{" +
                 "username='" + username + '\'' +
                 ", money=" + money +
                 ", maxScore=" + maxScore +
-                ", skins='" + skins + '\'' +
-                ", items='" + items + '\'' +
                 ", gameMusic=" + gameMusic +
                 ", soundEffect=" + soundEffect +
                 '}';
