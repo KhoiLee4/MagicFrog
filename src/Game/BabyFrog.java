@@ -16,7 +16,7 @@ public class BabyFrog extends GameObject implements gameConfig {
 	// Chuyển động của nhân vật
 	private Animation animation = null;
 	private int speedAction = 200;
-	
+
 	// Biến tạo ngẫu nhiên
 	private Random randomSpawn;
 
@@ -32,15 +32,14 @@ public class BabyFrog extends GameObject implements gameConfig {
 		this.pos_y = randomSpawn.nextInt(622 - this.animation.getHeight()) + y;
 
 		// Tạo hitbox
-		this.hitbox = new Rectangle(this.pos_x, this.pos_y, 30, 29);	
+		this.hitbox = new Rectangle(this.pos_x, this.pos_y, 30, 29);
 		this.hitbox.setLocation(this.pos_x, this.pos_y);
-	
+
 	}
 
 	public Animation getAnimation() {
 		return animation;
 	}
-
 
 	// Cập nhật
 	public void update(int delta, int check) throws SlickException {
@@ -49,10 +48,10 @@ public class BabyFrog extends GameObject implements gameConfig {
 		move(delta, check);
 	}
 
-	public void update2(int delta) throws SlickException {
+	public void update2(int delta, float distance) throws SlickException {
 		// Kiểm tra trạng thái chuyển động của nhân vật
 		animation.update(delta);
-		move2(delta);
+		move2(distance);
 	}
 
 	// bắt sự kiện di chuyển của ếch
@@ -64,11 +63,9 @@ public class BabyFrog extends GameObject implements gameConfig {
 		}
 	}
 
-	private void move2(int delta) throws SlickException {
-
-		this.pos_y -= speedFrog * delta*100;
+	private void move2(float distance) throws SlickException {
+		this.pos_y -= distance;
 		this.hitbox.setY(this.pos_y);
-
 	}
 
 	// Vẽ nhân vật
@@ -82,7 +79,6 @@ public class BabyFrog extends GameObject implements gameConfig {
 		PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 	}
 
-	
 }
 
 // LƯU Ý

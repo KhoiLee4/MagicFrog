@@ -56,8 +56,8 @@ public class Obstacles extends GameObject {
 		}
 	}
 
-	public void update2(int delta) throws SlickException {
-		this.move2(delta);
+	public void update2(float distance) throws SlickException {
+		this.move2(distance);
 	}
 
 	// Di chuyển đối tượng
@@ -69,10 +69,9 @@ public class Obstacles extends GameObject {
 		}
 	}
 
-	private void move2(int delta) throws SlickException {
-		this.pos_y -= speedMap * delta* 100;
-		this.hitbox.setY(this.hitbox.getY() - speedMap * delta*100);
-
+	private void move2(float distance) throws SlickException {
+		this.pos_y -= distance;
+		this.hitbox.setY(this.hitbox.getY() - distance);
 	}
 }
 

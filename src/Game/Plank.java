@@ -23,7 +23,7 @@ public class Plank extends GameObject {
 		if (direction == 1) {
 			this.pos_x = x - this.img.getWidth();
 		}
-		
+
 		// Tạo hitbox
 		this.hitbox = new Rectangle(this.pos_x, this.pos_y, this.img.getWidth(), this.img.getHeight() - 20);
 	}
@@ -31,6 +31,10 @@ public class Plank extends GameObject {
 	// Cập nhật
 	public void update(int delta, int check) throws SlickException {
 		move(delta, check);
+	}
+
+	public void update2(float distance) {
+		move2(distance);
 	}
 
 	// Di chuyển ván (1: sang phải, -1: sang trái)
@@ -42,6 +46,11 @@ public class Plank extends GameObject {
 			this.pos_y += speedMap * delta;
 			this.hitbox.setY(this.pos_y);
 		}
+	}
+
+	private void move2(float distance) {
+		this.pos_y -= distance;
+		this.hitbox.setY(this.hitbox.getY() - distance);
 	}
 
 	// Kiểm tra vị trí (ra ngoài thì trả về true)

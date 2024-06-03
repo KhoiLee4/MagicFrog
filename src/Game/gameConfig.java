@@ -16,10 +16,9 @@ public interface gameConfig {
 	// Trạng thái âm thanh
 	boolean Music = true;
 	boolean Sound = true;
-	
+
 	// Tốc độ giảm của năng lượng
 	float energyReduction = 0.001f;
-	
 
 }
 

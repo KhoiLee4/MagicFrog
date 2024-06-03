@@ -34,7 +34,6 @@ public final class MapLand extends Map implements gameConfig {
 	private boolean isRenderFrogBaby = false;
 	private boolean isRenderFruit = false;
 
-
 	// Count random again
 	private int cntChildFrog = 0;
 	private int cntFruit = 0;
@@ -79,7 +78,7 @@ public final class MapLand extends Map implements gameConfig {
 
 		if (url.equals("Data/Image/MapLand1.png")) {
 			// Draw mapLand 1
-			
+
 			createMap1();
 		} else if (url.equals("Data/Image/MapLand2.png")) {
 			// Draw mapLand 2
@@ -105,14 +104,13 @@ public final class MapLand extends Map implements gameConfig {
 			isRenderFrogBaby = true;
 			changePosChildFrog(obstacles);
 		}
-		
 
 		if (randomNumber >= 15 || energy <= 20) {
 			fruit = new Fruit(this.pos_y);
 			isRenderFruit = true;
 			changePosFruit(obstacles);
 		}
-	
+
 	}
 
 	public void changePosChildFrog(ArrayList<Obstacles> obstacles) {
@@ -125,31 +123,33 @@ public final class MapLand extends Map implements gameConfig {
 				if (obstacle.getHitbox().intersects(babyFrog.getHitbox())
 						|| obstacle.getHitbox().contains(babyFrog.getHitbox())) {
 					check = false;
-				//	System.out.println("Random again children frog");
+					// System.out.println("Random again children frog");
 					break;
 				}
 				i++;
 			}
 
 			if (!check) {
-			//	System.out.println("Baby Frog before: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
+				// System.out.println("Baby Frog before: " + babyFrog.getPos_x() + " " +
+				// babyFrog.getPos_y());
 				// Example 1 : the obstacle in 1/2 side left
 				if (obstacles.get(i).getPos_x() < 1 / 2 * screenWidth) {
-				//	System.out.println("Enter EX 1");
+					// System.out.println("Enter EX 1");
 					babyFrog.setPos_x(obstacles.get(i).getPos_x() + obstacles.get(i).getHitbox().getWidth() + 10);
 					babyFrog.hitbox.setX(babyFrog.getPos_x());
 				} else {// Example 2 : the obstacle in 1/2 side right
-				//	System.out.println("Enter EX 2");
+					// System.out.println("Enter EX 2");
 					babyFrog.setPos_x(obstacles.get(i).getPos_x() - babyFrog.getHitbox().getWidth());
 					babyFrog.hitbox.setX(babyFrog.getPos_x());
 				}
 				cntChildFrog++;
-				if (this.pos_y - babyFrog.hitbox.getY() >= 0 || cntChildFrog >= 10 ) {
+				if (this.pos_y - babyFrog.hitbox.getY() >= 0 || cntChildFrog >= 10) {
 					babyFrog.setPos_x(babyFrog.getPos_x() + screenWidth);
 					babyFrog.getHitbox().setX(babyFrog.getPos_x());
 					finalCheck = true;
 				}
-			//	System.out.println("Baby Frog after: " + babyFrog.getPos_x() + " " + babyFrog.getPos_y());
+				// System.out.println("Baby Frog after: " + babyFrog.getPos_x() + " " +
+				// babyFrog.getPos_y());
 			} else {
 				finalCheck = true;
 			}
@@ -166,20 +166,21 @@ public final class MapLand extends Map implements gameConfig {
 				if (obstacle.getHitbox().intersects(fruit.getHitbox())
 						|| obstacle.getHitbox().contains(fruit.getHitbox())) {
 					check = false;
-				//	System.out.println("Random again Fruit");
+					// System.out.println("Random again Fruit");
 					break;
 				}
 				i++;
 			}
 			if (!check) {
-			//	System.out.println("Fruit before: " + fruit.getPos_x() + " " + fruit.getPos_y());
+				// System.out.println("Fruit before: " + fruit.getPos_x() + " " +
+				// fruit.getPos_y());
 				// Example 1 : the obstacle in 1/2 side left
 				if (obstacles.get(i).getPos_x() < 1 / 2 * screenWidth) {
-				//	System.out.println("Enter EX 1");
+					// System.out.println("Enter EX 1");
 					fruit.setPos_x(obstacles.get(i).getPos_x() + obstacles.get(i).getHitbox().getWidth() + 10);
 					fruit.getHitbox().setX(fruit.getPos_x());
 				} else {// Example 2 : the obstacle in 1/2 side right
-			//		System.out.println("Enter EX 2");
+					// System.out.println("Enter EX 2");
 					fruit.setPos_x(obstacles.get(i).getPos_x() - fruit.getHitbox().getWidth() - 1);
 					fruit.getHitbox().setX(fruit.getPos_x());
 				}
@@ -189,7 +190,8 @@ public final class MapLand extends Map implements gameConfig {
 					fruit.getHitbox().setX(fruit.getPos_x());
 					finalCheck = true;
 				}
-			//	System.out.println("Fruit after: " + fruit.getPos_x() + " " + fruit.getPos_y());
+				// System.out.println("Fruit after: " + fruit.getPos_x() + " " +
+				// fruit.getPos_y());
 			} else {
 				finalCheck = true;
 			}
@@ -226,27 +228,27 @@ public final class MapLand extends Map implements gameConfig {
 
 	// Update 2
 	@Override
-	public void update2(int delta) throws SlickException {
+	public void update2(int delta, float distance) throws SlickException {
 		// TODO Auto-generated method stub
 		// Cập nhật đối tượng trong Map
 		for (Obstacles x : obstacles) {
-			x.update2(delta);
+			x.update2(distance);
 		}
 
 		// Cập nhật ếch con
 		if (isRenderFrogBaby) {
 			if (!isEat) {
-				babyFrog.update2(delta);
+				babyFrog.update2(delta, distance);
 			}
 		}
 
 		if (isRenderFruit) {
 			if (!fruit.getIsEat()) {
-				fruit.update2(delta);
+				fruit.update2(distance);
 			}
 		}
 
-		super.update2(delta);
+		super.update2(delta, distance);
 	}
 
 	// Vẽ Map

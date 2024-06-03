@@ -85,12 +85,12 @@ public class MapStreet extends Map implements gameConfig {
 	}
 
 	@Override
-	public void update2(int delta) throws SlickException {
+	public void update2(int delta, float distance) throws SlickException {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < cars.size(); i++) {
-			cars.get(i).update2(delta);
+			cars.get(i).update2(distance);
 		}
-		super.update2(delta);
+		super.update2(delta, distance);
 	}
 
 	// Vẽ Map
@@ -117,8 +117,5 @@ public class MapStreet extends Map implements gameConfig {
 		}
 		return 1;
 	}
-	
 
 }
-
-

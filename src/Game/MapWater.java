@@ -77,22 +77,22 @@ public class MapWater extends Map implements gameConfig {
 			if (planks.get(i).getHitbox().intersects(frog.getHitbox())
 					|| planks.get(i).getHitbox().contains(frog.getHitbox())) {
 				if (frog.getHitbox().getX() < planks.get(i).getHitbox().getX()
-						+ planks.get(i).getHitbox().getWidth()  - 30
+						+ planks.get(i).getHitbox().getWidth() - 30
 						&& frog.getHitbox().getX() > planks.get(i).getHitbox().getX()
-								
+
 						&& frog.getHitbox().getY() <= planks.get(i).getHitbox().getY()
 								+ planks.get(i).getHitbox().getHeight() - 20
 						&& frog.getHitbox().getY() >= planks.get(i).getHitbox().getY() - frog.getHitbox().getHeight()) {
-		
-					 index = i;
+
+					index = i;
 				}
-				
+
 			}
 		}
 
 		// Di chuyển nhân vật theo ván
 		if (index != -1) {
-			
+
 			// (1: to right, -1: to left)
 			if (planks.get(index).getDirection() == 1) {
 				frog.update(delta, 0);
@@ -113,15 +113,14 @@ public class MapWater extends Map implements gameConfig {
 			super.update(delta, check, frog);
 		}
 	}
-	
+
 	@Override
-	public void update2(int delta) throws SlickException {
+	public void update2(int delta, float distance) throws SlickException {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < planks.size(); i++) {
-			planks.get(i).setPos_y(planks.get(i).getPos_y() - speedFrog *delta *100);
-			planks.get(i).getHitbox().setY(planks.get(i).getPos_y());;
+			planks.get(i).update2(distance);
 		}
-		super.update2(delta);
+		super.update2(delta, distance);
 	}
 
 	// Vẽ map
@@ -136,7 +135,7 @@ public class MapWater extends Map implements gameConfig {
 	// Kiểm tra nhân vật so với Map
 	@Override
 	public int checkFrog(Shape hitbox) {
-		
+
 		for (Plank x : planks) {
 			if (x.getHitbox().contains(hitbox.getX() + hitbox.getWidth() / 2, hitbox.getY() + hitbox.getHeight() / 2)
 					|| x.getHitbox().intersects(hitbox)) {
@@ -152,8 +151,6 @@ public class MapWater extends Map implements gameConfig {
 		return 1;
 	}
 
-
-	
 }
 
 // LƯU Ý
