@@ -75,6 +75,7 @@ public class Shop extends BasicGameState implements gameConfig {
 
 	ItemsOfUser acc_items;
 	SkinsOfUser acc_skins;
+	Detail acc_detail;
 
 	// Khởi tạo các giá trị
 	@Override
@@ -112,7 +113,8 @@ public class Shop extends BasicGameState implements gameConfig {
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
 
-		money = SignIn.acc_detail.getMoney();
+		acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(SignIn.username.toString()));
+		money = acc_detail.getMoney();
 		
 		items = ItemsOfUserDAO.getInstance().selectQuantitiesByUsername(SignIn.username.toString());
 		skins = SkinsOfUserDAO.getInstance().selectStatesByUsername(SignIn.username.toString());
@@ -200,9 +202,9 @@ public class Shop extends BasicGameState implements gameConfig {
 
 		}
 
-		if (money != SignIn.acc_detail.getMoney()) {
-			SignIn.acc_detail.setMoney(money);
-			DetailDAO.getInstance().update(SignIn.acc_detail);
+		if (money != acc_detail.getMoney()) {
+			acc_detail.setMoney(money);
+			DetailDAO.getInstance().update(acc_detail);
 		}
 	}
 

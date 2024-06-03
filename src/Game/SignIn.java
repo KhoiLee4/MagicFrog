@@ -77,7 +77,7 @@ public class SignIn extends BasicGameState {
 	private int bt_back_X = 900;
 	private int bt_back_Y = 840;
 	
-	static Detail acc_detail;
+	private Detail acc_detail;
 
 	// Khởi tạo
 	@Override

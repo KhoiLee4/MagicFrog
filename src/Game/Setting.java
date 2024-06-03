@@ -144,7 +144,7 @@ public class Setting extends BasicGameState implements gameConfig {
 		g.draw(bt_music);
 		g.draw(bt_back);
 		
-		acc_detail = SignIn.acc_detail;
+		acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(SignIn.username.toString()));
 		if(acc_detail.isGameMusic()) {
 			indexMusic = 0;
 		}else {
