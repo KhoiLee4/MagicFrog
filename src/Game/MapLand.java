@@ -105,7 +105,7 @@ public final class MapLand extends Map implements gameConfig {
 			changePosChildFrog(obstacles);
 		}
 
-		if (randomNumber >= 15 || energy <= 20) {
+		if (randomNumber >= 15 || energy <= 50) {
 			fruit = new Fruit(this.pos_y);
 			isRenderFruit = true;
 			changePosFruit(obstacles);

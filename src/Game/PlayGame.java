@@ -293,7 +293,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				for (Map x : map) {
 					// check frog return != 1 => touches obstacles
 					flag = x.checkFrog(frog.getHitbox());
-					if (flag != 1) {
+					if (flag != 1 || energy == 0) {
 						indexMapFrog = indexMap;
 						// System.out.println("Map bi dung " + x.getTypeMap());
 						break;
@@ -484,6 +484,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				sound.click();
 				frog.useItem();
 				energy = 100;
+				time = 1;
 				itemBottelHp--;
 				indexItem = -1;
 				isNotice = false;
@@ -515,6 +516,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				sound.click();
 				frog.useItem();
 				energy = 100;
+				time = 1;
 				itemEnergyBar--;
 				indexItem = -1;
 				isNotice = false;
