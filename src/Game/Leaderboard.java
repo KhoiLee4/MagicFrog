@@ -20,29 +20,6 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import GameData.Detail;
 import GameData.DetailDAO;
 
-//
-//class Score {
-//    private String username;
-//    private int score;
-//
-//    public Score(String username, int score) {
-//        this.username = username;
-//        this.score = score;
-//    }
-//
-//    public String getPlayerName() {
-//        return username;
-//    }
-//
-//    public int getScore() {
-//        return score;
-//    }
-//    @Override
-//    public String toString() {
-//    	// TODO Auto-generated method stub
-//    	return username + " " +score;
-//    }
-//}
 
 public class Leaderboard extends BasicGameState {
 	// Nhạc nền, âm thanh hiệu ứng
@@ -91,16 +68,8 @@ public class Leaderboard extends BasicGameState {
 		}
 
 		// Lấy danh sách điểm từ csdl
-		// scores = new ArrayList<>();
 		list_username = DetailDAO.getInstance().selectAll();
 
-		// int i = 0;
-		// while (i < list_username.size() && i < 10) {
-		// String user = list_username.get(i).getUsername();
-		// int score = list_username.get(i).getMaxScore();
-		// scores.add(new Score(user, score));
-		// i++;
-		// }
 
 	}
 
@@ -124,7 +93,6 @@ public class Leaderboard extends BasicGameState {
 		img_bt_back.draw(bt_back_X, bt_back_Y);
 
 		// Vẽ hitbox
-		g.setColor(Color.transparent);
 		g.draw(bt_back);
 
 		g.setColor(new Color(40, 144, 255));

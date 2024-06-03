@@ -3,11 +3,14 @@ package Game;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
@@ -45,6 +48,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 
 	// Điểm
 	static int score;
+	private UnicodeFont font;
 
 	// map index of frog
 	static int indexMapFrog = 0;
@@ -214,6 +218,15 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		}
 
 		gameContainer = container;
+		
+		try {
+			font = new UnicodeFont("Data/Font/SundayMilk.ttf", 40, true, false);
+			font.addAsciiGlyphs();
+			font.getEffects().add(new ColorEffect(java.awt.Color.white));
+			font.loadGlyphs();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -258,7 +271,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				// Giảm năng lượng
 				if (frog.isAlive()) {
 					energy -= energyReduction * (int) time;
-					time += (delta / 100000.0f);
+					time += (delta*100 / 100000.0f);
 				}
 
 				// Tạo Map tự động
@@ -461,6 +474,10 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			g.draw(bt_no);
 
 		}
+		
+		g.setColor(new Color(40, 144, 255));
+		g.setFont(font);
+		g.drawString("SCORE: " + score, 50, 20);
 
 	}
 
