@@ -76,6 +76,10 @@ public class Shop extends BasicGameState implements gameConfig {
 	ItemsOfUser acc_items;
 	SkinsOfUser acc_skins;
 	Detail acc_detail;
+	
+	//Kiểm tra xem user đã sở hữu vật phẩm đó chưa
+	boolean isOwnSkin;
+	Image img_own_skin = null;
 
 	// Khởi tạo các giá trị
 	@Override
@@ -92,6 +96,7 @@ public class Shop extends BasicGameState implements gameConfig {
 		img_bt_buy_yes = new Image("Data/Image/Buy_yes.png");
 		img_bt_yes = new Image("Data/Image/Button_Yes.png");
 		img_bt_no = new Image("Data/Image/Button_No.png");
+		img_own_skin = new Image("Data/Image/OwnSkin.png");
 
 		// Tạo hitbox
 		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
@@ -106,7 +111,7 @@ public class Shop extends BasicGameState implements gameConfig {
 		skins = new int[] { 0, 0, 0, 0 };
 		items = new int[] { 0, 0, 0, 0 };
 		
-		
+		isOwnSkin = false;
 	}
 
 	// Cập nhật
@@ -195,7 +200,7 @@ public class Shop extends BasicGameState implements gameConfig {
 						bt_no.setLocation(bt_no_X, bt_no_Y);
 					} else {
 						System.out.println("Ban da so huu");
-						// bt_no.setLocation(bt_no_X, bt_no_Y);
+						isOwnSkin = true;
 					}
 				}
 			}
@@ -248,6 +253,21 @@ public class Shop extends BasicGameState implements gameConfig {
 				g.draw(bt);
 			}
 			g.draw(bt_back);
+		}
+		
+		if(isOwnSkin) {
+			img_own_skin.draw();
+			Rectangle button_back = new Rectangle(900, 840, 130, 140);
+			if (button_back.intersects(
+					new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| (button_back
+							.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(),
+									0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				isOwnSkin = false;
+			}
+
 		}
 
 	}
