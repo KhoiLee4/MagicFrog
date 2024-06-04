@@ -166,6 +166,10 @@ public class SignUp extends BasicGameState {
 					DetailDAO.getInstance().insert(acc_detail);
 					ItemsOfUserDAO.getInstance().insert(username.toString());
 					SkinsOfUserDAO.getInstance().insert(username.toString());
+					
+					img_username.clear();
+					img_password.clear();
+					img_confirmPassword.clear();
 
 					sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
 				}

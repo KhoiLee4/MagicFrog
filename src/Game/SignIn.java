@@ -70,9 +70,12 @@ public class SignIn extends BasicGameState {
 
 	boolean check_pass;
 	boolean check_null;
+	boolean check_exist;
 	
 	private Image img_check_pass = null;
 	private Image img_check_null = null;
+	private Image img_check_exist = null;
+	
 	private Rectangle bt_back = null;
 	private int bt_back_X = 900;
 	private int bt_back_Y = 840;
@@ -109,8 +112,12 @@ public class SignIn extends BasicGameState {
 
 		check_pass = true;
 		check_null = false;
+		check_exist = true;
 		img_check_pass = new Image("Data/Image/Check_pass.png");
 		img_check_null = new Image("Data/Image/Check_Null.png");
+		img_check_exist = new Image("Data/Image/Check_pass.png");
+		
+		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
 	}
 
 	// Cập nhật
@@ -160,8 +167,15 @@ public class SignIn extends BasicGameState {
 				music.setMusic(acc_detail.isGameMusic());
 				sound.setSound(acc_detail.isSoundEffect());
 
+				username = new StringBuilder();
+				password = new StringBuilder();
+				
+				img_username.clear();
+				img_password.clear();
+
 				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
 			}
+			
 
 		}
 
@@ -222,6 +236,7 @@ public class SignIn extends BasicGameState {
 			cursor.setLocation(-cursor.getWidth(), -cursor.getHeight());
 		}
 
+		
 		if (!check_pass) {
 			img_check_pass.draw();
 			if ((bt_back
@@ -233,7 +248,7 @@ public class SignIn extends BasicGameState {
 				check_pass = true;
 			}
 		}
-		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
+		
 		
 		if (check_null) {
 			img_check_null.draw();
@@ -246,13 +261,30 @@ public class SignIn extends BasicGameState {
 				check_null = false;
 			}
 		}
-		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
+
+		
+		if (!check_exist) {
+			img_check_exist.draw();
+			if ((bt_back
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_back.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				check_exist = true;
+			}
+		}
+
+		
 	}
 
 	// Kiểm tra tài khoản, mật khẩu
 	public boolean checkAccount() {
 		if (username.length() == 0) {
 			check_null = true;
+			return false;
+		} else if(AccountDAO.getInstance().selectByUsername(new Account(username.toString(),"")) == null) {
+			check_exist = false;
 			return false;
 		}
 		else{
