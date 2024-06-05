@@ -74,6 +74,23 @@ public class SignUp extends BasicGameState {
 	private int cursorPosition = 0;
 	boolean flagCursor = true;
 
+	// Ẩn hiện password
+	private Image img_visible = null;
+	private Image img_invisible = null;
+	private Image img_text_invisible = null;
+
+	private Rectangle bt_visible1 = null;
+	private Rectangle bt_visible2 = null;
+
+	private int visible1_X = 763;
+	private int visible1_Y = 573;
+
+	private int visible2_X = 763;
+	private int visible2_Y = 693;
+
+	private boolean isVisible1 = false;
+	private boolean isVisible2 = false;
+
 	// Lưu ý khi tạo mật khẩu
 	private Image[] notice_pass;
 	private boolean[] show_notice;
@@ -81,7 +98,6 @@ public class SignUp extends BasicGameState {
 	private Rectangle bt_back = null;
 	private int bt_back_X = 900;
 	private int bt_back_Y = 840;
-
 
 	// Khởi tạo
 	@Override
@@ -110,14 +126,19 @@ public class SignUp extends BasicGameState {
 		img_password = new ArrayList<Image>();
 		img_confirmPassword = new ArrayList<Image>();
 
+		// Tạo ẩn hiện password
+		img_visible = new Image("Data/Image/Button_Visible.png");
+		img_invisible = new Image("Data/Image/Button_Invisible.png");
+		img_text_invisible = new Image("Data/Image/text_sao.png");
+		bt_visible1 = new Rectangle(visible1_X, visible1_Y, 38, 38);
+		bt_visible2 = new Rectangle(visible2_X, visible2_Y, 38, 38);
+
 		// Thông báo khi tạo mật khẩu
-		notice_pass = new Image[] { new Image("Data/Image/Check_Null.png"),
-									new Image("Data/Image/Check_Exist.png"),
-									new Image("Data/Image/Notice_pass.png"),
-									new Image("Data/Image/Notice_pass2.png") };
-		show_notice = new boolean[] { false, false, false , false};
+		notice_pass = new Image[] { new Image("Data/Image/Check_Null.png"), new Image("Data/Image/Check_Exist.png"),
+				new Image("Data/Image/Notice_pass.png"), new Image("Data/Image/Notice_pass2.png") };
+		show_notice = new boolean[] { false, false, false, false };
 		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
-		
+
 	}
 
 	// Cập nhật
@@ -151,6 +172,25 @@ public class SignUp extends BasicGameState {
 			}
 		}
 
+		// Ẩn hiện mật khẩu
+		if ((bt_visible1
+				.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+				|| bt_visible1
+						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			sound.click();
+			toggleVisible1();
+		}
+		// Ẩn hiện mật khẩu
+		if ((bt_visible2
+				.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+				|| bt_visible2
+						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+			sound.click();
+			toggleVisible2();
+		}
+
 		// Bấm nút đăng ký
 		if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && (bt_SignUp
 				.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
@@ -167,7 +207,7 @@ public class SignUp extends BasicGameState {
 					DetailDAO.getInstance().insert(acc_detail);
 					ItemsOfUserDAO.getInstance().insert(username.toString());
 					SkinsOfUserDAO.getInstance().insert(username.toString());
-					
+
 					img_username.clear();
 					img_password.clear();
 					img_confirmPassword.clear();
@@ -175,7 +215,7 @@ public class SignUp extends BasicGameState {
 					sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
 				}
 			}
-			
+
 		}
 
 		// Nhập username
@@ -223,17 +263,39 @@ public class SignUp extends BasicGameState {
 
 		// Mật khẩu
 		if (img_password != null) {
-			for (Image img : img_password) {
-				img.draw(x2, y2);
-				x2 += img.getWidth();
+			if (!isVisible1) {
+				img_invisible.draw(visible1_X, visible1_Y);
+				int i = img_password.size();
+				while (i != 0) {
+					img_text_invisible.draw(x2, y2);
+					x2 += img_text_invisible.getWidth();
+					i--;
+				}
+			} else {
+				img_visible.draw(visible1_X, visible1_Y);
+				for (Image img : img_password) {
+					img.draw(x2, y2);
+					x2 += img.getWidth();
+				}
 			}
 		}
 
 		// Xác nhận mật khẩu
 		if (img_confirmPassword != null) {
-			for (Image img : img_confirmPassword) {
-				img.draw(x3, y3);
-				x3 += img.getWidth();
+			if (!isVisible2) {
+				img_invisible.draw(visible2_X, visible2_Y);
+				int i = img_confirmPassword.size();
+				while (i != 0) {
+					img_text_invisible.draw(x3, y3);
+					x3 += img_text_invisible.getWidth();
+					i--;
+				}
+			} else {
+				img_visible.draw(visible2_X, visible2_Y);
+				for (Image img : img_confirmPassword) {
+					img.draw(x3, y3);
+					x3 += img.getWidth();
+				}
 			}
 		}
 
@@ -258,17 +320,14 @@ public class SignUp extends BasicGameState {
 				notice_pass[i].draw();
 				if ((bt_back.intersects(
 						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-						|| bt_back
-								.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(),
-										0.5f)))
+						|| bt_back.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 						&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 					sound.click();
 					show_notice[i] = false;
 				}
-
 			}
 		}
-
 	}
 
 	// Kiểm tra mật khẩu
@@ -318,14 +377,30 @@ public class SignUp extends BasicGameState {
 		if (username.length() == 0) {
 			show_notice[0] = true;
 			return false;
-		}
-		else if(AccountDAO.getInstance().selectByUsername(new Account(username.toString(),"")) != null) {
+		} else if (AccountDAO.getInstance().selectByUsername(new Account(username.toString(), "")) != null) {
 			show_notice[1] = true;
 			return false;
 		}
 		return true;
 	}
-	
+
+	// Bật tắt ẩn hiện mật khẩu
+	public void toggleVisible1() {
+		if (isVisible1) {
+			isVisible1 = false;
+		} else {
+			isVisible1 = true;
+		}
+	}
+
+	public void toggleVisible2() {
+		if (isVisible2) {
+			isVisible2 = false;
+		} else {
+			isVisible2 = true;
+		}
+	}
+
 	// Nhập kí tự vào
 	public void input(GameContainer container, StringBuilder inputTest, ArrayList<Image> image) throws SlickException {
 		Input input = container.getInput();

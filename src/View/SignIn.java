@@ -67,21 +67,33 @@ public class SignIn extends BasicGameState {
 	// Con trỏ chuột
 	private Rectangle cursor;
 
+	// Ẩn hiện password
+	private Image img_visible = null;
+	private Image img_invisible = null;
+	private Image img_text_invisible = null;
+
+	private Rectangle bt_visible = null;
+
+	private int visible_X = 763;
+	private int visible_Y = 648;
+
+	private boolean isVisible = false;
+
 	// Vị trí con trỏ chuột
 	private int cursorPosition = 0;
 
 	boolean check_pass;
 	boolean check_null;
 	boolean check_exist;
-	
+
 	private Image img_check_pass = null;
 	private Image img_check_null = null;
 	private Image img_check_exist = null;
-	
+
 	private Rectangle bt_back = null;
 	private int bt_back_X = 900;
 	private int bt_back_Y = 840;
-	
+
 	private Detail acc_detail;
 
 	// Khởi tạo
@@ -112,81 +124,131 @@ public class SignIn extends BasicGameState {
 		img_username = new ArrayList<Image>();
 		img_password = new ArrayList<Image>();
 
+		// Tạo ẩn hiện password
+		img_visible = new Image("Data/Image/Button_Visible.png");
+		img_invisible = new Image("Data/Image/Button_Invisible.png");
+		img_text_invisible = new Image("Data/Image/text_sao.png");
+		bt_visible = new Rectangle(visible_X, visible_Y, 38, 38);
+
 		check_pass = true;
 		check_null = false;
 		check_exist = true;
 		img_check_pass = new Image("Data/Image/Check_pass.png");
 		img_check_null = new Image("Data/Image/Check_Null.png");
 		img_check_exist = new Image("Data/Image/Check_pass.png");
-		
+
 		bt_back = new Rectangle(bt_back_X, bt_back_Y, 130, 140);
 	}
 
 	// Cập nhật
 	@Override
 	public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
-		if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-			// Trỏ vào ô username
-			if (box_username
+		if (!check_pass) {
+			if ((bt_back
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| box_username.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
-				cursorPosition = 1;
+					|| bt_back.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				check_pass = true;
 			}
-			// Trỏ vào ô password
-			else if (box_password
+		}
+
+		else if (check_null) {
+			if ((bt_back
 					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| box_password.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
-				cursorPosition = 2;
-			}
-			// Bỏ trỏ chuột
-			else {
-				cursorPosition = 0;
+					|| bt_back.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				check_null = false;
 			}
 		}
 
-		// Nhập username
-		if (cursorPosition == 1) {
-			input(container, username, img_username);
-		}
-
-		// Nhập password
-		if (cursorPosition == 2) {
-			input(container, password, img_password);
-		}
-
-		// Bấm nút đăng nhập
-		if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && (bt_SignIn
-				.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-				|| bt_SignIn.contains(
-						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
-			// Kiểm tra tài khoản, mật khẩu
-			sound.click();
-			if (checkAccount()) {
-				acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(username.toString()));
-
-				music.setMusic(acc_detail.isGameMusic());
-				sound.setSound(acc_detail.isSoundEffect());
-
-				password = new StringBuilder();
-				
-				img_username.clear();
-				img_password.clear();
-
-				sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+		else if (!check_exist) {
+			if ((bt_back
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_back.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				check_exist = true;
 			}
-			
-
 		}
 
-		// Bấm nút đăng ký
-		if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && (bt_SignUp
-				.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-				|| bt_SignUp.contains(
-						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
-			sound.click();
-			sbg.enterState(7, new FadeOutTransition(), new FadeInTransition());
+		else {
+			if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+				// Trỏ vào ô username
+				if (box_username.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| box_username.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
+					cursorPosition = 1;
+				}
+				// Trỏ vào ô password
+				else if (box_password.intersects(
+						new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+						|| box_password.contains(
+								new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))) {
+					cursorPosition = 2;
+				}
+				// Bỏ trỏ chuột
+				else {
+					cursorPosition = 0;
+				}
+			}
+
+			// Nhập username
+			if (cursorPosition == 1) {
+				input(container, username, img_username);
+			}
+
+			// Nhập password
+			if (cursorPosition == 2) {
+				input(container, password, img_password);
+			}
+
+			// Ẩn hiện mật khẩu
+			if ((bt_visible
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_visible.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
+					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+				sound.click();
+				toggleVisible();
+			}
+
+			// Bấm nút đăng nhập
+			if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && (bt_SignIn
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_SignIn.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
+				// Kiểm tra tài khoản, mật khẩu
+				sound.click();
+				if (checkAccount()) {
+					acc_detail = DetailDAO.getInstance().selectByUsername(new Detail(username.toString()));
+
+					music.setMusic(acc_detail.isGameMusic());
+					sound.setSound(acc_detail.isSoundEffect());
+
+					password = new StringBuilder();
+
+					img_username.clear();
+					img_password.clear();
+
+					sbg.enterState(0, new FadeOutTransition(), new FadeInTransition());
+				}
+
+			}
+
+			// Bấm nút đăng ký
+			if (container.getInput().isMouseButtonDown(Input.MOUSE_LEFT_BUTTON) && (bt_SignUp
+					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
+					|| bt_SignUp.contains(
+							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))) {
+				sound.click();
+				sbg.enterState(7, new FadeOutTransition(), new FadeInTransition());
+			}
 		}
 	}
 
@@ -218,9 +280,20 @@ public class SignIn extends BasicGameState {
 
 		// Mật khẩu
 		if (img_password != null) {
-			for (Image img : img_password) {
-				img.draw(x2, y2);
-				x2 += img.getWidth();
+			if (!isVisible) {
+				img_invisible.draw(visible_X, visible_Y);
+				int i = img_password.size();
+				while (i != 0) {
+					img_text_invisible.draw(x2, y2);
+					x2 += img_text_invisible.getWidth();
+					i--;
+				}
+			} else {
+				img_visible.draw(visible_X, visible_Y);
+				for (Image img : img_password) {
+					img.draw(x2, y2);
+					x2 += img.getWidth();
+				}
 			}
 		}
 
@@ -237,46 +310,13 @@ public class SignIn extends BasicGameState {
 			cursor.setLocation(-cursor.getWidth(), -cursor.getHeight());
 		}
 
-		
 		if (!check_pass) {
 			img_check_pass.draw();
-			if ((bt_back
-					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_back.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				check_pass = true;
-			}
-		}
-		
-		
-		if (check_null) {
+		} else if (check_null) {
 			img_check_null.draw();
-			if ((bt_back
-					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_back.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				check_null = false;
-			}
-		}
-
-		
-		if (!check_exist) {
+		} else if (!check_exist) {
 			img_check_exist.draw();
-			if ((bt_back
-					.intersects(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f))
-					|| bt_back.contains(
-							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
-					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-				sound.click();
-				check_exist = true;
-			}
 		}
-
-		
 	}
 
 	// Kiểm tra tài khoản, mật khẩu
@@ -284,11 +324,10 @@ public class SignIn extends BasicGameState {
 		if (username.length() == 0) {
 			check_null = true;
 			return false;
-		} else if(AccountDAO.getInstance().selectByUsername(new Account(username.toString(),"")) == null) {
+		} else if (AccountDAO.getInstance().selectByUsername(new Account(username.toString(), "")) == null) {
 			check_exist = false;
 			return false;
-		}
-		else{
+		} else {
 			Account acc = new Account(username.toString(), "");
 			String pass = AccountDAO.getInstance().selectByUsername(acc).getPassword();
 			if (password.toString().equals(pass))
@@ -296,7 +335,15 @@ public class SignIn extends BasicGameState {
 			check_pass = false;
 			return false;
 		}
-		
+	}
+	
+	// Bật tắt ẩn hiện mật khẩu
+	public void toggleVisible() {
+		if (isVisible) {
+			isVisible = false;
+		} else {
+			isVisible = true;
+		}
 	}
 
 	// Nhập kí tự vào

@@ -99,6 +99,14 @@ public class Map implements gameConfig {
 		return total;
 	}
 
+	// Kiểm tra có ếch hay không
+	public boolean hasFrog(float y) {
+		if (this.pos_y + this.background.getHeight() > y) {
+			return true;
+		}
+		return false;
+	}
+
 	// Lấy hình nền
 	public Image getImage() {
 		return this.background;

@@ -162,7 +162,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		score = 0;
 
 		// Năng lượng
-		energy = 100;
+		energy = 10;
 
 		// Init time
 		time = 1;
@@ -257,7 +257,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 						.contains(new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 				&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 			sound.click();
-			togglePause(container);
+			togglePause();
 		}
 
 		if (!isPause) {
@@ -297,18 +297,21 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				// Cờ trạng thái
 				int flag = 1;
 				int indexMap = 0;
+
 				// kiểm tra Map
 				for (Map x : map) {
+					// Xác định map đang đứng
+					if (x.hasFrog(frog.getHitbox().getY())) {
+						indexMapFrog = indexMap;
+					}
+
 					// check frog return != 1 => touches obstacles
 					flag = x.checkFrog(frog.getHitbox());
-					if (flag != 1 || energy == 0) {
-						indexMapFrog = indexMap;
-						// System.out.println("Map bi dung " + x.getTypeMap());
+					if (flag != 1) {
 						break;
 					}
 
 					indexMap++;
-
 				}
 
 				// Cập nhật nhân vật theo trạng thái
@@ -323,8 +326,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 				if (!frog.isAlive()) {
 					// Sử dụng item
 					useItem(container, flag);
-
-					// Không dùng item
 
 					if (!isNotice && !frog.isAlive()) {
 						Detail acc_detail = DetailDAO.getInstance()
@@ -347,8 +348,6 @@ public class PlayGame extends BasicGameState implements gameConfig {
 						sbg.enterState(5, new FadeOutTransition(), new FadeInTransition());
 
 					} else if (!isNotice && frog.isAlive()) {
-						isUseItem = false;
-
 						float distance = map.get(indexMapFrog).getPos_y() + map.get(indexMapFrog).getImage().getHeight()
 								- frog.getImg().getHeight() - frog.getPos_y();
 						for (int i = 0; i < map.size(); i++) {
@@ -451,7 +450,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	}
 
 	// Tạm dừng trò chơi
-	public void togglePause(GameContainer gc) {
+	public void togglePause() {
 		if (isPause) {
 			isPause = false;
 		} else {
