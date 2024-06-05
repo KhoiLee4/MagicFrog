@@ -162,7 +162,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 		score = 0;
 
 		// Năng lượng
-		energy = 10;
+		energy = 100;
 
 		// Init time
 		time = 1;
