@@ -82,7 +82,6 @@ public class SignIn extends BasicGameState {
 	
 	private boolean isVisible = false;
 
-	// Thông báo
 	private boolean check_pass;
 	private boolean check_null;
 	private boolean check_exist;

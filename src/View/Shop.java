@@ -75,9 +75,9 @@ public class Shop extends BasicGameState implements gameConfig {
 	private int[] items = new int[4];
 	
 
-	ItemsOfUser acc_items;
-	SkinsOfUser acc_skins;
-	Detail acc_detail;
+	private ItemsOfUser acc_items;
+	private SkinsOfUser acc_skins;
+	private Detail acc_detail;
 	
 	//Kiểm tra xem user đã sở hữu vật phẩm đó chưa
 	boolean isOwnSkin;
@@ -246,16 +246,16 @@ public class Shop extends BasicGameState implements gameConfig {
 		}
 
 		// Vẽ hitbox
-		g.setColor(Color.red);
-		if (isNotice >= 0 || isNotice == -2) {
-			g.draw(bt_yes);
-			g.draw(bt_no);
-		} else {
-			for (Rectangle bt : bt_buy) {
-				g.draw(bt);
-			}
-			g.draw(bt_back);
-		}
+//		g.setColor(Color.red);
+//		if (isNotice >= 0 || isNotice == -2) {
+//			g.draw(bt_yes);
+//			g.draw(bt_no);
+//		} else {
+//			for (Rectangle bt : bt_buy) {
+//				g.draw(bt);
+//			}
+//			g.draw(bt_back);
+//		}
 		
 		if(isOwnSkin) {
 			img_own_skin.draw();

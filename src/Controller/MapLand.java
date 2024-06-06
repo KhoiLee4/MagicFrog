@@ -132,8 +132,7 @@ public final class MapLand extends Map implements gameConfig {
 			}
 
 			if (!check) {
-				// System.out.println("Baby Frog before: " + babyFrog.getPos_x() + " " +
-				// babyFrog.getPos_y());
+				
 				// Example 1 : the obstacle in 1/2 side left
 				if (obstacles.get(i).getPos_x() < 1 / 2 * screenWidth) {
 					// System.out.println("Enter EX 1");
@@ -174,8 +173,6 @@ public final class MapLand extends Map implements gameConfig {
 				i++;
 			}
 			if (!check) {
-				// System.out.println("Fruit before: " + fruit.getPos_x() + " " +
-				// fruit.getPos_y());
 				// Example 1 : the obstacle in 1/2 side left
 				if (obstacles.get(i).getPos_x() < 1 / 2 * screenWidth) {
 					// System.out.println("Enter EX 1");
