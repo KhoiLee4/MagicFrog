@@ -82,9 +82,9 @@ public class SignIn extends BasicGameState {
 	// Vị trí con trỏ chuột
 	private int cursorPosition = 0;
 
-	boolean check_pass;
-	boolean check_null;
-	boolean check_exist;
+	private boolean check_pass;
+	private boolean check_null;
+	private boolean check_exist;
 
 	private Image img_check_pass = null;
 	private Image img_check_null = null;

@@ -75,9 +75,9 @@ public class Shop extends BasicGameState implements gameConfig {
 	private int[] items = new int[4];
 	
 
-	ItemsOfUser acc_items;
-	SkinsOfUser acc_skins;
-	Detail acc_detail;
+	private ItemsOfUser acc_items;
+	private SkinsOfUser acc_skins;
+	private Detail acc_detail;
 	
 	//Kiểm tra xem user đã sở hữu vật phẩm đó chưa
 	boolean isOwnSkin;

@@ -54,7 +54,7 @@ public class Setting extends BasicGameState implements gameConfig {
 	// Từ đâu đến
 	static boolean isMenu = true;
 	
-	Detail acc_detail = null;
+	private Detail acc_detail = null;
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
