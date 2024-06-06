@@ -67,24 +67,25 @@ public class SignIn extends BasicGameState {
 	// Con trỏ chuột
 	private Rectangle cursor;
 
+	// Vị trí con trỏ chuột
+	private int cursorPosition = 0;
+	
 	// Ẩn hiện password
 	private Image img_visible = null;
 	private Image img_invisible = null;
 	private Image img_text_invisible = null;
-
+	
 	private Rectangle bt_visible = null;
-
+	
 	private int visible_X = 763;
 	private int visible_Y = 648;
-
+	
 	private boolean isVisible = false;
 
-	// Vị trí con trỏ chuột
-	private int cursorPosition = 0;
-
-	boolean check_pass;
-	boolean check_null;
-	boolean check_exist;
+	// Thông báo
+	private boolean check_pass;
+	private boolean check_null;
+	private boolean check_exist;
 
 	private Image img_check_pass = null;
 	private Image img_check_null = null;

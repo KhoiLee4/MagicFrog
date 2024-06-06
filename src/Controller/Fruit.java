@@ -27,8 +27,8 @@ public class Fruit extends GameObject implements gameConfig {
 
 		randomSpawn = new Random();
 
-//		this.img = new Image("Data/Image/Fruit" + randomSpawn.nextInt(15) + ".png");
-		this.img = new Image("Data/Image/Fruit0.png");
+		this.img = new Image("Data/Image/Fruit" + randomSpawn.nextInt(4) + ".png");
+//		this.img = new Image("Data/Image/Fruit0.png");
 
 		this.pos_x = randomSpawn.nextInt(screenWidth - this.img.getWidth());
 		this.pos_y = randomSpawn.nextInt(622 - this.img.getHeight() - 5) + y;

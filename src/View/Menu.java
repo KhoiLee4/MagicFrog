@@ -170,7 +170,7 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-				toggleBag(container);
+				toggleBag();
 			}
 		} else if (isOut) {
 			// Đồng ý
@@ -179,7 +179,7 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-				toggleOut(container);
+				toggleOut();
 				sbg.enterState(6, new FadeOutTransition(), new FadeInTransition());
 			}
 			// Không đồng ý
@@ -188,7 +188,7 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) { // Không đồng ý
 				sound.click();
-				toggleOut(container);
+				toggleOut();
 			}
 		} else {
 			// Chuyển sang setting
@@ -228,7 +228,7 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-				toggleBag(container);
+				toggleBag();
 			}
 
 			// Đăng xuất
@@ -238,7 +238,7 @@ public class Menu extends BasicGameState {
 							new Circle(container.getInput().getMouseX(), container.getInput().getMouseY(), 0.5f)))
 					&& container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
 				sound.click();
-				toggleOut(container);
+				toggleOut();
 				SignIn.username = new StringBuilder();
 			}
 
@@ -326,7 +326,7 @@ public class Menu extends BasicGameState {
 	}
 
 	// Mở đóng túi
-	public void toggleBag(GameContainer gc) {
+	public void toggleBag() {
 		if (isBag) {
 			isBag = false;
 		} else {
@@ -335,7 +335,7 @@ public class Menu extends BasicGameState {
 	}
 	
 	// Đóng mở đăng xuất
-		public void toggleOut(GameContainer gc) {
+		public void toggleOut() {
 			if (isOut) {
 				isOut = false;
 			} else {

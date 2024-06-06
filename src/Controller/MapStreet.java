@@ -18,7 +18,7 @@ public class MapStreet extends Map implements gameConfig {
 	private int randomTime = 0;
 
 	// Khởi tạo
-	protected MapStreet(float x) throws SlickException {
+	public MapStreet(float x) throws SlickException {
 		// Tạo loại Map
 		super(null, x, 0, "street");
 

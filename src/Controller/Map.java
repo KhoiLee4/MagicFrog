@@ -18,22 +18,6 @@ public class Map implements gameConfig {
 	protected float pos_x;
 	protected float pos_y;
 
-	public float getPos_x() {
-		return pos_x;
-	}
-
-	public void setPos_x(float pos_x) {
-		this.pos_x = pos_x;
-	}
-
-	public float getPos_y() {
-		return pos_y;
-	}
-
-	public void setPos_y(float pos_y) {
-		this.pos_y = pos_y;
-	}
-
 	// Loại Map
 	protected String typeMap;
 
@@ -117,6 +101,21 @@ public class Map implements gameConfig {
 		return typeMap;
 	}
 
+	public float getPos_x() {
+		return pos_x;
+	}
+
+	public void setPos_x(float pos_x) {
+		this.pos_x = pos_x;
+	}
+
+	public float getPos_y() {
+		return pos_y;
+	}
+
+	public void setPos_y(float pos_y) {
+		this.pos_y = pos_y;
+	}
 }
 
 // LƯU Ý
