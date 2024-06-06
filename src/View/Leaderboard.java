@@ -94,7 +94,7 @@ public class Leaderboard extends BasicGameState {
 		img_bt_back.draw(bt_back_X, bt_back_Y);
 
 		// Vẽ hitbox
-		g.draw(bt_back);
+	//	g.draw(bt_back);
 
 		g.setColor(new Color(40, 144, 255));
 		g.setFont(font);

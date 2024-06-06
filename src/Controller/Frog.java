@@ -214,8 +214,8 @@ public class Frog extends GameObject implements gameConfig {
 		}
 
 		// Vẽ hitbox
-		PlayGame.gameContainer.getGraphics().setColor(Color.black);
-		PlayGame.gameContainer.getGraphics().draw(this.hitbox);
+//		PlayGame.gameContainer.getGraphics().setColor(Color.black);
+//		PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 	}
 
 	public void render(boolean isPause) {

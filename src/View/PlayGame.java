@@ -152,14 +152,14 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	// Khởi tạo
 	@Override
 	public void init(GameContainer container, StateBasedGame sbg) throws SlickException {
-		// Tạo âm thanh hiệu ứng
+		// Create sound effect
 		sound = new SoundEffect();
 		music = new GameMusic();
 
-		// Điểm
+
 		score = 0;
 
-		// Năng lượng
+	
 		energy = 100;
 
 		// Init time
@@ -417,7 +417,7 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			img_tutorial.draw(screenWidth / 2 - img_tutorial.getCenterOfRotationX(),
 					screenHeight / 3 - img_tutorial.getCenterOfRotationY() / 2);
 			img_bt_nextr.draw(bt_next_X, bt_next_Y, 0.5f);
-			g.draw(bt_next);
+			// g.draw(bt_next);
 		}
 
 		// Vẽ nút dừng
@@ -426,18 +426,18 @@ public class PlayGame extends BasicGameState implements gameConfig {
 			img_bt_pauseOn.draw(bt_pause_X, bt_pause_Y);
 			img_bt_pauseSetting.draw(bt_pauseSetting_X, bt_pauseSetting_Y);
 			img_bt_pauseAgain.draw(bt_pauseAgain_X, bt_pauseAgain_Y);
-			g.draw(bt_pause);
-			g.draw(bt_pauseSetting);
-			g.draw(bt_pauseAgain);
+//			g.draw(bt_pause);
+//			g.draw(bt_pauseSetting);
+//			g.draw(bt_pauseAgain);
 		} else {
 			img_bt_pauseOff.draw(bt_pause_X, bt_pause_Y);
-			g.draw(bt_pause);
+		//	g.draw(bt_pause);
 		}
 		if (isNotice) {
 			img_notice_item.draw();
 			img_item.get(indexItem).draw(item_X, item_Y);
-			g.draw(bt_yes);
-			g.draw(bt_no);
+//			g.draw(bt_yes);
+//			g.draw(bt_no);
 
 		}
 

@@ -45,8 +45,8 @@ public abstract class GameObject implements gameConfig {
 
 		// Vẽ hitbox
 		if (this.hitbox != null) {
-			PlayGame.gameContainer.getGraphics().setColor(Color.black);
-			PlayGame.gameContainer.getGraphics().draw(this.hitbox);
+//			PlayGame.gameContainer.getGraphics().setColor(Color.black);
+//			PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 		}
 	}
 

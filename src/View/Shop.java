@@ -246,16 +246,16 @@ public class Shop extends BasicGameState implements gameConfig {
 		}
 
 		// Vẽ hitbox
-		g.setColor(Color.red);
-		if (isNotice >= 0 || isNotice == -2) {
-			g.draw(bt_yes);
-			g.draw(bt_no);
-		} else {
-			for (Rectangle bt : bt_buy) {
-				g.draw(bt);
-			}
-			g.draw(bt_back);
-		}
+//		g.setColor(Color.red);
+//		if (isNotice >= 0 || isNotice == -2) {
+//			g.draw(bt_yes);
+//			g.draw(bt_no);
+//		} else {
+//			for (Rectangle bt : bt_buy) {
+//				g.draw(bt);
+//			}
+//			g.draw(bt_back);
+//		}
 		
 		if(isOwnSkin) {
 			img_own_skin.draw();
