@@ -145,11 +145,9 @@ public class PlayGame extends BasicGameState implements gameConfig {
 	private static int itemEnergyBar = 1;
 	private static int itemCrown = 1;
 
-	int[] itemArray = new int[4];
+	private int[] itemArray = new int[4];
 
-	boolean flagUseItem = false;
-
-	ItemsOfUser acc_items;
+	private ItemsOfUser acc_items;
 
 	// Khởi tạo
 	@Override

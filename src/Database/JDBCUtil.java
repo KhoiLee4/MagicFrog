@@ -12,10 +12,10 @@ public class JDBCUtil {
 		try {
 
 			// Register the Oracle JDBC driver with DriverManager
-//			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			String url = "jdbc:mysql://localhost:3306/game_data";
-			String user = "root";
-			String password = "792004+zZ";
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			String url = "jdbc:mysql://LAPTOP-9UDVFSM0/game_data";
+			String user = "btl";
+			String password = "000000";
 
 			// String url = "jdbc:mysql://localhost:3306/game_data";
 			// String user = "root";
