@@ -61,8 +61,6 @@ public class Setting extends BasicGameState implements gameConfig {
 		// Tạo nhạc nền, âm thanh hiệu ứng
 		music = new GameMusic();
 		sound = new SoundEffect();
-
-
 		// Tạo hình ảnh
 		img_background = new Image("Data/Image/Setting.png");
 		img_bt_sound = new Image[] { new Image("Data/Image/Button_Sound_on.png"),
@@ -70,7 +68,6 @@ public class Setting extends BasicGameState implements gameConfig {
 		img_bt_music = new Image[] { new Image("Data/Image/Button_Music_on.png"),
 				new Image("Data/Image/Button_Music_off.png") };
 		img_bt_back = new Image("Data/Image/Button_Back.png");
-
 		// Tạo hitbox
 		bt_sound = new Rectangle(bt_sound_X, bt_sound_Y, 130, 140);
 		bt_music = new Rectangle(bt_music_X, bt_music_Y, 130, 140);
