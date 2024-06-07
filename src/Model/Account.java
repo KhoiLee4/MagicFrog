@@ -1,7 +1,7 @@
 package Model;
 
 public class Account {
-    private String username;
+    public String username;
     private String password;
 
     public Account() {

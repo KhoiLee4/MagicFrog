@@ -1,7 +1,7 @@
 package Model;
 
-public class Detail {
-    public String username;
+public class Detail extends Account{
+
     private int money;
     private int maxScore;
     private boolean gameMusic;

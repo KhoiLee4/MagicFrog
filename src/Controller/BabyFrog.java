@@ -77,8 +77,8 @@ public class BabyFrog extends GameObject implements gameConfig {
 		animation.draw(this.pos_x, this.pos_y);
 
 		// Vẽ hitbox
-		PlayGame.gameContainer.getGraphics().setColor(Color.black);
-		PlayGame.gameContainer.getGraphics().draw(this.hitbox);
+//		PlayGame.gameContainer.getGraphics().setColor(Color.black);
+//		PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 	}
 
 }

@@ -1,7 +1,7 @@
 package Model;
 
-public class ItemsOfUser {
-    private String username;
+public class ItemsOfUser extends Account{
+
     private String item;
     private int quantity;
 

@@ -68,8 +68,8 @@ public class Fruit extends GameObject implements gameConfig {
 	public void render() {
 		if (!isEat) {
 			this.img.draw(pos_x, pos_y);
-			PlayGame.gameContainer.getGraphics().setColor(Color.black);
-			PlayGame.gameContainer.getGraphics().draw(this.hitbox);
+//			PlayGame.gameContainer.getGraphics().setColor(Color.black);
+//			PlayGame.gameContainer.getGraphics().draw(this.hitbox);
 		}
 	}
 

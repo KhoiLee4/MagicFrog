@@ -1,7 +1,7 @@
 package Model;
 
-public class SkinsOfUser {
-    private String username;
+public class SkinsOfUser extends Account{
+
     private String skin;
     private int state;
 
